@@ -1,17 +1,38 @@
 {
   "name": "seven-half-beers",
   "version": "0.1.0",
-  "private": true,
+  "main": "dist/index.js",
+  "private": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Andrea1302/seven-and-half-beers.git"
+  },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
+    "@react-native-async-storage/async-storage": "^1.17.6",
+    "@react-native-community/masked-view": "^0.1.11",
+    "axios": "^0.27.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-native-gesture-handler": "^2.4.2",
+    "react-native-reanimated": "^2.8.0",
+    "react-native-safe-area-context": "^4.3.1",
+    "react-native-screens": "^3.13.1",
+    "react-native-web": "0.17.7",
+    "react-scripts": "4.0.3",
     "web-vitals": "^2.1.4"
   },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.3"
+  },
   "scripts": {
+    "clean": "rimraf dist",
+    "compile": "npm run clean && cross-env NODE_ENV=production babel src/components --out-dir dist --copy-files --ignore tests,spec.js,test.js,stories.js,snapshots",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -34,5 +55,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.10",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-react": "^7.17.12",
+    "cross-env": "^7.0.3"
   }
 }
