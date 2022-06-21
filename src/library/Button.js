@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Text } from 'react-native'
 
-const Button = ({ callback, label,styleCustom,styleCustomText }) => {
+const Button = ({ callback, label, styleCustom, styleCustomText }) => {
     const onPress = () => {
         callback()
     }

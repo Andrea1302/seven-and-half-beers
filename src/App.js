@@ -4,7 +4,7 @@
 // components
 import { SafeAreaView } from 'react-native';
 
-import Game from './components/Game';
+import Game from './library/Game';
 
 // import Login from './components/Login';
 

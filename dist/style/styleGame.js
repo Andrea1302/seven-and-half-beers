@@ -10,86 +10,77 @@ var _reactNative = require("react-native");
 var _default = _reactNative.StyleSheet.create({
   gameTable: {
     height: _reactNative.Dimensions.get('screen').height,
+    width: _reactNative.Dimensions.get('screen').width,
     justifyContent: 'center',
     alignItems: 'center'
   },
   table: {
-    height: _reactNative.Dimensions.get('screen').height / 1.5,
-    backgroundColor: 'yellow',
-    width: _reactNative.Dimensions.get('screen').width - 200,
+    backgroundColor: "yellow",
+    position: 'relative',
+    height: 300,
+    width: '80%',
     borderRadius: 20,
     justifyContent: 'space-between'
   },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    position: 'relative',
-    bottom: 50
+  bastardi: {
+    height: "100%",
+    width: 100
   },
-  rowCentral: {
-    flexDirection: 'row',
+  playerContainer: {
     justifyContent: 'space-between',
-    width: _reactNative.Dimensions.get('screen').width - 100,
-    position: 'relative',
-    right: 50
-  },
-  rowBottom: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    position: 'relative',
-    bottom: 61
+    position: "relative",
+    height: '100%'
   },
   centralUser: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    position: "relative",
+    bottom: 50,
+    width: "100%",
+    height: 100
   },
-  bottomUser: {
-    justifyContent: 'center',
-    alignItems: 'center'
+  centralSx: {
+    position: "relative",
+    right: 50
+  },
+  centralDx: {
+    position: "relative",
+    left: 50
   },
   topUser: {
-    justifyContent: 'center',
-    alignItems: 'center'
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    position: "releative",
+    bottom: 50,
+    width: "100%",
+    height: 100
+  },
+  bottomUser: {
+    height: 100,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    top: 50,
+    flexDirection: 'row',
+    position: 'relative'
   },
   user: {
-    height: 100,
+    height: "80%",
     width: 100,
     backgroundColor: 'blue',
     borderRadius: 50
   },
-  pt: {
-    height: 90,
-    width: 50,
-    backgroundColor: '#000',
-    margin: 16,
-    justifyContent: 'flex-end'
+  playerRow: {
+    height: '100%',
+    alignItems: "center"
   },
-  pts1: {
-    height: 12,
-    backgroundColor: '#fff'
-  },
-  pts2: {
-    height: 24,
-    backgroundColor: '#fff'
-  },
-  pts3: {
-    height: 36,
-    backgroundColor: '#fff'
-  },
-  pts4: {
-    height: 48,
-    backgroundColor: '#fff'
-  },
-  pts5: {
-    height: 60,
-    backgroundColor: '#fff'
-  },
-  pts6: {
-    height: 72,
-    backgroundColor: '#fff'
-  },
-  pts7: {
-    height: 84,
-    backgroundColor: '#fff'
+  deck: {
+    position: 'absolute',
+    top: "50%",
+    left: "50%",
+    height: 100,
+    width: 100,
+    transform: "translate(-50%, -50%)"
   }
 });
 
