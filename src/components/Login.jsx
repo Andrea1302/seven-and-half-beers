@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { signInPostApi } from '../services/api/auth/authApi';
+import { signInPostApi } from './services/api/auth/authApi';
 // button 
 import Button from './Button';
 
@@ -8,9 +8,11 @@ import Button from './Button';
 import { TextInput, View, ImageBackground } from 'react-native';
 
 // storage 
-import { setStorage } from '../utils/asyncStorage';
+import { setStorage } from './utils/asyncStorage';
 
-import styleForm from '../style/styleForm'
+
+
+import styleForm from './style/styleForm'
 
 let formObject = {
     email: '',

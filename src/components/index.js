@@ -1,10 +1,12 @@
 import Button from "./Button";
-import Login from "./Login";
 import Registration from "./Registration";
+import Login from './Login';
+import Game from './Game';
 
 
 export {
     Button,
     Login,
-    Registration
+    Registration,
+    Game
 }

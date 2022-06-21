@@ -3,12 +3,16 @@
 
 // components
 import { SafeAreaView } from 'react-native';
-import Registration from './components/Registration';
+
+import Game from './components/Game';
+
+// import Login from './components/Login';
+
 
 function App() {
   return (
     <SafeAreaView>
-      <Registration />
+      <Game />
     </SafeAreaView>
   );
 }

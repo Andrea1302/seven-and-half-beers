@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 // services 
-import { registerUserPostApi, signInPostApi } from '../services/api/auth/authApi';
+import { registerUserPostApi, signInPostApi } from './services/api/auth/authApi';
 
 // custom components 
 import Button from './Button';
@@ -10,13 +10,13 @@ import Button from './Button';
 import { TextInput, View, ImageBackground } from 'react-native';
 
 // storage 
-import { setStorage } from '../utils/asyncStorage';
+import { setStorage } from './utils/asyncStorage';
 
 // style 
-import styleForm from '../style/styleForm';
+import styleForm from './style/styleForm';
 
 // utils 
-import { checkMail, checkPassword } from '../utils/validation'
+import { checkMail, checkPassword } from './utils/validation'
 
 let formObject = {
     userName: '',

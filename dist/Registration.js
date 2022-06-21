@@ -9,7 +9,19 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _authApi = require("./services/api/auth/authApi");
+
+var _Button = _interopRequireDefault(require("./Button"));
+
 var _reactNative = require("react-native");
+
+var _asyncStorage = require("./utils/asyncStorage");
+
+var _styleForm = _interopRequireDefault(require("./style/styleForm"));
+
+var _validation = require("./utils/validation");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -33,32 +45,89 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var Counter = function Counter() {
+var formObject = {
+  userName: '',
+  email: '',
+  password: ''
+};
+
+var Registration = function Registration(_ref) {
+  var callback = _ref.callback,
+      imgBg = _ref.imgBg,
+      containerStyle = _ref.containerStyle;
+
   var _useState = (0, _react.useState)({
-    counter: 0
+    errorMail: false,
+    errorPassword: false
   }),
       _useState2 = _slicedToArray(_useState, 2),
       state = _useState2[0],
       setState = _useState2[1];
 
-  var decCounter = function decCounter() {
-    setState(_objectSpread(_objectSpread({}, state), {}, {
-      counter: state.counter - 1
-    }));
+  var registration = function registration() {
+    // if (!checkMail(formObject.email)) {
+    //     setState({
+    //         ...state,
+    //         errorMail: true
+    //     })
+    // }
+    // if (!checkPassword(formObject.password)) {
+    //     setState({
+    //         ...state,
+    //         errorPassword: true
+    //     })
+    // }
+    (0, _authApi.registerUserPostApi)(formObject).then((0, _authApi.signInPostApi)({
+      email: formObject.email,
+      password: formObject.password
+    })).then(function (res) {
+      setState(_objectSpread(_objectSpread({}, state), {}, {
+        errorMail: false,
+        errorPassword: false
+      }));
+      (0, _asyncStorage.setStorage)("token", res.data.token);
+      (0, _asyncStorage.setStorage)("refreshToken", res.data.refreshToken);
+      callback(res.data);
+    });
   };
 
-  var incCounter = function incCounter() {
-    setState(_objectSpread(_objectSpread({}, state), {}, {
-      counter: state.counter + 1
-    }));
+  var handleInput = function handleInput(params) {
+    return function (e) {
+      formObject[params] = e;
+    };
   };
 
-  return /*#__PURE__*/_react.default.createElement(_reactNative.View, null, /*#__PURE__*/_react.default.createElement(_reactNative.TouchableOpacity, {
-    onPress: decCounter
-  }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, null, "dec")), /*#__PURE__*/_react.default.createElement(_reactNative.Text, null, state.counter), /*#__PURE__*/_react.default.createElement(_reactNative.TouchableOpacity, {
-    onPress: incCounter
-  }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, null, "inc")));
+  return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {
+    source: {
+      uri: 'https://img.freepik.com/free-vector/beer-with-bubbles-foam-background_107791-2563.jpg?w=2000'
+    },
+    style: [_styleForm.default.bgDefault, imgBg],
+    resizeMode: "cover"
+  }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+    style: [_styleForm.default.container, containerStyle]
+  }, /*#__PURE__*/_react.default.createElement(_reactNative.TextInput, {
+    style: _styleForm.default.input,
+    onChangeText: handleInput('userName'),
+    placeholder: "userName",
+    placeholderTextColor: "#ececec"
+  }), /*#__PURE__*/_react.default.createElement(_reactNative.TextInput, {
+    style: [_styleForm.default.input, state.errorMail ? _styleForm.default.errorInput : ''],
+    onChangeText: handleInput('email'),
+    placeholder: "email",
+    placeholderTextColor: "#ececec"
+  }), /*#__PURE__*/_react.default.createElement(_reactNative.TextInput, {
+    secureTextEntry: true,
+    style: [_styleForm.default.input, state.errorPassword ? _styleForm.default.errorInput : ''],
+    onChangeText: handleInput('password'),
+    placeholder: "password",
+    placeholderTextColor: "#ececec"
+  }), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    styleCustom: _styleForm.default.btn,
+    styleCustomText: _styleForm.default.textBtn,
+    callback: registration,
+    label: "registration"
+  })));
 };
 
-var _default = Counter;
+var _default = Registration;
 exports.default = _default;
