@@ -66,49 +66,86 @@ const playerList = [{
     otherCards: []
 }]
 
-let turnoId = null
+const nextCard = 2
+
+let turnoId
+let index
+let myId
 
 const Game = ({ user, arrayPlayer }) => {
 
     const [state, setState] = useState({
         infoGiocatori: playerList,
-        contatoreTurni: 0
+        contatoreTurni: 0,
+        isMyTurn: false
     })
 
     const playerIcon = useRef()
     const beer = useRef()
 
+    //DidMount
     useEffect(() => {
-        //Logica turni:
+        console.log("sono nel did mount")
+        //Chiamata per prendere id user dallo storage
+        myId = 1
+
+    }, [])
+
+    //DidUpdate
+   /*  useEffect(() => {
+        
+        handleTurn()
+
+    }, [state.contatoreTurni]) */
+
+
+    const handleTurn = () => {
+
         const newState = Object.assign({}, state)
 
-        state.infoGiocatori[0].active === true
+        newState.infoGiocatori[state.contatoreTurni].active = true
 
-        state.infoGiocatori.forEach((player) => {
+        newState.infoGiocatori.forEach((player) => {
             if (player.active === true) {
                 turnoId = player.id
             }
+            if (turnoId === myId) {
+                newState.isMyTurn = true
+            } else {
+                newState.isMyTurn = false
+            }
         })
-
+        console.log("Turno: ", newState.contatoreTurni)
         console.log("Tocca al giocatore con id:", turnoId)
 
-    }, [state.contatoreTurni])
+        setState(newState)
+    }
 
 
     const stoppe = () => {
-        /*         let index = state.playerList.findIndex((player) => player.id === turnoId)
-        
-                console.log(newState)
-                newState.playerList[index].active = false
-        
-                if (newState.playerList[index + 1] === undefined) {
-                    return
-                    //Chiamata API per termiane la partita
-                }
-        
-                newState.playerList[index + 1].active = true
-                setState(newState) */
-        setState({ ...state, contatoreTurni: state.contatoreTurni + 1 })
+        const newState = Object.assign({}, state)
+
+        index = newState.infoGiocatori.findIndex((player) => player.id === turnoId)
+        console.log("index: ", index)
+
+        newState.infoGiocatori[index].active = false
+
+        if (newState.infoGiocatori[index + 1] === undefined) {
+            //Chiamata API per termiane la partita
+            alert("turni finiti")
+            return
+        }
+
+        newState.infoGiocatori[index + 1].active = true
+        setState({
+            ...state,
+            infoGiocatori: newState.infoGiocatori,
+            contatoreTurni: state.contatoreTurni + 1
+        })
+    }
+
+    const carta = () => {
+        const newState = Object.assign({}, state)
     }
 
 
@@ -291,8 +328,14 @@ const Game = ({ user, arrayPlayer }) => {
 
                     </View>
 
-                    <Button label="Stop" callback={stoppe} />
-                    {/* <Button label="Carta" callback={carta} /> */}
+                    {
+                        state.isMyTurn &&
+                        <>
+                            <Button label="Stop" callback={stoppe} />
+                            <Button label="Carta" callback={carta} />
+                        </>
+                    }
+
 
                 </ImageBackground>
             </View>
