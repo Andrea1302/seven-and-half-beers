@@ -6,7 +6,7 @@ const Button = ({ callback, label, styleCustom, styleCustomText }) => {
         callback()
     }
     return (
-        <TouchableOpacity style={styleCustom} onPress={onPress} >
+        <TouchableOpacity style={{backgroundColor:'blue'}} onPress={onPress} >
             <Text style={styleCustomText}>
                 {label}
             </Text>
