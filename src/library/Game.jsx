@@ -1,61 +1,115 @@
 import React, { useEffect, useState, useRef } from "react";
 import { View, ImageBackground, Image, Text } from 'react-native';
 
-import LottieView from 'react-native-web-lottie'
+//import LottieView from 'react-native-web-lottie'
+
 // style 
 import styleGame from "./style/styleGame";
 
+//Components
+import Button from './Button'
+
+
+/* 
+<LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
+<LottieView ref={beer} style={{ height: "100%" }} source={require('./assets/lotties/beer.json')} loop={true} autosize={true} /> 
+*/
 
 const playerList = [{
+    id: 1,
     username: "Sempronio",
     points: 1000,
     firstCard: 5,
+    active: false,
     otherCards: []
 }, {
+    id: 2,
     username: "PotatoGnognos",
     points: 758,
     firstCard: 2,
+    active: false,
     otherCards: []
 }, {
+    id: 3,
     username: "Yugi Muto",
     points: 9999,
     firstCard: "Exodia",
+    active: false,
     otherCards: []
 }, {
+    id: 4,
     username: "Seto Kaiba",
     points: 1,
     firstCard: 6,
+    active: false,
     otherCards: []
 }, {
+    id: 5,
     username: "Mai Valentine",
     points: 69,
     firstCard: 3,
+    active: false,
     otherCards: []
 }, {
+    id: 6,
     username: "Bulma",
     points: 420,
     firstCard: 2,
+    active: false,
     otherCards: []
 }, {
+    id: 7,
     username: "Nico Robin",
     points: 0,
     firstCard: 0.5,
+    active: false,
     otherCards: []
 }]
+
+let turnoId = null
 
 const Game = ({ user, arrayPlayer }) => {
 
     const [state, setState] = useState({
-        infoGiocatori: playerList
+        infoGiocatori: playerList,
+        contatoreTurni: 0
     })
 
     const playerIcon = useRef()
     const beer = useRef()
 
     useEffect(() => {
-        // playerIcon.current.play()
+        //Logica turni:
+        const newState = Object.assign({}, state)
 
-    }, [])
+        state.infoGiocatori[0].active === true
+
+        state.infoGiocatori.forEach((player) => {
+            if (player.active === true) {
+                turnoId = player.id
+            }
+        })
+
+        console.log("Tocca al giocatore con id:", turnoId)
+
+    }, [state.contatoreTurni])
+
+
+    const stoppe = () => {
+        /*         let index = state.playerList.findIndex((player) => player.id === turnoId)
+        
+                console.log(newState)
+                newState.playerList[index].active = false
+        
+                if (newState.playerList[index + 1] === undefined) {
+                    return
+                    //Chiamata API per termiane la partita
+                }
+        
+                newState.playerList[index + 1].active = true
+                setState(newState) */
+        setState({ ...state, contatoreTurni: state.contatoreTurni + 1 })
+    }
 
 
     return (
@@ -90,8 +144,6 @@ const Game = ({ user, arrayPlayer }) => {
                                 <View style={styleGame.playerRow}>
 
                                     <View style={{ flexDirection: "row", height: '80%' }}>
-                                        <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
-                                        <LottieView ref={beer} style={{ height: "100%" }} source={require('./assets/lotties/beer.json')} loop={true} autosize={true} />
                                     </View>
 
                                     <Text>{state.infoGiocatori[0].username}</Text>
@@ -112,8 +164,6 @@ const Game = ({ user, arrayPlayer }) => {
                                 ?
                                 <View style={styleGame.playerRow}>
                                     <View style={{ flexDirection: "row", height: '80%' }}>
-                                        <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
-                                        <LottieView ref={beer} style={{ height: "100%" }} source={require('./assets/lotties/beer.json')} loop={true} autosize={true} />
                                     </View>
 
                                     <Text>{state.infoGiocatori[1].username}</Text>
@@ -134,8 +184,6 @@ const Game = ({ user, arrayPlayer }) => {
                                 ?
                                 <View style={styleGame.playerRow}>
                                     <View style={{ flexDirection: "row", height: '80%' }}>
-                                        <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
-                                        <LottieView ref={beer} style={{ height: "100%" }} source={require('./assets/lotties/beer.json')} loop={true} autosize={true} />
                                     </View>
 
                                     <Text>{state.infoGiocatori[2].username}</Text>
@@ -160,8 +208,6 @@ const Game = ({ user, arrayPlayer }) => {
                                 <View style={[styleGame.playerRow, styleGame.centralSx]}>
 
                                     <View style={{ flexDirection: "row", height: '80%' }}>
-                                        <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
-                                        <LottieView ref={beer} style={{ height: "100%" }} source={require('./assets/lotties/beer.json')} loop={true} autosize={true} />
                                     </View>
 
                                     <Text>{state.infoGiocatori[3].username}</Text>
@@ -182,8 +228,6 @@ const Game = ({ user, arrayPlayer }) => {
                                 ?
                                 <View style={[styleGame.playerRow, styleGame.centralDx]}>
                                     <View style={{ flexDirection: "row", height: '80%' }}>
-                                        <LottieView ref={beer} style={{ height: "100%" }} source={require('./assets/lotties/beer.json')} loop={true} autosize={true} />
-                                        <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
                                     </View>
 
                                     <Text>{state.infoGiocatori[4].username}</Text>
@@ -208,8 +252,6 @@ const Game = ({ user, arrayPlayer }) => {
                                 <View style={styleGame.playerRow}>
 
                                     <View style={{ flexDirection: "row", height: '80%' }}>
-                                        <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
-                                        <LottieView ref={beer} style={{ height: "100%" }} source={require('./assets/lotties/beer.json')} loop={true} autosize={true} />
                                     </View>
 
                                     <Text>{state.infoGiocatori[5].username}</Text>
@@ -230,8 +272,6 @@ const Game = ({ user, arrayPlayer }) => {
                                 ?
                                 <View style={styleGame.playerRow}>
                                     <View style={{ flexDirection: "row", height: '80%' }}>
-                                        <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
-                                        <LottieView ref={beer} style={{ height: "100%" }} source={require('./assets/lotties/beer.json')} loop={true} autosize={true} />
                                     </View>
 
                                     <Text>{state.infoGiocatori[6].username}</Text>
@@ -250,6 +290,9 @@ const Game = ({ user, arrayPlayer }) => {
 
 
                     </View>
+
+                    <Button label="Stop" callback={stoppe} />
+                    {/* <Button label="Carta" callback={carta} /> */}
 
                 </ImageBackground>
             </View>

@@ -4,6 +4,7 @@
 // components
 import { SafeAreaView } from 'react-native';
 
+import Lobby from './library/Lobby';
 import Game from './library/Game';
 
 // import Login from './components/Login';
@@ -12,6 +13,7 @@ import Game from './library/Game';
 function App() {
   return (
     <SafeAreaView>
+      {/* <Lobby navigationFrom="newlobby" /> */}
       <Game />
     </SafeAreaView>
   );
