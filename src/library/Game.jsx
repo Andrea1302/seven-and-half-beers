@@ -83,6 +83,7 @@ let myId
 
 const Game = ({ user, arrayPlayer }) => {
     const myRef = useRef([])
+
     const [state, setState] = useState({
         infoGiocatori: playerList,
         contatoreTurni: 0,
@@ -93,11 +94,14 @@ const Game = ({ user, arrayPlayer }) => {
     const playerIcon = useRef()
     const beer = useRef()
 
-    //DidMount
+    //DidUpade
     useEffect(() => {
         let newState = Object.assign({}, state)
-        //Chiamata per prendere id user dallo storage
-        myId = 59
+
+        if (newState.turns === 0) {
+            //Chiamata per prendere id user dallo storage
+            myId = 59
+        }
 
         if (state.infoGiocatori[state.turns].id === myId) {
             newState.isMyTurn = true
@@ -107,6 +111,7 @@ const Game = ({ user, arrayPlayer }) => {
         setState(newState)
 
     }, [state.turns])
+
     const renderPlayer = (player, key) => {
         return (
             <View ref={el => myRef.current[key] = el} key={key} style={{ height: 200, width: 100, backgroundColor: state.infoGiocatori[state.turns].id === player.id ? 'yellow' : 'red' }}>

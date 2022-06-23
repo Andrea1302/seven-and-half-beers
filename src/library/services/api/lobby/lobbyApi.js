@@ -1,0 +1,1 @@
+import { postApi, getApi} from '../../genericServices'

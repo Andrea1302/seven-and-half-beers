@@ -20,12 +20,14 @@ let formObject = {
 }
 
 const Login = ({ callback, imgBg, containerStyle }) => {
+
     const Login = () => {
-        signInPostApi(formObject).then(res => {
-            setStorage("token", res.data.token);
-            setStorage("refreshToken", res.data.refreshToken);
-            callback(res.data)
-        })
+        signInPostApi(formObject)
+            .then(res => {
+                setStorage("token", res.data.token);
+                setStorage("refreshToken", res.data.refreshToken);
+                callback(res.data)
+            })
     }
     const handleInput = (params) => (e) => {
         formObject[params] = e
