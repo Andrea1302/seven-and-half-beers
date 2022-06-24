@@ -19,7 +19,7 @@ import styleForm from './style/styleForm';
 import { checkMail, checkPassword } from './utils/validation'
 
 let formObject = {
-    userName: '',
+    username: '',
     email: '',
     password: '',
 }
@@ -30,31 +30,35 @@ const Registration = ({ callback, imgBg, containerStyle }) => {
         errorPassword: false
     })
     const registration = () => {
-        // if (!checkMail(formObject.email)) {
-        //     setState({
-        //         ...state,
-        //         errorMail: true
-        //     })
-        // }
-        // if (!checkPassword(formObject.password)) {
-        //     setState({
-        //         ...state,
-        //         errorPassword: true
-        //     })
-        // }
+        if (!checkMail(formObject.email)) {
+            alert('error in mail')
+            // setState({
+            //     ...state,
+            //     errorMail: true
+            // })
+        }
+        if (!checkPassword(formObject.password)) {
+            alert('error in password')
+
+            // setState({
+            //     ...state,
+            //     errorPassword: true
+            // })
+        }
 
         registerUserPostApi(formObject).then(signInPostApi({
             email: formObject.email,
             password: formObject.password
         })).then(res => {
-            setState({
-                ...state,
-                errorMail: false,
-                errorPassword: false,
-            })
-            setStorage("token", res.data.token);
-            setStorage("refreshToken", res.data.refreshToken);
-            callback(res.data)
+            console.log('res',res)
+            // setState({
+            //     ...state,
+            //     errorMail: false,
+            //     errorPassword: false,
+            // })
+            // setStorage("token", res.data.token);
+            // setStorage("refreshToken", res.data.refreshToken);
+            // callbac(res.data)
         })
 
 
@@ -73,7 +77,7 @@ const Registration = ({ callback, imgBg, containerStyle }) => {
                 <TextInput
                     style={styleForm.input}
                     onChangeText={handleInput('userName')}
-                    placeholder="userName"
+                    placeholder="username"
                     placeholderTextColor="#ececec"
                 />
                 <TextInput
