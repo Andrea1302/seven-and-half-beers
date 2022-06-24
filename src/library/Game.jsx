@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { View, ImageBackground, Image, Text, Dimensions } from 'react-native';
-
+import Lottie from "./Lottie";
 //import LottieView from 'react-native-web-lottie'
 
 // style 
@@ -81,7 +81,7 @@ const nextCard = 2
 
 let myId
 
-const Game = ({ user, arrayPlayer }) => {
+const Game = (props) => {
     const myRef = useRef([])
 
     const [state, setState] = useState({
@@ -114,7 +114,10 @@ const Game = ({ user, arrayPlayer }) => {
 
     const renderPlayer = (player, key) => {
         return (
-            <View ref={el => myRef.current[key] = el} key={key} style={{ height: 200, width: 100, backgroundColor: state.infoGiocatori[state.turns].id === player.id ? 'yellow' : 'red' }}>
+            // <View ref={el => myRef.current[key] = el} key={key} style={{ height: 200, width: 100, backgroundColor: state.infoGiocatori[state.turns].id === player.id ? 'yellow' : 'red' }}>
+            <View key={key}>
+                {props.children}
+
                 <Text>
                     {player.username}
                 </Text>
@@ -131,8 +134,8 @@ const Game = ({ user, arrayPlayer }) => {
                     })}
                 </>
 
-
-            </View >
+            </View>
+            // </View >
 
         )
     }

@@ -1,7 +1,7 @@
 /* The following API are sorted by AUTH then with the following priority: GET->POST->PUT->PATCH->DELETE  */
 
 // import { getLocalStorage } from '../../../utils/localStorage/localStorage';
-import { postApi } from '../../genericServices'
+import { getApi, postApi } from '../../genericServices'
 
 const registerUserPostApi = async (obj) => {
     return await postApi(`user/registration`, obj);
@@ -15,6 +15,10 @@ const signInPostApi = async (obj) => {
     return await postApi(`signin`, obj);
 }
 
+const getUserInfo = async (id) =>{
+    return await getApi(`getuser/${id}`);
+}
+
 /* AUTH:isLogged */
 // const updateAuthTokenPostApi = async () => {
 //     return await postApi(`/updateAuthToken`, {
@@ -23,6 +27,6 @@ const signInPostApi = async (obj) => {
 // }
 
 export {
-    signInPostApi, registerUserPostApi
+    signInPostApi, registerUserPostApi,getUserInfo
 }
 

@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text } from 'react-native'
-
+import Button from './Button'
 //AsyncStorage
 import { getStorage } from './utils/asyncStorage'
 
-//Api
-
-//Components
-import Button from "./Button"
+import { createLobby } from './services/api/lobby/lobbyApi'
 
 const elencoPlayer = [{
     id: 1,
@@ -43,15 +40,7 @@ const Lobby = ({ locationFrom, idUser }) => {
         isHost: false
     })
 
-    const webSocketLobby = async () => {
-
-        const newState = Object.assign({}, state)
-        //const userId = await getStorage("user")
-        const userId = 1
-
-        if (state.playerList[0].id === userId) {
-            newState.isHost = true
-        }
+    const webSocketLobby = async () => {    
 
         if (locationFrom === "newlobby") {
             //let response = await chiamataIpoteticaAPIperCreareLobby&PrendereID
@@ -59,13 +48,12 @@ const Lobby = ({ locationFrom, idUser }) => {
             //connectToLobby(response.data.lobby.id) funzione da generalizzare e importare
             //newState.playerList = response.data.lobby.elencoPlayer
         } else {
-            //let response = await chiamataIpoteticaAPIperPrendereID
-            //console.log(response) 
-            //connectToLobby(response.data.lobby.id) funzione da generalizzare e importare
-            //newState.playerList = response.data.lobby.elencoPlayer
+            let user = await getStorage('user')
+            console.log('user',user)
+            let response = await createLobby(user?.token)
+            console.log(response)
         }
 
-        setState(newState)
     }
 
     useEffect(() => {
@@ -85,7 +73,10 @@ const Lobby = ({ locationFrom, idUser }) => {
         console.log("startGame")
     }
 
-
+    const chiamata = async () =>{
+        let response = await createLobby('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJydWJiZXJAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2NTYwODQzODMsImV4cCI6MTY1NjA4Nzk4M30.2bXNp2hJn3H5Ktz_bcweUg4Zg6NJofVhxNx2jN7MqPY')
+            console.log('response',response) 
+    }
     return (
         <View>
             {

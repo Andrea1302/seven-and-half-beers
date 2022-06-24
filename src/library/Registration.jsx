@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 // services 
-import { registerUserPostApi, signInPostApi } from './services/api/auth/authApi';
+import { getUserInfo, registerUserPostApi, signInPostApi } from './services/api/auth/authApi';
 
 // custom components 
 import Button from './Button';
@@ -29,40 +29,30 @@ const Registration = ({ callback, imgBg, containerStyle }) => {
         errorMail: false,
         errorPassword: false
     })
-    const registration = () => {
-        if (!checkMail(formObject.email)) {
-            alert('error in mail')
-            // setState({
-            //     ...state,
-            //     errorMail: true
-            // })
+    const registration = async () => {
+        console.log(formObject)
+       
+
+        let responseRegistration = await registerUserPostApi(formObject)
+        let responseLogin;
+        if (responseRegistration){
+            responseLogin = await signInPostApi({
+                email : formObject.email,
+                password : formObject.password
+            })
+
         }
-        if (!checkPassword(formObject.password)) {
-            alert('error in password')
-
-            // setState({
-            //     ...state,
-            //     errorPassword: true
-            // })
+        console.log('myId',responseLogin.data?.id)
+        let responseUser = await getUserInfo(responseLogin.data?.id)
+        let infoUser = {
+            info : responseUser.data,
+            token : responseLogin.data.token,
+            refreshToken : responseLogin.data.refreshToken
         }
-
-        registerUserPostApi(formObject).then(signInPostApi({
-            email: formObject.email,
-            password: formObject.password
-        })).then(res => {
-            console.log('res',res)
-            // setState({
-            //     ...state,
-            //     errorMail: false,
-            //     errorPassword: false,
-            // })
-            // setStorage("token", res.data.token);
-            // setStorage("refreshToken", res.data.refreshToken);
-            // callbac(res.data)
-        })
+        setStorage('user',infoUser)
 
 
-    }
+        }
     const handleInput = (params) => (e) => {
         formObject[params] = e
     }
@@ -76,7 +66,7 @@ const Registration = ({ callback, imgBg, containerStyle }) => {
 
                 <TextInput
                     style={styleForm.input}
-                    onChangeText={handleInput('userName')}
+                    onChangeText={handleInput('username')}
                     placeholder="username"
                     placeholderTextColor="#ececec"
                 />
