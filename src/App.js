@@ -2,7 +2,7 @@
 // import { StatusBar } from '';
 
 // components
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, Text } from 'react-native';
 
 import Lobby from './library/Lobby';
 import Game from './library/Game';
@@ -18,10 +18,15 @@ import Home from './library/Home';
 
 
 function App() {
+  const test = (state)=>{
+    console.log('state',state)
+  }
   return (
     <SafeAreaView>
       {/* <Lobby navigationFrom="newlobby" /> */}
-      <Login />
+      <Game callback={test}>
+        <Text>ciaoooo</Text>
+      </Game>
     </SafeAreaView>
   );
 }

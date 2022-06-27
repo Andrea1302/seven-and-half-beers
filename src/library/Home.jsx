@@ -1,5 +1,5 @@
 import React from "react"
-import { ImageBackground, Dimensions } from "react-native"
+import { ImageBackground, Dimensions,Text } from "react-native"
 // import { getStorage } from './utils/asyncStorage'
 
 //Components

@@ -78,12 +78,12 @@ const playerList = [{
     otherCards: [],
 }]
 
-const nextCard = 2
+// const nextCard = 2
 
-let myId
+// let myId
 
 const Game = (props) => {
-    const myRef = useRef([])
+    // const myRef = useRef([])
 
     const [state, setState] = useState({
         infoGiocatori: playerList,
@@ -92,87 +92,57 @@ const Game = (props) => {
         isMyTurn: false,
     })
 
-    const playerIcon = useRef()
-    const beer = useRef()
-
     //DidUpade
     useEffect(() => {
-        let newState = Object.assign({}, state)
+        // let newState = Object.assign({}, state)
 
-        if (newState.turns === 0) {
-            //Chiamata per prendere id user dallo storage
-            myId = 59
-        }
+        // if (newState.turns === 0) {
+        //     Chiamata per prendere id user dallo storage
+        //     myId = 59
+        // }
 
-        if (state.infoGiocatori[state.turns].id === myId) {
-            newState.isMyTurn = true
-        } else {
-            newState.isMyTurn = false
-        }
-        setState(newState)
+        // if (state.infoGiocatori[state.turns].id === myId) {
+        //     newState.isMyTurn = true
+        // } else {
+        //     newState.isMyTurn = false
+        // }
+        // setState(newState)
+
         props.callback(state)
-    }, [state.turns])
+    }, [state])
 
-    const renderPlayer = (player, key) => {
-        return (
-            // <View ref={el => myRef.current[key] = el} key={key} style={{ height: 200, width: 100, backgroundColor: state.infoGiocatori[state.turns].id === player.id ? 'yellow' : 'red' }}>
-            <View ref={el => myRef.current[key] = el} key={key}>
-                {React.cloneElement(props.children, { ref: myRef.current[key] })}
-                {/* {props.children} */}
+    // const renderPlayer = (player, key) => {
+    //     return (
+    //         // <View ref={el => myRef.current[key] = el} key={key} style={{ height: 200, width: 100, backgroundColor: state.infoGiocatori[state.turns].id === player.id ? 'yellow' : 'red' }}>
+    //         <View ref={el => myRef.current[key] = el} key={key}>
+    //             {React.cloneElement(props.children, { ref: myRef.current[key] })}
+    //             {/* {props.children} */}
 
-                <Text>
-                    {player.username}
-                </Text>
-                <Text>
-                    {player.firstCard}
-                </Text>
-
-
-                <>
-                    {player.otherCards.map((card, key) => {
-                        return (
-                            <Text key={key}>{card}</Text>
-                        )
-                    })}
-                </>
-
-            </View>
-            // </View >
-
-        )
-    }
-    //DidUpdate
-    /*  useEffect(() => {
-         
-         handleTurn()
-     
-     }, [state.contatoreTurni]) */
+    //             <Text>
+    //                 {player.username}
+    //             </Text>
+    //             <Text>
+    //                 {player.firstCard}
+    //             </Text>
 
 
-    // const handleTurn = () => {
+    //             <>
+    //                 {player.otherCards.map((card, key) => {
+    //                     return (
+    //                         <Text key={key}>{card}</Text>
+    //                     )
+    //                 })}
+    //             </>
 
-    //     const newState = Object.assign({}, state)
+    //         </View>
+    //         // </View >
 
-    //     newState.infoGiocatori[state.contatoreTurni].active = true
-
-    //     newState.infoGiocatori.forEach((player) => {
-    //         if (player.active === true) {
-    //             turnoId = player.id
-    //         }
-    //         if (turnoId === myId) {
-    //             newState.isMyTurn = true
-    //         } else {
-    //             newState.isMyTurn = false
-    //         }
-    //     })
-    //     console.log("Turno: ", newState.contatoreTurni)
-    //     console.log("Tocca al giocatore con id:", turnoId)
-
-    //     setState(newState)
+    //     )
     // }
 
 
-    const stoppe = () => {
+
+    const stop = () => {
         const lenghtPlayers = state.infoGiocatori.length
         if (state.turns === lenghtPlayers - 1) {
             alert('finiiish')
@@ -182,25 +152,6 @@ const Game = (props) => {
             ...state,
             turns: state.turns + 1
         })
-        // const newState = Object.assign({}, state)
-
-        // index = newState.infoGiocatori.findIndex((player) => player.id === turnoId)
-        // console.log("index: ", index)
-
-        // newState.infoGiocatori[index].active = false
-
-        // if (newState.infoGiocatori[index + 1] === undefined) {
-        //     //Chiamata API per termiane la partita
-        //     alert("turni finiti")
-        //     return
-        // }
-
-        // newState.infoGiocatori[index + 1].active = true
-        // setState({
-        //     ...state,
-        //     infoGiocatori: newState.infoGiocatori,
-        //     contatoreTurni: state.contatoreTurni + 1
-        // })
     }
 
     const carta = () => {
@@ -211,20 +162,12 @@ const Game = (props) => {
         newState.infoGiocatori[state.turns].otherCards.push(nextCard)
         let sumCard = newState.infoGiocatori[state.turns].otherCards.reduce((a, b) => a + b, newState.infoGiocatori[state.turns].firstCard)
 
-        console.log("initCard", state.infoGiocatori[state.turns].firstCard, "nextCard", nextCard, "sommatoria: ", sumCard)
-
         if (sumCard > 7.5) {
             console.log("Hai perso zi")
             // myRef.current[state.turns].style = {backgrounColor : 'green'}
-            console.log(myRef.current[state.turns])
-
-            myRef.current[state.turns].style.border = '20px solid green'
-
+            // console.log(myRef.current[state.turns])
             newState.infoGiocatori[state.turns].isDrunk = true
-            stoppe()
-            // newState.isMyTurn = false
-            // newState.infoGiocatori[index].active = false
-            // newState.infoGiocatori[index + 1].active = true
+            stop()
             return
 
         }
@@ -237,25 +180,23 @@ const Game = (props) => {
     return (
 
 
-        <View style={{ height: 600, backgroundColor: 'blue' }}>
+        <ImageBackground source={{ uri: 'https://cdn.shopify.com/s/files/1/1772/0301/products/3_47247d8e-5f77-4b71-b13c-6e1c08adb51f.png?v=1575939071' }} style={styleGame.gameTable}>
             <>
-
                 <>
-                    <Button styleCustom={{ backgrounColor: 'blue' }} label="Stop" callback={stoppe} />
-                    <Button label="Carta" callback={carta} />
+                    {props.children}
                 </>
 
-
-
-
-
-                <View style={{ flexDirection: 'row', width: Dimensions.get('screen').width, justifyContent: 'space-between' }}>
+                {/* <View style={{ flexDirection: 'row', width: Dimensions.get('screen').width, justifyContent: 'space-between' }}>
                     {
                         state.infoGiocatori.map(renderPlayer)
                     }
+                </View> */}
+                <View style={styleGame.btn}>
+                    <Button styleCustom={styleGame.singleBtn} label="Stop" callback={stop} />
+                    <Button styleCustom={styleGame.singleBtn} label="Carta" callback={carta} />
                 </View>
             </>
-        </View>
+        </ImageBackground>
     )
 }
 
