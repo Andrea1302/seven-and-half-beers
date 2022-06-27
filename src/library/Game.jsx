@@ -157,7 +157,7 @@ const Game = (props) => {
     const carta = () => {
         const newState = Object.assign({}, state)
 
-        const nextCard = Math.floor(Math.random() * 10 + 1)
+        const nextCard = Math.floor(Math.random() * (7 - 0.5 + 1)) + 0.5;
 
         newState.infoGiocatori[state.turns].otherCards.push(nextCard)
         let sumCard = newState.infoGiocatori[state.turns].otherCards.reduce((a, b) => a + b, newState.infoGiocatori[state.turns].firstCard)
@@ -168,11 +168,11 @@ const Game = (props) => {
             // console.log(myRef.current[state.turns])
             newState.infoGiocatori[state.turns].isDrunk = true
             stop()
-            return
+            return props.addCard('gameover')
 
         }
-
-        setState(newState)
+        props.addCard(nextCard)
+        // setState(newState)
 
     }
 

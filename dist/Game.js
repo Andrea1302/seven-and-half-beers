@@ -192,7 +192,9 @@ var Game = function Game(props) {
       uri: 'https://cdn.shopify.com/s/files/1/1772/0301/products/3_47247d8e-5f77-4b71-b13c-6e1c08adb51f.png?v=1575939071'
     },
     style: _styleGame.default.gameTable
-  }, /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, props.children), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+    style: props.styleChildren
+  }, props.children), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: _styleGame.default.btn
   }, /*#__PURE__*/_react.default.createElement(_Button.default, {
     styleCustom: _styleGame.default.singleBtn,
@@ -202,7 +204,7 @@ var Game = function Game(props) {
     styleCustom: _styleGame.default.singleBtn,
     label: "Carta",
     callback: carta
-  }))));
+  })));
 };
 
 var _default = Game;
