@@ -52,14 +52,14 @@ var playerList = [{
   firstCard: 1,
   active: false,
   isDrunk: false,
-  otherCards: []
+  otherCards: 0
 }, {
   id: 222,
   username: "PotatoGnognos",
   points: 758,
   firstCard: 2,
   active: false,
-  otherCards: [],
+  otherCards: 0,
   isDrunk: false
 }, {
   id: 300,
@@ -67,7 +67,7 @@ var playerList = [{
   points: 9999,
   firstCard: "Exodia",
   active: false,
-  otherCards: [],
+  otherCards: 0,
   isDrunk: false
 }, {
   id: 2,
@@ -75,7 +75,7 @@ var playerList = [{
   points: 1,
   firstCard: 6,
   active: false,
-  otherCards: [],
+  otherCards: 0,
   isDrunk: false
 }, {
   id: 59,
@@ -83,7 +83,7 @@ var playerList = [{
   points: 69,
   firstCard: 3,
   active: false,
-  otherCards: [],
+  otherCards: 0,
   isDrunk: false
 }, {
   id: 62,
@@ -92,7 +92,7 @@ var playerList = [{
   firstCard: 2,
   active: false,
   isDrunk: false,
-  otherCards: []
+  otherCards: 0
 }, {
   id: 711,
   username: "Nico Robin",
@@ -100,7 +100,7 @@ var playerList = [{
   firstCard: 0.5,
   active: false,
   isDrunk: false,
-  otherCards: []
+  otherCards: 0
 }]; // const nextCard = 2
 // let myId
 
@@ -172,10 +172,8 @@ var Game = function Game(props) {
     var newState = Object.assign({}, state);
     var arrCards = [0.5, 1, 2, 3, 4, 5, 6, 7];
     var nextCard = arrCards[Math.floor(Math.random() * (7 + 1))];
-    newState.infoGiocatori[state.turns].otherCards.push(nextCard);
-    var sumCard = newState.infoGiocatori[state.turns].otherCards.reduce(function (a, b) {
-      return a + b;
-    }, newState.infoGiocatori[state.turns].firstCard);
+    newState.infoGiocatori[state.turns].otherCards = newState.infoGiocatori[state.turns].otherCards + nextCard;
+    var sumCard = newState.infoGiocatori[state.turns].otherCards + newState.infoGiocatori[state.turns].firstCard;
 
     if (sumCard > 7.5) {
       console.log("Hai perso zi"); // myRef.current[state.turns].style = {backgrounColor : 'green'}
@@ -239,6 +237,7 @@ var Game = function Game(props) {
     }
 
     props.addCard(variable);
+    setState(newState);
   };
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {

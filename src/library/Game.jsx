@@ -1,15 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
-import { View, ImageBackground, Image, Text, Dimensions } from 'react-native';
-import Lottie from "./Lottie";
-//import LottieView from 'react-native-web-lottie'
+import React, { useEffect, useState } from "react";
+import { View, ImageBackground,Text } from 'react-native';
 
+import {openConnection,wsMessage,sendDataToWs} from './services/genericSocket'
 // style 
 import styleGame from "./style/styleGame";
 
 //Components
 import Button from './Button'
-import react from "react";
-
 
 /* 
 <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
@@ -94,52 +91,15 @@ const Game = (props) => {
 
     //DidUpade
     useEffect(() => {
-        // let newState = Object.assign({}, state)
-
-        // if (newState.turns === 0) {
-        //     Chiamata per prendere id user dallo storage
-        //     myId = 59
-        // }
-
-        // if (state.infoGiocatori[state.turns].id === myId) {
-        //     newState.isMyTurn = true
-        // } else {
-        //     newState.isMyTurn = false
-        // }
-        // setState(newState)
+       
 
         props.callback(state)
     }, [state])
 
-    // const renderPlayer = (player, key) => {
-    //     return (
-    //         // <View ref={el => myRef.current[key] = el} key={key} style={{ height: 200, width: 100, backgroundColor: state.infoGiocatori[state.turns].id === player.id ? 'yellow' : 'red' }}>
-    //         <View ref={el => myRef.current[key] = el} key={key}>
-    //             {React.cloneElement(props.children, { ref: myRef.current[key] })}
-    //             {/* {props.children} */}
-
-    //             <Text>
-    //                 {player.username}
-    //             </Text>
-    //             <Text>
-    //                 {player.firstCard}
-    //             </Text>
-
-
-    //             <>
-    //                 {player.otherCards.map((card, key) => {
-    //                     return (
-    //                         <Text key={key}>{card}</Text>
-    //                     )
-    //                 })}
-    //             </>
-
-    //         </View>
-    //         // </View >
-
-    //     )
-    // }
-
+    useEffect(()=>{
+        openConnection()
+        wsMessage()
+    })
 
 
     const stop = () => {
@@ -212,7 +172,13 @@ const Game = (props) => {
         setState(newState)
     }
 
+    const webS = () =>{
+        sendDataToWs(0,'start',66)
+    }
 
+    const start = () =>{
+        sendDataToWs(0,'start',66)
+    }
     return (
 
 
@@ -225,6 +191,10 @@ const Game = (props) => {
             <View style={styleGame.btn}>
                 <Button styleCustom={styleGame.singleBtn} label="Stop" callback={stop} />
                 <Button styleCustom={styleGame.singleBtn} label="Carta" callback={carta} />
+                <Button styleCustom={styleGame.singleBtn} label="wbs" callback={webS} />
+                <Button styleCustom={styleGame.singleBtn} label="start Game" callback={start} />
+
+
             </View>
         </ImageBackground>
     )

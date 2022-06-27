@@ -1,4 +1,4 @@
-import { postApi, deleteApi} from '../../genericServices';
+import {putApi, postApi, deleteApi} from '../../genericServices';
 
 const createLobby = async (token)=>{
     return await postApi('lobby',{}, token)
@@ -8,4 +8,8 @@ const deleteLobby = async (token)=>{
     return await deleteApi('lobby', token)
 }
 
-export {createLobby,deleteLobby}
+const editLobby = async (id,body,token)=>{
+    return await putApi(`lobby/${id}`,body,token)
+}
+
+export {createLobby,deleteLobby,editLobby}
