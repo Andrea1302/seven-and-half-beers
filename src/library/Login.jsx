@@ -26,7 +26,7 @@ const Login = ({ goToRegistration, callback, imgBg, containerStyle }) => {
             .then(res => {
                 setStorage("token", res.data.token);
                 setStorage("refreshToken", res.data.refreshToken);
-                callback(res.data)
+                callback(res)
             })
     }
 
@@ -35,7 +35,7 @@ const Login = ({ goToRegistration, callback, imgBg, containerStyle }) => {
         formObject[params] = e
     }
 
-    const goTo = (params) = () => {
+    const goTo = (params) =>()=>{
         goToRegistration(params)
     }
     return (

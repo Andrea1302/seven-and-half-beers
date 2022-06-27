@@ -47,19 +47,11 @@ var Login = function Login(_ref) {
     };
   };
 
-  var goTo = params = function (_params) {
-    function params() {
-      return _params.apply(this, arguments);
-    }
-
-    params.toString = function () {
-      return _params.toString();
+  var goTo = function goTo(params) {
+    return function () {
+      goToRegistration(params);
     };
-
-    return params;
-  }(function () {
-    goToRegistration(params);
-  });
+  };
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {
     source: {
