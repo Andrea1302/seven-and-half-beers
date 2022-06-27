@@ -8,6 +8,8 @@ import Lobby from './library/Lobby';
 import Game from './library/Game';
 import Registration from './library/Registration';
 import Login from './library/Login';
+import Home from './library/Home';
+
 
 
 
@@ -19,7 +21,7 @@ function App() {
   return (
     <SafeAreaView>
       {/* <Lobby navigationFrom="newlobby" /> */}
-      <Lobby />
+      <Home />
     </SafeAreaView>
   );
 }

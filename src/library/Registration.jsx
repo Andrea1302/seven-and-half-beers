@@ -42,7 +42,6 @@ const Registration = ({ callback, imgBg, containerStyle }) => {
             })
 
         }
-        console.log('myId',responseLogin.data?.id)
         let responseUser = await getUserInfo(responseLogin.data?.id)
         let infoUser = {
             info : responseUser.data,
