@@ -60,6 +60,7 @@ export async function postApi(resource, obj, header = null) {
         .catch(responseApiError());
 }
 
+
 export async function getApi(resource, header = null) {
     //function for get api call
     return axiosInstance

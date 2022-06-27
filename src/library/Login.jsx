@@ -24,9 +24,10 @@ const Login = ({ callback, imgBg, containerStyle }) => {
     const Login = () => {
         signInPostApi(formObject)
             .then(res => {
-                setStorage("token", res.data.token);
+                console.log(res)
+                /* setStorage("token", res.data.token);
                 setStorage("refreshToken", res.data.refreshToken);
-                callback(res.data)
+                callback(res.data) */
             })
     }
     const handleInput = (params) => (e) => {
