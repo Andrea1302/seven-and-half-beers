@@ -165,11 +165,13 @@ var Game = function Game(props) {
     setState(_objectSpread(_objectSpread({}, state), {}, {
       turns: state.turns + 1
     }));
+    props.stop(71);
   };
 
   var carta = function carta() {
     var newState = Object.assign({}, state);
-    var nextCard = Math.floor(Math.random() * (7 - 0.5 + 1)) + 0.5;
+    var arrCards = [0.5, 1, 2, 3, 4, 5, 6, 7];
+    var nextCard = arrCards[Math.floor(Math.random() * (7 + 1))];
     newState.infoGiocatori[state.turns].otherCards.push(nextCard);
     var sumCard = newState.infoGiocatori[state.turns].otherCards.reduce(function (a, b) {
       return a + b;
@@ -184,7 +186,59 @@ var Game = function Game(props) {
       return props.addCard('gameover');
     }
 
-    props.addCard(nextCard); // setState(newState)
+    var variable;
+
+    switch (nextCard) {
+      case 0.5:
+        {
+          variable = 11.4;
+          break;
+        }
+
+      case 1:
+        {
+          variable = 22.8;
+          break;
+        }
+
+      case 2:
+        {
+          variable = 45.6;
+          break;
+        }
+
+      case 3:
+        {
+          variable = 68.4;
+          break;
+        }
+
+      case 4:
+        {
+          variable = 91.2;
+          break;
+        }
+
+      case 5:
+        {
+          variable = 114;
+          break;
+        }
+
+      case 6:
+        {
+          variable = 136.8;
+          break;
+        }
+
+      case 7:
+        {
+          variable = 159.6;
+          break;
+        }
+    }
+
+    props.addCard(variable);
   };
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {

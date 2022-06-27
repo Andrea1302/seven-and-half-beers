@@ -23,14 +23,14 @@ const playerList = [{
     firstCard: 1,
     active: false,
     isDrunk: false,
-    otherCards: []
+    otherCards: 0
 }, {
     id: 222,
     username: "PotatoGnognos",
     points: 758,
     firstCard: 2,
     active: false,
-    otherCards: [],
+    otherCards: 0,
     isDrunk: false,
 
 }, {
@@ -39,7 +39,7 @@ const playerList = [{
     points: 9999,
     firstCard: "Exodia",
     active: false,
-    otherCards: [],
+    otherCards: 0,
     isDrunk: false,
 
 }, {
@@ -48,7 +48,7 @@ const playerList = [{
     points: 1,
     firstCard: 6,
     active: false,
-    otherCards: [],
+    otherCards: 0,
     isDrunk: false,
 
 }, {
@@ -57,7 +57,7 @@ const playerList = [{
     points: 69,
     firstCard: 3,
     active: false,
-    otherCards: [],
+    otherCards: 0,
     isDrunk: false,
 
 }, {
@@ -67,7 +67,7 @@ const playerList = [{
     firstCard: 2,
     active: false,
     isDrunk: false,
-    otherCards: [],
+    otherCards: 0,
 }, {
     id: 711,
     username: "Nico Robin",
@@ -75,7 +75,7 @@ const playerList = [{
     firstCard: 0.5,
     active: false,
     isDrunk: false,
-    otherCards: [],
+    otherCards: 0,
 }]
 
 // const nextCard = 2
@@ -159,8 +159,8 @@ const Game = (props) => {
         const newState = Object.assign({}, state)
         let arrCards = [0.5, 1, 2, 3, 4, 5, 6, 7]
         const nextCard = arrCards[Math.floor(Math.random() * (7 + 1))];
-        newState.infoGiocatori[state.turns].otherCards.push(nextCard)
-        let sumCard = newState.infoGiocatori[state.turns].otherCards.reduce((a, b) => a + b, newState.infoGiocatori[state.turns].firstCard)
+        newState.infoGiocatori[state.turns].otherCards = newState.infoGiocatori[state.turns].otherCards + nextCard
+        let sumCard = newState.infoGiocatori[state.turns].otherCards + newState.infoGiocatori[state.turns].firstCard
 
         if (sumCard > 7.5) {
             console.log("Hai perso zi")
@@ -177,38 +177,39 @@ const Game = (props) => {
                 variable = 11.4
                 break;
             }
-            case 1 : {
+            case 1: {
                 variable = 22.8
                 break;
             }
-            case 2 : {
+            case 2: {
                 variable = 45.6
                 break;
             }
-            case 3 : {
+            case 3: {
                 variable = 68.4
                 break;
             }
-            case 4 : {
+            case 4: {
                 variable = 91.2
                 break;
             }
-            case 5 : {
+            case 5: {
                 variable = 114
                 break;
             }
-            case 6 : {
+            case 6: {
                 variable = 136.8
                 break;
             }
-            case 7 : {
+            case 7: {
                 variable = 159.6
                 break;
             }
-            
+
 
         }
         props.addCard(variable)
+        setState(newState)
     }
 
 
