@@ -181,21 +181,15 @@ const Game = (props) => {
 
 
         <ImageBackground source={{ uri: 'https://cdn.shopify.com/s/files/1/1772/0301/products/3_47247d8e-5f77-4b71-b13c-6e1c08adb51f.png?v=1575939071' }} style={styleGame.gameTable}>
-            <>
-                <>
-                    {props.children}
-                </>
 
-                {/* <View style={{ flexDirection: 'row', width: Dimensions.get('screen').width, justifyContent: 'space-between' }}>
-                    {
-                        state.infoGiocatori.map(renderPlayer)
-                    }
-                </View> */}
-                <View style={styleGame.btn}>
-                    <Button styleCustom={styleGame.singleBtn} label="Stop" callback={stop} />
-                    <Button styleCustom={styleGame.singleBtn} label="Carta" callback={carta} />
-                </View>
-            </>
+            <View style={props.styleChildren}>
+                {props.children}
+            </View>
+
+            <View style={styleGame.btn}>
+                <Button styleCustom={styleGame.singleBtn} label="Stop" callback={stop} />
+                <Button styleCustom={styleGame.singleBtn} label="Carta" callback={carta} />
+            </View>
         </ImageBackground>
     )
 }

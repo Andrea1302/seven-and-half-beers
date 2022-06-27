@@ -49,7 +49,7 @@ var Home = function Home(_ref) {
     source: {
       uri: 'https://thumbs.gfycat.com/LikableMarriedArizonaalligatorlizard-size_restricted.gif'
     }
-  }, /*#__PURE__*/_react.default.createElement(Text, null, "ciao "), /*#__PURE__*/_react.default.createElement(_Button.default, {
+  }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, null, "ciao "), /*#__PURE__*/_react.default.createElement(_Button.default, {
     callback: navigateTo("quickplay"),
     label: "Gioca Veloce"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {

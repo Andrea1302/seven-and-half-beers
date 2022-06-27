@@ -101,13 +101,11 @@ var playerList = [{
   active: false,
   isDrunk: false,
   otherCards: []
-}];
-var nextCard = 2;
-var myId;
+}]; // const nextCard = 2
+// let myId
 
 var Game = function Game(props) {
-  var myRef = (0, _react.useRef)([]);
-
+  // const myRef = useRef([])
   var _useState = (0, _react.useState)({
     infoGiocatori: playerList,
     contatoreTurni: 0,
@@ -116,74 +114,47 @@ var Game = function Game(props) {
   }),
       _useState2 = _slicedToArray(_useState, 2),
       state = _useState2[0],
-      setState = _useState2[1];
+      setState = _useState2[1]; //DidUpade
 
-  var playerIcon = (0, _react.useRef)();
-  var beer = (0, _react.useRef)(); //DidUpade
 
   (0, _react.useEffect)(function () {
-    var newState = Object.assign({}, state);
-
-    if (newState.turns === 0) {
-      //Chiamata per prendere id user dallo storage
-      myId = 59;
-    }
-
-    if (state.infoGiocatori[state.turns].id === myId) {
-      newState.isMyTurn = true;
-    } else {
-      newState.isMyTurn = false;
-    }
-
-    setState(newState);
+    // let newState = Object.assign({}, state)
+    // if (newState.turns === 0) {
+    //     Chiamata per prendere id user dallo storage
+    //     myId = 59
+    // }
+    // if (state.infoGiocatori[state.turns].id === myId) {
+    //     newState.isMyTurn = true
+    // } else {
+    //     newState.isMyTurn = false
+    // }
+    // setState(newState)
     props.callback(state);
-  }, [state.turns]);
-
-  var renderPlayer = function renderPlayer(player, key) {
-    return (
-      /*#__PURE__*/
-      // <View ref={el => myRef.current[key] = el} key={key} style={{ height: 200, width: 100, backgroundColor: state.infoGiocatori[state.turns].id === player.id ? 'yellow' : 'red' }}>
-      _react.default.createElement(_reactNative.View, {
-        ref: function ref(el) {
-          return myRef.current[key] = el;
-        },
-        key: key
-      }, /*#__PURE__*/_react.default.cloneElement(props.children, {
-        ref: myRef.current[key]
-      }), /*#__PURE__*/_react.default.createElement(_reactNative.Text, null, player.username), /*#__PURE__*/_react.default.createElement(_reactNative.Text, null, player.firstCard), /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, player.otherCards.map(function (card, key) {
-        return /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
-          key: key
-        }, card);
-      }))) // </View >
-
-    );
-  }; //DidUpdate
-
-  /*  useEffect(() => {
-       
-       handleTurn()
-   
-   }, [state.contatoreTurni]) */
-  // const handleTurn = () => {
-  //     const newState = Object.assign({}, state)
-  //     newState.infoGiocatori[state.contatoreTurni].active = true
-  //     newState.infoGiocatori.forEach((player) => {
-  //         if (player.active === true) {
-  //             turnoId = player.id
-  //         }
-  //         if (turnoId === myId) {
-  //             newState.isMyTurn = true
-  //         } else {
-  //             newState.isMyTurn = false
-  //         }
-  //     })
-  //     console.log("Turno: ", newState.contatoreTurni)
-  //     console.log("Tocca al giocatore con id:", turnoId)
-  //     setState(newState)
+  }, [state]); // const renderPlayer = (player, key) => {
+  //     return (
+  //         // <View ref={el => myRef.current[key] = el} key={key} style={{ height: 200, width: 100, backgroundColor: state.infoGiocatori[state.turns].id === player.id ? 'yellow' : 'red' }}>
+  //         <View ref={el => myRef.current[key] = el} key={key}>
+  //             {React.cloneElement(props.children, { ref: myRef.current[key] })}
+  //             {/* {props.children} */}
+  //             <Text>
+  //                 {player.username}
+  //             </Text>
+  //             <Text>
+  //                 {player.firstCard}
+  //             </Text>
+  //             <>
+  //                 {player.otherCards.map((card, key) => {
+  //                     return (
+  //                         <Text key={key}>{card}</Text>
+  //                     )
+  //                 })}
+  //             </>
+  //         </View>
+  //         // </View >
+  //     )
   // }
 
-
-  var stoppe = function stoppe() {
+  var stop = function stop() {
     var lenghtPlayers = state.infoGiocatori.length;
 
     if (state.turns === lenghtPlayers - 1) {
@@ -193,21 +164,7 @@ var Game = function Game(props) {
 
     setState(_objectSpread(_objectSpread({}, state), {}, {
       turns: state.turns + 1
-    })); // const newState = Object.assign({}, state)
-    // index = newState.infoGiocatori.findIndex((player) => player.id === turnoId)
-    // console.log("index: ", index)
-    // newState.infoGiocatori[index].active = false
-    // if (newState.infoGiocatori[index + 1] === undefined) {
-    //     //Chiamata API per termiane la partita
-    //     alert("turni finiti")
-    //     return
-    // }
-    // newState.infoGiocatori[index + 1].active = true
-    // setState({
-    //     ...state,
-    //     infoGiocatori: newState.infoGiocatori,
-    //     contatoreTurni: state.contatoreTurni + 1
-    // })
+    }));
   };
 
   var carta = function carta() {
@@ -217,45 +174,35 @@ var Game = function Game(props) {
     var sumCard = newState.infoGiocatori[state.turns].otherCards.reduce(function (a, b) {
       return a + b;
     }, newState.infoGiocatori[state.turns].firstCard);
-    console.log("initCard", state.infoGiocatori[state.turns].firstCard, "nextCard", nextCard, "sommatoria: ", sumCard);
 
     if (sumCard > 7.5) {
       console.log("Hai perso zi"); // myRef.current[state.turns].style = {backgrounColor : 'green'}
+      // console.log(myRef.current[state.turns])
 
-      console.log(myRef.current[state.turns]);
-      myRef.current[state.turns].style.border = '20px solid green';
       newState.infoGiocatori[state.turns].isDrunk = true;
-      stoppe(); // newState.isMyTurn = false
-      // newState.infoGiocatori[index].active = false
-      // newState.infoGiocatori[index + 1].active = true
-
+      stop();
       return;
     }
 
     setState(newState);
   };
 
-  return /*#__PURE__*/_react.default.createElement(_reactNative.View, {
-    style: {
-      height: 600,
-      backgroundColor: 'blue'
-    }
-  }, /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_Button.default, {
-    styleCustom: {
-      backgrounColor: 'blue'
+  return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {
+    source: {
+      uri: 'https://cdn.shopify.com/s/files/1/1772/0301/products/3_47247d8e-5f77-4b71-b13c-6e1c08adb51f.png?v=1575939071'
     },
+    style: _styleGame.default.gameTable
+  }, /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, props.children), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+    style: _styleGame.default.btn
+  }, /*#__PURE__*/_react.default.createElement(_Button.default, {
+    styleCustom: _styleGame.default.singleBtn,
     label: "Stop",
-    callback: stoppe
+    callback: stop
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    styleCustom: _styleGame.default.singleBtn,
     label: "Carta",
     callback: carta
-  })), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
-    style: {
-      flexDirection: 'row',
-      width: _reactNative.Dimensions.get('screen').width,
-      justifyContent: 'space-between'
-    }
-  }, state.infoGiocatori.map(renderPlayer))));
+  }))));
 };
 
 var _default = Game;

@@ -22,9 +22,7 @@ var Button = function Button(_ref) {
   };
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.TouchableOpacity, {
-    style: {
-      backgroundColor: 'blue'
-    },
+    style: styleCustom,
     onPress: onPress
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: styleCustomText
