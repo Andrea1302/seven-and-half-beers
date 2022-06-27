@@ -129,7 +129,7 @@ var Home = function Home(_ref) {
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {
     style: {
-      height: '100vh',
+      height: _reactNative.Dimensions.get('screen').height,
       flexDirection: "column",
       justifyContent: 'center',
       alignItems: 'center'

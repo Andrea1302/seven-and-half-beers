@@ -21,7 +21,7 @@ function App() {
   return (
     <SafeAreaView>
       {/* <Lobby navigationFrom="newlobby" /> */}
-      <Home />
+      <Lobby />
     </SafeAreaView>
   );
 }

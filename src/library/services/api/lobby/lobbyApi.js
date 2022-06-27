@@ -5,7 +5,7 @@ const createLobby = async (token)=>{
 }
 
 const deleteLobby = async (token)=>{
-    return await deleteApi('lobby',{}, token)
+    return await deleteApi('lobby', token)
 }
 
 export {createLobby,deleteLobby}

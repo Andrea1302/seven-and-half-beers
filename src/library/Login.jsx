@@ -19,19 +19,24 @@ let formObject = {
     password: '',
 }
 
-const Login = ({ callback, imgBg, containerStyle }) => {
+const Login = ({ goToRegistration, callback, imgBg, containerStyle }) => {
 
     const Login = () => {
         signInPostApi(formObject)
             .then(res => {
-                console.log(res)
-                /* setStorage("token", res.data.token);
+                setStorage("token", res.data.token);
                 setStorage("refreshToken", res.data.refreshToken);
-                callback(res.data) */
+                callback(res.data)
             })
     }
+
+
     const handleInput = (params) => (e) => {
         formObject[params] = e
+    }
+
+    const goTo = (params) = () => {
+        goToRegistration(params)
     }
     return (
         <ImageBackground
@@ -60,6 +65,13 @@ const Login = ({ callback, imgBg, containerStyle }) => {
                     styleCustomText={styleForm.textBtn}
                     callback={Login}
                     label="Login"
+                />
+
+                <Button
+                    styleCustom={styleForm.btn}
+                    styleCustomText={styleForm.textBtn}
+                    callback={goTo('Registration')}
+                    label="Go to registration"
                 />
             </View >
 

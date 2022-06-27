@@ -4,7 +4,7 @@ import Button from './Button'
 //AsyncStorage
 import { getStorage } from './utils/asyncStorage'
 
-import { createLobby } from './services/api/lobby/lobbyApi'
+import { createLobby, deleteLobby } from './services/api/lobby/lobbyApi'
 
 const elencoPlayer = [{
     id: 1,
@@ -40,7 +40,7 @@ const Lobby = ({ locationFrom, idUser }) => {
         isHost: false
     })
 
-    const webSocketLobby = async () => {    
+    const webSocketLobby = async () => {
 
         if (locationFrom === "newlobby") {
             //let response = await chiamataIpoteticaAPIperCreareLobby&PrendereID
@@ -49,9 +49,9 @@ const Lobby = ({ locationFrom, idUser }) => {
             //newState.playerList = response.data.lobby.elencoPlayer
         } else {
             let user = await getStorage('user')
-            console.log('user',user)
+            console.log('user', user)
             let response = await createLobby(user?.token)
-            console.log(response)
+            console.log('responseCreate',response)
         }
 
     }
@@ -60,12 +60,19 @@ const Lobby = ({ locationFrom, idUser }) => {
         webSocketLobby()
     }, [])
 
-
+    const deleteLobbyFunc = async () => {
+        let user = await getStorage('user')
+        let response = await deleteLobby(user?.token)
+        console.log('responseDelete', response)
+    }
     const renderPlayerLobby = (player, key) => {
         return (
-            <Text key={key}>
-                {player.username}
-            </Text>
+            <>
+                <Text key={key}>
+                    {player.username}
+                </Text>
+                <Button callback={deleteLobbyFunc} label='Delete' />
+            </>
         )
     }
 
@@ -73,9 +80,9 @@ const Lobby = ({ locationFrom, idUser }) => {
         console.log("startGame")
     }
 
-    const chiamata = async () =>{
+    const chiamata = async () => {
         let response = await createLobby('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJydWJiZXJAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2NTYwODQzODMsImV4cCI6MTY1NjA4Nzk4M30.2bXNp2hJn3H5Ktz_bcweUg4Zg6NJofVhxNx2jN7MqPY')
-            console.log('response',response) 
+        console.log('response', response)
     }
     return (
         <View>
