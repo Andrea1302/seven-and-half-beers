@@ -68,7 +68,7 @@ const Login = ({ goToRegistration, callback, imgBg, containerStyle }) => {
                 <Button
                     styleCustom={styleForm.btn}
                     styleCustomText={styleForm.textBtn}
-                    callback={goTo('Registration')}
+                    callback={goTo}
                     label="Go to registration"
                 />
             </View >

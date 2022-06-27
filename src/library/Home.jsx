@@ -1,30 +1,26 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { ImageBackground, Dimensions } from "react-native"
-import { getStorage } from './utils/asyncStorage'
+// import { getStorage } from './utils/asyncStorage'
 
 //Components
 import Button from './Button'
 
 
 const Home = ({ goTo, logoutCallback }) => {
-    useEffect(() => {
-        getUser()
-    }, [])
-    const getUser = async () => {
-        let newstate = Object.assign({}, state)
-        let user = await getStorage('user')
-        if (user !== undefined) {
-            newstate.isUserLogged = true
-        }
-        setState({
-            ...state,
-            isUserLogged: newstate.isUserLogged
-        })
-    }
+    // useEffect(() => {
+    //     getUser()
+    // }, [])
+    // const getUser = async () => {
+    //     let newstate = Object.assign({}, state)
+    //     let user = await getStorage('user')
+    //     if (user !== undefined) {
+    //         newstate.isUserLogged = true
+    //     }
+    // }
     const navigateTo = (path) => () => {
         goTo(path)
     }
-    const logout = async () => {
+    const logout = () => {
         logoutCallback()
     }
     return (
