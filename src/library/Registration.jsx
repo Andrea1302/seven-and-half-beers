@@ -30,9 +30,6 @@ const Registration = ({ callback, imgBg, containerStyle }) => {
         errorPassword: false
     })
     const registration = async () => {
-        console.log(formObject)
-       
-
         let responseRegistration = await registerUserPostApi(formObject)
         let responseLogin;
         if (responseRegistration){
@@ -49,8 +46,7 @@ const Registration = ({ callback, imgBg, containerStyle }) => {
             refreshToken : responseLogin.data.refreshToken
         }
         setStorage('user',infoUser)
-
-
+        callback(responseLogin)
         }
     const handleInput = (params) => (e) => {
         formObject[params] = e
