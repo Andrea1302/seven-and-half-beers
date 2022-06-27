@@ -35,8 +35,6 @@ var Login = function Login(_ref) {
 
   var Login = function Login() {
     (0, _authApi.signInPostApi)(formObject).then(function (res) {
-      (0, _asyncStorage.setStorage)("token", res.data.token);
-      (0, _asyncStorage.setStorage)("refreshToken", res.data.refreshToken);
       callback(res);
     });
   };
@@ -47,10 +45,8 @@ var Login = function Login(_ref) {
     };
   };
 
-  var goTo = function goTo(params) {
-    return function () {
-      goToRegistration(params);
-    };
+  var goTo = function goTo() {
+    goToRegistration();
   };
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {

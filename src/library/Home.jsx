@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { ImageBackground, Dimensions } from "react-native"
-import { getStorage, removeStorage } from './utils/asyncStorage'
+import { getStorage } from './utils/asyncStorage'
 
 //Components
 import Button from './Button'
 
 
-const Home = ({ goTo }) => {
-    const [state, setState] = useState({
-        isUserLogged: false
-    })
-
+const Home = ({ goTo, logoutCallback }) => {
     useEffect(() => {
         getUser()
     }, [])
@@ -29,12 +25,7 @@ const Home = ({ goTo }) => {
         goTo(path)
     }
     const logout = async () => {
-        await removeStorage('user');
-        setState({
-            ...state,
-            isUserLogged: false
-        })
-        navigateTo('LoginPage')
+        logoutCallback()
     }
     return (
         <ImageBackground
@@ -45,15 +36,7 @@ const Home = ({ goTo }) => {
             <Button callback={navigateTo("quickplay")} label="Gioca Veloce" />
             <Button callback={navigateTo("LobbyPage")} label="Crea Lobby" />
             <Button callback={navigateTo("leaderboard")} label="Leaderboard" />
-
-            {
-                state.isUserLogged ?
-                    <Button callback={logout} label="Logout" />
-                    :
-                    <Button callback={navigateTo("LoginPage")} label="Login/Registrati" />
-
-            }
-
+            <Button callback={logout} label="Logout" />
         </ImageBackground>
     )
 }

@@ -113,8 +113,9 @@ var Home = function Home(_ref) {
               setState(_objectSpread(_objectSpread({}, state), {}, {
                 isUserLogged: false
               }));
+              navigateTo('LoginPage');
 
-            case 3:
+            case 4:
             case "end":
               return _context2.stop();
           }
@@ -141,7 +142,7 @@ var Home = function Home(_ref) {
     callback: navigateTo("quickplay"),
     label: "Gioca Veloce"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    callback: navigateTo("newlobby"),
+    callback: navigateTo("LobbyPage"),
     label: "Crea Lobby"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
     callback: navigateTo("leaderboard"),
@@ -150,7 +151,7 @@ var Home = function Home(_ref) {
     callback: logout,
     label: "Logout"
   }) : /*#__PURE__*/_react.default.createElement(_Button.default, {
-    callback: navigateTo("login"),
+    callback: navigateTo("LoginPage"),
     label: "Login/Registrati"
   }));
 };

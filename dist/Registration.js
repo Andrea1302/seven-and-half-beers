@@ -68,7 +68,7 @@ var Registration = function Registration(_ref) {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var _responseLogin$data;
 
-      var responseRegistration, responseLogin, responseUser, infoUser;
+      var responseRegistration, responseLogin, responseUser;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -99,15 +99,9 @@ var Registration = function Registration(_ref) {
 
             case 9:
               responseUser = _context.sent;
-              infoUser = {
-                info: responseUser.data,
-                token: responseLogin.data.token,
-                refreshToken: responseLogin.data.refreshToken
-              };
-              (0, _asyncStorage.setStorage)('user', infoUser);
-              callback(responseLogin);
+              callback(responseUser, responseLogin);
 
-            case 13:
+            case 11:
             case "end":
               return _context.stop();
           }
