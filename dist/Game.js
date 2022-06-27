@@ -169,7 +169,7 @@ var Game = function Game(props) {
 
   var carta = function carta() {
     var newState = Object.assign({}, state);
-    var nextCard = Math.floor(Math.random() * 10 + 1);
+    var nextCard = Math.floor(Math.random() * (7 - 0.5 + 1)) + 0.5;
     newState.infoGiocatori[state.turns].otherCards.push(nextCard);
     var sumCard = newState.infoGiocatori[state.turns].otherCards.reduce(function (a, b) {
       return a + b;
@@ -181,10 +181,10 @@ var Game = function Game(props) {
 
       newState.infoGiocatori[state.turns].isDrunk = true;
       stop();
-      return;
+      return props.addCard('gameover');
     }
 
-    setState(newState);
+    props.addCard(nextCard); // setState(newState)
   };
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {

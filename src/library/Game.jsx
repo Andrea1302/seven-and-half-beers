@@ -152,13 +152,13 @@ const Game = (props) => {
             ...state,
             turns: state.turns + 1
         })
+        props.stop(71)
     }
 
     const carta = () => {
         const newState = Object.assign({}, state)
-
-        const nextCard = Math.floor(Math.random() * (7 - 0.5 + 1)) + 0.5;
-
+        let arrCards = [0.5, 1, 2, 3, 4, 5, 6, 7]
+        const nextCard = arrCards[Math.floor(Math.random() * (7 + 1))];
         newState.infoGiocatori[state.turns].otherCards.push(nextCard)
         let sumCard = newState.infoGiocatori[state.turns].otherCards.reduce((a, b) => a + b, newState.infoGiocatori[state.turns].firstCard)
 
@@ -172,8 +172,6 @@ const Game = (props) => {
 
         }
         props.addCard(nextCard)
-        // setState(newState)
-
     }
 
 
