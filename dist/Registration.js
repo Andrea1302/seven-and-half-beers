@@ -73,32 +73,31 @@ var Registration = function Registration(_ref) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              console.log(formObject);
-              _context.next = 3;
+              _context.next = 2;
               return (0, _authApi.registerUserPostApi)(formObject);
 
-            case 3:
+            case 2:
               responseRegistration = _context.sent;
 
               if (!responseRegistration) {
-                _context.next = 8;
+                _context.next = 7;
                 break;
               }
 
-              _context.next = 7;
+              _context.next = 6;
               return (0, _authApi.signInPostApi)({
                 email: formObject.email,
                 password: formObject.password
               });
 
-            case 7:
+            case 6:
               responseLogin = _context.sent;
 
-            case 8:
-              _context.next = 10;
+            case 7:
+              _context.next = 9;
               return (0, _authApi.getUserInfo)((_responseLogin$data = responseLogin.data) === null || _responseLogin$data === void 0 ? void 0 : _responseLogin$data.id);
 
-            case 10:
+            case 9:
               responseUser = _context.sent;
               infoUser = {
                 info: responseUser.data,
@@ -106,6 +105,7 @@ var Registration = function Registration(_ref) {
                 refreshToken: responseLogin.data.refreshToken
               };
               (0, _asyncStorage.setStorage)('user', infoUser);
+              callback(responseLogin);
 
             case 13:
             case "end":

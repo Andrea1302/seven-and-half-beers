@@ -28,16 +28,16 @@ var formObject = {
 };
 
 var Login = function Login(_ref) {
-  var callback = _ref.callback,
+  var goToRegistration = _ref.goToRegistration,
+      callback = _ref.callback,
       imgBg = _ref.imgBg,
       containerStyle = _ref.containerStyle;
 
   var Login = function Login() {
     (0, _authApi.signInPostApi)(formObject).then(function (res) {
-      console.log(res);
-      /* setStorage("token", res.data.token);
-      setStorage("refreshToken", res.data.refreshToken);
-      callback(res.data) */
+      (0, _asyncStorage.setStorage)("token", res.data.token);
+      (0, _asyncStorage.setStorage)("refreshToken", res.data.refreshToken);
+      callback(res.data);
     });
   };
 
@@ -46,6 +46,20 @@ var Login = function Login(_ref) {
       formObject[params] = e;
     };
   };
+
+  var goTo = params = function (_params) {
+    function params() {
+      return _params.apply(this, arguments);
+    }
+
+    params.toString = function () {
+      return _params.toString();
+    };
+
+    return params;
+  }(function () {
+    goToRegistration(params);
+  });
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {
     source: {
@@ -71,6 +85,11 @@ var Login = function Login(_ref) {
     styleCustomText: _styleForm.default.textBtn,
     callback: Login,
     label: "Login"
+  }), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    styleCustom: _styleForm.default.btn,
+    styleCustomText: _styleForm.default.textBtn,
+    callback: goTo('Registration'),
+    label: "Go to registration"
   })));
 };
 

@@ -107,7 +107,7 @@ var Lobby = function Lobby(_ref) {
 
             case 9:
               response = _context.sent;
-              console.log(response);
+              console.log('responseCreate', response);
 
             case 11:
             case "end":
@@ -126,31 +126,26 @@ var Lobby = function Lobby(_ref) {
     webSocketLobby();
   }, []);
 
-  var renderPlayerLobby = function renderPlayerLobby(player, key) {
-    return /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
-      key: key
-    }, player.username);
-  };
-
-  var testButton = function testButton() {
-    console.log("startGame");
-  };
-
-  var chiamata = /*#__PURE__*/function () {
+  var deleteLobbyFunc = /*#__PURE__*/function () {
     var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var response;
+      var user, response;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return (0, _lobbyApi.createLobby)('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJydWJiZXJAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2NTYwODQzODMsImV4cCI6MTY1NjA4Nzk4M30.2bXNp2hJn3H5Ktz_bcweUg4Zg6NJofVhxNx2jN7MqPY');
+              return (0, _asyncStorage.getStorage)('user');
 
             case 2:
-              response = _context2.sent;
-              console.log('response', response);
+              user = _context2.sent;
+              _context2.next = 5;
+              return (0, _lobbyApi.deleteLobby)(user === null || user === void 0 ? void 0 : user.token);
 
-            case 4:
+            case 5:
+              response = _context2.sent;
+              console.log('responseDelete', response);
+
+            case 7:
             case "end":
               return _context2.stop();
           }
@@ -158,8 +153,48 @@ var Lobby = function Lobby(_ref) {
       }, _callee2);
     }));
 
-    return function chiamata() {
+    return function deleteLobbyFunc() {
       return _ref3.apply(this, arguments);
+    };
+  }();
+
+  var renderPlayerLobby = function renderPlayerLobby(player, key) {
+    return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
+      key: key
+    }, player.username), /*#__PURE__*/_react.default.createElement(_Button.default, {
+      callback: deleteLobbyFunc,
+      label: "Delete"
+    }));
+  };
+
+  var testButton = function testButton() {
+    console.log("startGame");
+  };
+
+  var chiamata = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      var response;
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return (0, _lobbyApi.createLobby)('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJydWJiZXJAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2NTYwODQzODMsImV4cCI6MTY1NjA4Nzk4M30.2bXNp2hJn3H5Ktz_bcweUg4Zg6NJofVhxNx2jN7MqPY');
+
+            case 2:
+              response = _context3.sent;
+              console.log('response', response);
+
+            case 4:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+
+    return function chiamata() {
+      return _ref4.apply(this, arguments);
     };
   }();
 
