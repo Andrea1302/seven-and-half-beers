@@ -5,7 +5,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.signInPostApi = exports.registerUserPostApi = void 0;
+exports.signInPostApi = exports.registerUserPostApi = exports.getUserInfo = void 0;
 
 var _genericServices = require("../../genericServices");
 
@@ -69,6 +69,33 @@ var signInPostApi = /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }();
+
+exports.signInPostApi = signInPostApi;
+
+var getUserInfo = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(id) {
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return (0, _genericServices.getApi)("getuser/".concat(id));
+
+          case 2:
+            return _context3.abrupt("return", _context3.sent);
+
+          case 3:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+
+  return function getUserInfo(_x3) {
+    return _ref3.apply(this, arguments);
+  };
+}();
 /* AUTH:isLogged */
 // const updateAuthTokenPostApi = async () => {
 //     return await postApi(`/updateAuthToken`, {
@@ -77,4 +104,4 @@ var signInPostApi = /*#__PURE__*/function () {
 // }
 
 
-exports.signInPostApi = signInPostApi;
+exports.getUserInfo = getUserInfo;

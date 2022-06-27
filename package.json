@@ -1,6 +1,6 @@
 {
   "name": "seven-half-beers",
-  "version": "3.0.5",
+  "version": "3.1.8",
   "main": "dist/index.js",
   "private": false,
   "files": [

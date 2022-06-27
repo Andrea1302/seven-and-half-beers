@@ -9,17 +9,13 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _authApi = require("./services/api/auth/authApi");
+var _reactNative = require("react-native");
 
 var _Button = _interopRequireDefault(require("./Button"));
 
-var _reactNative = require("react-native");
-
 var _asyncStorage = require("./utils/asyncStorage");
 
-var _styleForm = _interopRequireDefault(require("./style/styleForm"));
-
-var _validation = require("./utils/validation");
+var _lobbyApi = require("./services/api/lobby/lobbyApi");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -45,69 +41,75 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var formObject = {
-  username: '',
-  email: '',
-  password: ''
-};
+var elencoPlayer = [{
+  id: 1,
+  username: "Pippo Baudo",
+  active: false,
+  cardList: []
+}, {
+  id: 2,
+  username: "Yugi Mugo",
+  active: false,
+  cardList: []
+}, {
+  id: 3,
+  username: "Seto Kaiba",
+  active: false,
+  cardList: []
+}, {
+  id: 4,
+  username: "Re Kaio",
+  active: false,
+  cardList: []
+}, {
+  id: 5,
+  username: "Sampei",
+  active: false,
+  cardList: []
+}];
 
-var Registration = function Registration(_ref) {
-  var callback = _ref.callback,
-      imgBg = _ref.imgBg,
-      containerStyle = _ref.containerStyle;
+var Lobby = function Lobby(_ref) {
+  var locationFrom = _ref.locationFrom,
+      idUser = _ref.idUser;
 
   var _useState = (0, _react.useState)({
-    errorMail: false,
-    errorPassword: false
+    playerList: elencoPlayer,
+    isHost: false
   }),
       _useState2 = _slicedToArray(_useState, 2),
       state = _useState2[0],
       setState = _useState2[1];
 
-  var registration = /*#__PURE__*/function () {
+  var webSocketLobby = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var _responseLogin$data;
-
-      var responseRegistration, responseLogin, responseUser, infoUser;
+      var user, response;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              console.log(formObject);
-              _context.next = 3;
-              return (0, _authApi.registerUserPostApi)(formObject);
-
-            case 3:
-              responseRegistration = _context.sent;
-
-              if (!responseRegistration) {
-                _context.next = 8;
+              if (!(locationFrom === "newlobby")) {
+                _context.next = 3;
                 break;
               }
 
-              _context.next = 7;
-              return (0, _authApi.signInPostApi)({
-                email: formObject.email,
-                password: formObject.password
-              });
+              _context.next = 11;
+              break;
 
-            case 7:
-              responseLogin = _context.sent;
+            case 3:
+              _context.next = 5;
+              return (0, _asyncStorage.getStorage)('user');
 
-            case 8:
-              _context.next = 10;
-              return (0, _authApi.getUserInfo)((_responseLogin$data = responseLogin.data) === null || _responseLogin$data === void 0 ? void 0 : _responseLogin$data.id);
+            case 5:
+              user = _context.sent;
+              console.log('user', user);
+              _context.next = 9;
+              return (0, _lobbyApi.createLobby)(user === null || user === void 0 ? void 0 : user.token);
 
-            case 10:
-              responseUser = _context.sent;
-              infoUser = {
-                info: responseUser.data,
-                token: responseLogin.data.token,
-                refreshToken: responseLogin.data.refreshToken
-              };
-              (0, _asyncStorage.setStorage)('user', infoUser);
+            case 9:
+              response = _context.sent;
+              console.log(response);
 
-            case 13:
+            case 11:
             case "end":
               return _context.stop();
           }
@@ -115,48 +117,57 @@ var Registration = function Registration(_ref) {
       }, _callee);
     }));
 
-    return function registration() {
+    return function webSocketLobby() {
       return _ref2.apply(this, arguments);
     };
   }();
 
-  var handleInput = function handleInput(params) {
-    return function (e) {
-      formObject[params] = e;
-    };
+  (0, _react.useEffect)(function () {
+    webSocketLobby();
+  }, []);
+
+  var renderPlayerLobby = function renderPlayerLobby(player, key) {
+    return /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
+      key: key
+    }, player.username);
   };
 
-  return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {
-    source: {
-      uri: 'https://img.freepik.com/free-vector/beer-with-bubbles-foam-background_107791-2563.jpg?w=2000'
-    },
-    style: [_styleForm.default.bgDefault, imgBg],
-    resizeMode: "cover"
-  }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
-    style: [_styleForm.default.container, containerStyle]
-  }, /*#__PURE__*/_react.default.createElement(_reactNative.TextInput, {
-    style: _styleForm.default.input,
-    onChangeText: handleInput('username'),
-    placeholder: "username",
-    placeholderTextColor: "#ececec"
-  }), /*#__PURE__*/_react.default.createElement(_reactNative.TextInput, {
-    style: [_styleForm.default.input, state.errorMail ? _styleForm.default.errorInput : ''],
-    onChangeText: handleInput('email'),
-    placeholder: "email",
-    placeholderTextColor: "#ececec"
-  }), /*#__PURE__*/_react.default.createElement(_reactNative.TextInput, {
-    secureTextEntry: true,
-    style: [_styleForm.default.input, state.errorPassword ? _styleForm.default.errorInput : ''],
-    onChangeText: handleInput('password'),
-    placeholder: "password",
-    placeholderTextColor: "#ececec"
-  }), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    styleCustom: _styleForm.default.btn,
-    styleCustomText: _styleForm.default.textBtn,
-    callback: registration,
-    label: "registration"
+  var testButton = function testButton() {
+    console.log("startGame");
+  };
+
+  var chiamata = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var response;
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return (0, _lobbyApi.createLobby)('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJydWJiZXJAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2NTYwODQzODMsImV4cCI6MTY1NjA4Nzk4M30.2bXNp2hJn3H5Ktz_bcweUg4Zg6NJofVhxNx2jN7MqPY');
+
+            case 2:
+              response = _context2.sent;
+              console.log('response', response);
+
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function chiamata() {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+
+  return /*#__PURE__*/_react.default.createElement(_reactNative.View, null, state.playerList.map(renderPlayerLobby), /*#__PURE__*/_react.default.createElement(_reactNative.View, null, state.isHost && /*#__PURE__*/_react.default.createElement(_Button.default, {
+    label: "Start Game",
+    callback: testButton
   })));
 };
 
-var _default = Registration;
+var _default = Lobby;
 exports.default = _default;

@@ -79,8 +79,7 @@ var _default = _reactNative.StyleSheet.create({
     top: "50%",
     left: "50%",
     height: 100,
-    width: 100,
-    transform: "translate(-50%, -50%)"
+    width: 100
   }
 });
 
