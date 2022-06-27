@@ -8,6 +8,7 @@ import styleGame from "./style/styleGame";
 
 //Components
 import Button from './Button'
+import react from "react";
 
 
 /* 
@@ -109,14 +110,15 @@ const Game = (props) => {
             newState.isMyTurn = false
         }
         setState(newState)
-
+        props.callback(state)
     }, [state.turns])
 
     const renderPlayer = (player, key) => {
         return (
             // <View ref={el => myRef.current[key] = el} key={key} style={{ height: 200, width: 100, backgroundColor: state.infoGiocatori[state.turns].id === player.id ? 'yellow' : 'red' }}>
-            <View key={key}>
-                {props.children}
+            <View ref={el => myRef.current[key] = el} key={key}>
+                {React.cloneElement(props.children, { ref: myRef.current[key] })}
+                {/* {props.children} */}
 
                 <Text>
                     {player.username}
@@ -233,204 +235,7 @@ const Game = (props) => {
 
 
     return (
-        // <ImageBackground
-        //     source={{ uri: 'https://cdn.shopify.com/s/files/1/1772/0301/products/3_47247d8e-5f77-4b71-b13c-6e1c08adb51f.png?v=1575939071' }}
-        //     style={styleGame.gameTable}
-        // >
-        //     <View style={styleGame.gameTable}>
 
-
-        //         <ImageBackground
-        //             source={{ uri: 'https://ae01.alicdn.com/kf/HTB1x512QXXXXXXIaFXXq6xXFXXXp/Huayi-asse-di-legno-fotografia-sfondo-paesaggio-foto-personalizzata-ritratto-studios-background-bordo-sfondo-xt4933.jpg' }}
-        //             resizeMode="cover"
-        //             style={styleGame.table}
-        //         >
-
-        //             {/* ER SPILLATORE*/}
-
-        //             <Image
-        //                 resizeMode="center"
-        //                 style={styleGame.deck}
-        //                 source={{ uri: 'https://www.bereacasa.it/wp-content/uploads/2018/01/heineken5lt.jpg' }}
-        //             />
-
-
-        //             <View style={styleGame.playerContainer}>
-
-        //                 <View style={styleGame.topUser}>
-        //                     {/*PLAYER 1*/}
-        //                     {state.infoGiocatori[0] !== undefined
-        //                         ?
-        //                         <View style={styleGame.playerRow}>
-
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[0].username}</Text>
-        //                             <Text>{state.infoGiocatori[0].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-
-        //                     {/*PLAYER 2*/}
-        //                     {state.infoGiocatori[1] !== undefined
-        //                         ?
-        //                         <View style={styleGame.playerRow}>
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[1].username}</Text>
-        //                             <Text>{state.infoGiocatori[1].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-
-        //                     {/*PLAYER 3*/}
-        //                     {state.infoGiocatori[2] !== undefined
-        //                         ?
-        //                         <View style={styleGame.playerRow}>
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[2].username}</Text>
-        //                             <Text>{state.infoGiocatori[2].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-        //                 </View>
-
-
-        //                 <View style={styleGame.centralUser}>
-        //                     {/*PLAYER 4*/}
-        //                     {state.infoGiocatori[3] !== undefined
-        //                         ?
-        //                         <View style={[styleGame.playerRow, styleGame.centralSx]}>
-
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[3].username}</Text>
-        //                             <Text>{state.infoGiocatori[3].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-
-        //                     {/*PLAYER 5*/}
-        //                     {state.infoGiocatori[4] !== undefined
-        //                         ?
-        //                         <View style={[styleGame.playerRow, styleGame.centralDx]}>
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[4].username}</Text>
-        //                             <Text>{state.infoGiocatori[4].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View style={[styleGame.playerRow, styleGame.centralDx]}>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-        //                 </View>
-
-
-        //                 <View style={styleGame.bottomUser}>
-        //                     {/*PLAYER 6*/}
-        //                     {state.infoGiocatori[5] !== undefined
-        //                         ?
-        //                         <View style={styleGame.playerRow}>
-
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[5].username}</Text>
-        //                             <Text>{state.infoGiocatori[5].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View style={styleGame.playerRow}>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-
-        //                     {/*PLAYER 7*/}
-        //                     {state.infoGiocatori[6] !== undefined
-        //                         ?
-        //                         <View style={styleGame.playerRow}>
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[6].username}</Text>
-        //                             <Text>{state.infoGiocatori[6].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View style={styleGame.playerRow}>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-        //                 </View>
-
-
-        //             </View>
-
-        //             {
-        //                 state.isMyTurn &&
-        //                 <>
-        //                     <Button styleCustom={{ backgrounColor: 'blue' }} label="Stop" callback={stoppe} />
-        //                     <Button label="Carta" callback={carta} />
-        //                 </>
-        //             }
-
-
-
-
-
-
-        //         </ImageBackground>
-        //     </View>
-        //     <>
-        //         <Button styleCustom={{ backgrounColor: 'blue' }} label="Stop" callback={stoppe} />
-        //         <Button label="Carta" callback={carta} />
-        //     </>
-        // </ImageBackground >
 
         <View style={{ height: 600, backgroundColor: 'blue' }}>
             <>

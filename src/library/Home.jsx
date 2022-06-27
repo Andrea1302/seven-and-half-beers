@@ -28,7 +28,7 @@ const Home = ({ goTo, logoutCallback }) => {
             style={{ height: Dimensions.get('screen').height, flexDirection: "column", justifyContent: 'center', alignItems: 'center' }}
             source={{ uri: 'https://thumbs.gfycat.com/LikableMarriedArizonaalligatorlizard-size_restricted.gif' }}
         >
-
+            <Text>ciao </Text>
             <Button callback={navigateTo("quickplay")} label="Gioca Veloce" />
             <Button callback={navigateTo("LobbyPage")} label="Crea Lobby" />
             <Button callback={navigateTo("leaderboard")} label="Leaderboard" />

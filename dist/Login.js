@@ -76,7 +76,7 @@ var Login = function Login(_ref) {
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
     styleCustom: _styleForm.default.btn,
     styleCustomText: _styleForm.default.textBtn,
-    callback: goTo('Registration'),
+    callback: goTo,
     label: "Go to registration"
   })));
 };
