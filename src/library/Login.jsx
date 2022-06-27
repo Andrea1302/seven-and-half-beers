@@ -24,8 +24,6 @@ const Login = ({ goToRegistration, callback, imgBg, containerStyle }) => {
     const Login = () => {
         signInPostApi(formObject)
             .then(res => {
-                setStorage("token", res.data.token);
-                setStorage("refreshToken", res.data.refreshToken);
                 callback(res)
             })
     }
@@ -35,8 +33,8 @@ const Login = ({ goToRegistration, callback, imgBg, containerStyle }) => {
         formObject[params] = e
     }
 
-    const goTo = (params) =>()=>{
-        goToRegistration(params)
+    const goTo = () => {
+        goToRegistration()
     }
     return (
         <ImageBackground

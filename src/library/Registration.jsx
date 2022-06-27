@@ -40,13 +40,7 @@ const Registration = ({ callback, imgBg, containerStyle }) => {
 
         }
         let responseUser = await getUserInfo(responseLogin.data?.id)
-        let infoUser = {
-            info : responseUser.data,
-            token : responseLogin.data.token,
-            refreshToken : responseLogin.data.refreshToken
-        }
-        setStorage('user',infoUser)
-        callback(responseLogin)
+        callback(responseUser,responseLogin)
         }
     const handleInput = (params) => (e) => {
         formObject[params] = e

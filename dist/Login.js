@@ -37,7 +37,7 @@ var Login = function Login(_ref) {
     (0, _authApi.signInPostApi)(formObject).then(function (res) {
       (0, _asyncStorage.setStorage)("token", res.data.token);
       (0, _asyncStorage.setStorage)("refreshToken", res.data.refreshToken);
-      callback(res.data);
+      callback(res);
     });
   };
 

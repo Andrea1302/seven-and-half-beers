@@ -34,6 +34,7 @@ const Home = ({ goTo }) => {
             ...state,
             isUserLogged: false
         })
+        navigateTo('LoginPage')
     }
     return (
         <ImageBackground
@@ -42,14 +43,14 @@ const Home = ({ goTo }) => {
         >
 
             <Button callback={navigateTo("quickplay")} label="Gioca Veloce" />
-            <Button callback={navigateTo("newlobby")} label="Crea Lobby" />
+            <Button callback={navigateTo("LobbyPage")} label="Crea Lobby" />
             <Button callback={navigateTo("leaderboard")} label="Leaderboard" />
 
             {
                 state.isUserLogged ?
                     <Button callback={logout} label="Logout" />
                     :
-                    <Button callback={navigateTo("login")} label="Login/Registrati" />
+                    <Button callback={navigateTo("LoginPage")} label="Login/Registrati" />
 
             }
 
