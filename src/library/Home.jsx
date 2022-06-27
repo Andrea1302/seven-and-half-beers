@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { ImageBackground } from "react-native"
+import { ImageBackground, Dimensions } from "react-native"
 import { getStorage, removeStorage } from './utils/asyncStorage'
 
 //Components
@@ -37,7 +37,7 @@ const Home = ({ goTo }) => {
     }
     return (
         <ImageBackground
-            style={{ height: '100vh', flexDirection: "column", justifyContent: 'center', alignItems: 'center' }}
+            style={{ height: Dimensions.get('screen').height, flexDirection: "column", justifyContent: 'center', alignItems: 'center' }}
             source={{ uri: 'https://thumbs.gfycat.com/LikableMarriedArizonaalligatorlizard-size_restricted.gif' }}
         >
 
