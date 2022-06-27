@@ -171,7 +171,44 @@ const Game = (props) => {
             return props.addCard('gameover')
 
         }
-        props.addCard(nextCard)
+        let variable;
+        switch (nextCard) {
+            case 0.5: {
+                variable = 11.4
+                break;
+            }
+            case 1 : {
+                variable = 22.8
+                break;
+            }
+            case 2 : {
+                variable = 45.6
+                break;
+            }
+            case 3 : {
+                variable = 68.4
+                break;
+            }
+            case 4 : {
+                variable = 91.2
+                break;
+            }
+            case 5 : {
+                variable = 114
+                break;
+            }
+            case 6 : {
+                variable = 136.8
+                break;
+            }
+            case 7 : {
+                variable = 159.6
+                break;
+            }
+            
+
+        }
+        props.addCard(variable)
     }
 
 
