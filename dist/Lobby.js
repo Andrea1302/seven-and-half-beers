@@ -69,8 +69,11 @@ var elencoPlayer = [{
 }];
 
 var Lobby = function Lobby(_ref) {
-  var locationFrom = _ref.locationFrom,
-      idUser = _ref.idUser;
+  var createCallback = _ref.createCallback,
+      randomCallback = _ref.randomCallback,
+      randomCallbackMobile = _ref.randomCallbackMobile,
+      createCallbackMobile = _ref.createCallbackMobile,
+      Children = _ref.Children;
 
   var _useState = (0, _react.useState)({
     playerList: elencoPlayer,
@@ -80,34 +83,38 @@ var Lobby = function Lobby(_ref) {
       state = _useState2[0],
       setState = _useState2[1];
 
-  var webSocketLobby = /*#__PURE__*/function () {
+  (0, _react.useEffect)(function () {
+    webSocketLobby();
+  }, []);
+
+  var random = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var user, response;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              if (!(locationFrom === "newlobby")) {
-                _context.next = 3;
+              if (!(_reactNative.Platform.OS === 'web')) {
+                _context.next = 10;
                 break;
               }
 
+              _context.next = 3;
+              return (0, _asyncStorage.getStorage)('user');
+
+            case 3:
+              user = _context.sent;
+              _context.next = 6;
+              return (0, _lobbyApi.randomLobby)(user === null || user === void 0 ? void 0 : user.token);
+
+            case 6:
+              response = _context.sent;
+              randomCallback(response.data);
               _context.next = 11;
               break;
 
-            case 3:
-              _context.next = 5;
-              return (0, _asyncStorage.getStorage)('user');
-
-            case 5:
-              user = _context.sent;
-              console.log('user', user);
-              _context.next = 9;
-              return (0, _lobbyApi.createLobby)(user === null || user === void 0 ? void 0 : user.token);
-
-            case 9:
-              response = _context.sent;
-              console.log('responseCreate', response);
+            case 10:
+              randomCallbackMobile();
 
             case 11:
             case "end":
@@ -117,35 +124,41 @@ var Lobby = function Lobby(_ref) {
       }, _callee);
     }));
 
-    return function webSocketLobby() {
+    return function random() {
       return _ref2.apply(this, arguments);
     };
   }();
 
-  (0, _react.useEffect)(function () {
-    webSocketLobby();
-  }, []);
-
-  var deleteLobbyFunc = /*#__PURE__*/function () {
+  var create = /*#__PURE__*/function () {
     var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
       var user, response;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              _context2.next = 2;
+              if (!(_reactNative.Platform.OS === 'web')) {
+                _context2.next = 10;
+                break;
+              }
+
+              _context2.next = 3;
               return (0, _asyncStorage.getStorage)('user');
 
-            case 2:
+            case 3:
               user = _context2.sent;
-              _context2.next = 5;
-              return (0, _lobbyApi.deleteLobby)(user === null || user === void 0 ? void 0 : user.token);
+              _context2.next = 6;
+              return (0, _lobbyApi.createLobby)(user === null || user === void 0 ? void 0 : user.token);
 
-            case 5:
+            case 6:
               response = _context2.sent;
-              console.log('responseDelete', response);
+              createCallback(response.data);
+              _context2.next = 11;
+              break;
 
-            case 7:
+            case 10:
+              createCallbackMobile();
+
+            case 11:
             case "end":
               return _context2.stop();
           }
@@ -153,28 +166,18 @@ var Lobby = function Lobby(_ref) {
       }, _callee2);
     }));
 
-    return function deleteLobbyFunc() {
+    return function create() {
       return _ref3.apply(this, arguments);
     };
   }();
 
-  var renderPlayerLobby = function renderPlayerLobby(player, key) {
-    return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
-      key: key
-    }, player.username), /*#__PURE__*/_react.default.createElement(_Button.default, {
-      callback: deleteLobbyFunc,
-      label: "Delete"
-    }));
-  };
-
-  var testButton = function testButton() {
-    console.log("startGame");
-  };
-
-  return /*#__PURE__*/_react.default.createElement(_reactNative.View, null, state.playerList.map(renderPlayerLobby), /*#__PURE__*/_react.default.createElement(_reactNative.View, null, state.isHost && /*#__PURE__*/_react.default.createElement(_Button.default, {
-    label: "Start Game",
-    callback: testButton
-  })));
+  return /*#__PURE__*/_react.default.createElement(_reactNative.View, null, /*#__PURE__*/_react.default.createElement(_Button.default, {
+    callback: create,
+    label: "Create Lobby"
+  }), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    callback: random,
+    label: "Random Lobby"
+  }), Children);
 };
 
 var _default = Lobby;
