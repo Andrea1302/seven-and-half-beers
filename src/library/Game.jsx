@@ -1,14 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
-import { View, ImageBackground, Image, Text, Dimensions } from 'react-native';
-import Lottie from "./Lottie";
-//import LottieView from 'react-native-web-lottie'
+import React, { useEffect, useState } from "react";
+import { View, ImageBackground, Text } from 'react-native';
 
+import { openConnection, wsMessage, sendDataToWs } from './services/genericSocket'
 // style 
 import styleGame from "./style/styleGame";
 
 //Components
 import Button from './Button'
-
+import { getStorage } from "./utils/asyncStorage";
 
 /* 
 <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
@@ -22,14 +21,14 @@ const playerList = [{
     firstCard: 1,
     active: false,
     isDrunk: false,
-    otherCards: []
+    otherCards: 0
 }, {
     id: 222,
     username: "PotatoGnognos",
     points: 758,
     firstCard: 2,
     active: false,
-    otherCards: [],
+    otherCards: 0,
     isDrunk: false,
 
 }, {
@@ -38,7 +37,7 @@ const playerList = [{
     points: 9999,
     firstCard: "Exodia",
     active: false,
-    otherCards: [],
+    otherCards: 0,
     isDrunk: false,
 
 }, {
@@ -47,7 +46,7 @@ const playerList = [{
     points: 1,
     firstCard: 6,
     active: false,
-    otherCards: [],
+    otherCards: 0,
     isDrunk: false,
 
 }, {
@@ -56,7 +55,7 @@ const playerList = [{
     points: 69,
     firstCard: 3,
     active: false,
-    otherCards: [],
+    otherCards: 0,
     isDrunk: false,
 
 }, {
@@ -66,7 +65,7 @@ const playerList = [{
     firstCard: 2,
     active: false,
     isDrunk: false,
-    otherCards: [],
+    otherCards: 0,
 }, {
     id: 711,
     username: "Nico Robin",
@@ -74,103 +73,41 @@ const playerList = [{
     firstCard: 0.5,
     active: false,
     isDrunk: false,
-    otherCards: [],
+    otherCards: 0,
 }]
 
-const nextCard = 2
+// const nextCard = 2
 
-let myId
-
+// let myId
 const Game = (props) => {
-    const myRef = useRef([])
+    // const myRef = useRef([])
 
     const [state, setState] = useState({
         infoGiocatori: playerList,
         contatoreTurni: 0,
         turns: 0,
         isMyTurn: false,
-    })
+        myId: undefined
 
-    const playerIcon = useRef()
-    const beer = useRef()
+    })
 
     //DidUpade
     useEffect(() => {
-        let newState = Object.assign({}, state)
+        props.callback(state)
+    }, [state])
 
-        if (newState.turns === 0) {
-            //Chiamata per prendere id user dallo storage
-            myId = 59
-        }
-
-        if (state.infoGiocatori[state.turns].id === myId) {
-            newState.isMyTurn = true
-        } else {
-            newState.isMyTurn = false
-        }
-        setState(newState)
-
-    }, [state.turns])
-
-    const renderPlayer = (player, key) => {
-        return (
-            // <View ref={el => myRef.current[key] = el} key={key} style={{ height: 200, width: 100, backgroundColor: state.infoGiocatori[state.turns].id === player.id ? 'yellow' : 'red' }}>
-            <View key={key}>
-                {props.children}
-
-                <Text>
-                    {player.username}
-                </Text>
-                <Text>
-                    {player.firstCard}
-                </Text>
+    useEffect(() => {
+        (async () => {
+            const user = await getStorage('user')
+            setState({
+                ...state,
+                myId : user.id
+            })
+        })()
+    },[])
 
 
-                <>
-                    {player.otherCards.map((card, key) => {
-                        return (
-                            <Text key={key}>{card}</Text>
-                        )
-                    })}
-                </>
-
-            </View>
-            // </View >
-
-        )
-    }
-    //DidUpdate
-    /*  useEffect(() => {
-         
-         handleTurn()
-     
-     }, [state.contatoreTurni]) */
-
-
-    // const handleTurn = () => {
-
-    //     const newState = Object.assign({}, state)
-
-    //     newState.infoGiocatori[state.contatoreTurni].active = true
-
-    //     newState.infoGiocatori.forEach((player) => {
-    //         if (player.active === true) {
-    //             turnoId = player.id
-    //         }
-    //         if (turnoId === myId) {
-    //             newState.isMyTurn = true
-    //         } else {
-    //             newState.isMyTurn = false
-    //         }
-    //     })
-    //     console.log("Turno: ", newState.contatoreTurni)
-    //     console.log("Tocca al giocatore con id:", turnoId)
-
-    //     setState(newState)
-    // }
-
-
-    const stoppe = () => {
+    const stop = () => {
         const lenghtPlayers = state.infoGiocatori.length
         if (state.turns === lenghtPlayers - 1) {
             alert('finiiish')
@@ -180,277 +117,91 @@ const Game = (props) => {
             ...state,
             turns: state.turns + 1
         })
-        // const newState = Object.assign({}, state)
-
-        // index = newState.infoGiocatori.findIndex((player) => player.id === turnoId)
-        // console.log("index: ", index)
-
-        // newState.infoGiocatori[index].active = false
-
-        // if (newState.infoGiocatori[index + 1] === undefined) {
-        //     //Chiamata API per termiane la partita
-        //     alert("turni finiti")
-        //     return
-        // }
-
-        // newState.infoGiocatori[index + 1].active = true
-        // setState({
-        //     ...state,
-        //     infoGiocatori: newState.infoGiocatori,
-        //     contatoreTurni: state.contatoreTurni + 1
-        // })
+        props.stop(71)
     }
 
     const carta = () => {
         const newState = Object.assign({}, state)
-
-        const nextCard = Math.floor(Math.random() * 10 + 1)
-
-        newState.infoGiocatori[state.turns].otherCards.push(nextCard)
-        let sumCard = newState.infoGiocatori[state.turns].otherCards.reduce((a, b) => a + b, newState.infoGiocatori[state.turns].firstCard)
-
-        console.log("initCard", state.infoGiocatori[state.turns].firstCard, "nextCard", nextCard, "sommatoria: ", sumCard)
+        let arrCards = [0.5, 1, 2, 3, 4, 5, 6, 7]
+        const nextCard = arrCards[Math.floor(Math.random() * (7 + 1))];
+        newState.infoGiocatori[state.turns].otherCards = newState.infoGiocatori[state.turns].otherCards + nextCard
+        let sumCard = newState.infoGiocatori[state.turns].otherCards + newState.infoGiocatori[state.turns].firstCard
 
         if (sumCard > 7.5) {
             console.log("Hai perso zi")
             // myRef.current[state.turns].style = {backgrounColor : 'green'}
-            console.log(myRef.current[state.turns])
-
-            myRef.current[state.turns].style.border = '20px solid green'
-
+            // console.log(myRef.current[state.turns])
             newState.infoGiocatori[state.turns].isDrunk = true
-            stoppe()
-            // newState.isMyTurn = false
-            // newState.infoGiocatori[index].active = false
-            // newState.infoGiocatori[index + 1].active = true
-            return
+            stop()
+            return props.addCard('gameover')
 
         }
+        let variable;
+        switch (nextCard) {
+            case 0.5: {
+                variable = 11.4
+                break;
+            }
+            case 1: {
+                variable = 22.8
+                break;
+            }
+            case 2: {
+                variable = 45.6
+                break;
+            }
+            case 3: {
+                variable = 68.4
+                break;
+            }
+            case 4: {
+                variable = 91.2
+                break;
+            }
+            case 5: {
+                variable = 114
+                break;
+            }
+            case 6: {
+                variable = 136.8
+                break;
+            }
+            case 7: {
+                variable = 159.6
+                break;
+            }
 
+
+        }
+        props.addCard(variable)
         setState(newState)
-
     }
 
+    const webS = () => {
+        sendDataToWs(2, 'start', state.myId)
+    }
 
+    const start = () => {
+        sendDataToWs(2, 'start', state.myId)
+    }
     return (
-        // <ImageBackground
-        //     source={{ uri: 'https://cdn.shopify.com/s/files/1/1772/0301/products/3_47247d8e-5f77-4b71-b13c-6e1c08adb51f.png?v=1575939071' }}
-        //     style={styleGame.gameTable}
-        // >
-        //     <View style={styleGame.gameTable}>
 
 
-        //         <ImageBackground
-        //             source={{ uri: 'https://ae01.alicdn.com/kf/HTB1x512QXXXXXXIaFXXq6xXFXXXp/Huayi-asse-di-legno-fotografia-sfondo-paesaggio-foto-personalizzata-ritratto-studios-background-bordo-sfondo-xt4933.jpg' }}
-        //             resizeMode="cover"
-        //             style={styleGame.table}
-        //         >
+        <ImageBackground source={{ uri: 'https://cdn.shopify.com/s/files/1/1772/0301/products/3_47247d8e-5f77-4b71-b13c-6e1c08adb51f.png?v=1575939071' }} style={styleGame.gameTable}>
 
-        //             {/* ER SPILLATORE*/}
+            <View style={props.styleChildren}>
+                {props.children}
+            </View>
 
-        //             <Image
-        //                 resizeMode="center"
-        //                 style={styleGame.deck}
-        //                 source={{ uri: 'https://www.bereacasa.it/wp-content/uploads/2018/01/heineken5lt.jpg' }}
-        //             />
+            <View style={styleGame.btn}>
+                <Button styleCustom={styleGame.singleBtn} label="Stop" callback={stop} />
+                <Button styleCustom={styleGame.singleBtn} label="Carta" callback={carta} />
+                <Button styleCustom={styleGame.singleBtn} label="wbs" callback={webS} />
+                <Button styleCustom={styleGame.singleBtn} label="start Game" callback={start} />
 
 
-        //             <View style={styleGame.playerContainer}>
-
-        //                 <View style={styleGame.topUser}>
-        //                     {/*PLAYER 1*/}
-        //                     {state.infoGiocatori[0] !== undefined
-        //                         ?
-        //                         <View style={styleGame.playerRow}>
-
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[0].username}</Text>
-        //                             <Text>{state.infoGiocatori[0].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-
-        //                     {/*PLAYER 2*/}
-        //                     {state.infoGiocatori[1] !== undefined
-        //                         ?
-        //                         <View style={styleGame.playerRow}>
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[1].username}</Text>
-        //                             <Text>{state.infoGiocatori[1].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-
-        //                     {/*PLAYER 3*/}
-        //                     {state.infoGiocatori[2] !== undefined
-        //                         ?
-        //                         <View style={styleGame.playerRow}>
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[2].username}</Text>
-        //                             <Text>{state.infoGiocatori[2].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-        //                 </View>
-
-
-        //                 <View style={styleGame.centralUser}>
-        //                     {/*PLAYER 4*/}
-        //                     {state.infoGiocatori[3] !== undefined
-        //                         ?
-        //                         <View style={[styleGame.playerRow, styleGame.centralSx]}>
-
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[3].username}</Text>
-        //                             <Text>{state.infoGiocatori[3].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-
-        //                     {/*PLAYER 5*/}
-        //                     {state.infoGiocatori[4] !== undefined
-        //                         ?
-        //                         <View style={[styleGame.playerRow, styleGame.centralDx]}>
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[4].username}</Text>
-        //                             <Text>{state.infoGiocatori[4].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View style={[styleGame.playerRow, styleGame.centralDx]}>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-        //                 </View>
-
-
-        //                 <View style={styleGame.bottomUser}>
-        //                     {/*PLAYER 6*/}
-        //                     {state.infoGiocatori[5] !== undefined
-        //                         ?
-        //                         <View style={styleGame.playerRow}>
-
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[5].username}</Text>
-        //                             <Text>{state.infoGiocatori[5].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View style={styleGame.playerRow}>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-
-        //                     {/*PLAYER 7*/}
-        //                     {state.infoGiocatori[6] !== undefined
-        //                         ?
-        //                         <View style={styleGame.playerRow}>
-        //                             <View style={{ flexDirection: "row", height: '80%' }}>
-        //                             </View>
-
-        //                             <Text>{state.infoGiocatori[6].username}</Text>
-        //                             <Text>{state.infoGiocatori[6].points}</Text>
-        //                         </View>
-        //                         :
-        //                         <View style={styleGame.playerRow}>
-        //                             <Image
-        //                                 resizeMode="center"
-        //                                 style={styleGame.user}
-        //                                 source={{ uri: 'https://e7.pngegg.com/pngimages/524/884/png-clipart-alcohol-intoxication-character-drunk-hand-boy.png' }}
-        //                             />
-        //                         </View>
-        //                     }
-        //                 </View>
-
-
-        //             </View>
-
-        //             {
-        //                 state.isMyTurn &&
-        //                 <>
-        //                     <Button styleCustom={{ backgrounColor: 'blue' }} label="Stop" callback={stoppe} />
-        //                     <Button label="Carta" callback={carta} />
-        //                 </>
-        //             }
-
-
-
-
-
-
-        //         </ImageBackground>
-        //     </View>
-        //     <>
-        //         <Button styleCustom={{ backgrounColor: 'blue' }} label="Stop" callback={stoppe} />
-        //         <Button label="Carta" callback={carta} />
-        //     </>
-        // </ImageBackground >
-
-        <View style={{ height: 600, backgroundColor: 'blue' }}>
-            <>
-
-                <>
-                    <Button styleCustom={{ backgrounColor: 'blue' }} label="Stop" callback={stoppe} />
-                    <Button label="Carta" callback={carta} />
-                </>
-
-
-
-
-
-                <View style={{ flexDirection: 'row', width: Dimensions.get('screen').width, justifyContent: 'space-between' }}>
-                    {
-                        state.infoGiocatori.map(renderPlayer)
-                    }
-                </View>
-            </>
-        </View>
+            </View>
+        </ImageBackground>
     )
 }
 

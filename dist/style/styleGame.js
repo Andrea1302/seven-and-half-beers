@@ -11,8 +11,16 @@ var _default = _reactNative.StyleSheet.create({
   gameTable: {
     height: _reactNative.Dimensions.get('screen').height,
     width: _reactNative.Dimensions.get('screen').width,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center'
+  },
+  btn: {
+    flexDirection: 'row'
+  },
+  singleBtn: {
+    backgroundColor: 'blue',
+    marginHorizontal: 20,
+    padding: 10
   },
   table: {
     backgroundColor: "yellow",
@@ -21,10 +29,6 @@ var _default = _reactNative.StyleSheet.create({
     width: '80%',
     borderRadius: 20,
     justifyContent: 'space-between'
-  },
-  bastardi: {
-    height: "100%",
-    width: 100
   },
   playerContainer: {
     justifyContent: 'space-between',

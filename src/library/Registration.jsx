@@ -24,7 +24,7 @@ let formObject = {
     password: '',
 }
 
-const Registration = ({ callback, imgBg, containerStyle }) => {
+const Registration = ({ callback, imgBg, containerStyle, styleBtn, styleTextBtn }) => {
     const [state, setState] = useState({
         errorMail: false,
         errorPassword: false
@@ -32,16 +32,16 @@ const Registration = ({ callback, imgBg, containerStyle }) => {
     const registration = async () => {
         let responseRegistration = await registerUserPostApi(formObject)
         let responseLogin;
-        if (responseRegistration){
+        if (responseRegistration) {
             responseLogin = await signInPostApi({
-                email : formObject.email,
-                password : formObject.password
+                email: formObject.email,
+                password: formObject.password
             })
 
         }
         let responseUser = await getUserInfo(responseLogin.data?.id)
-        callback(responseUser,responseLogin)
-        }
+        callback(responseUser, responseLogin)
+    }
     const handleInput = (params) => (e) => {
         formObject[params] = e
     }
@@ -74,8 +74,8 @@ const Registration = ({ callback, imgBg, containerStyle }) => {
                     placeholderTextColor="#ececec"
                 />
                 <Button
-                    styleCustom={styleForm.btn}
-                    styleCustomText={styleForm.textBtn}
+                    styleCustom={styleBtn}
+                    styleCustomText={styleTextBtn}
                     callback={registration}
                     label="registration"
                 />

@@ -71,15 +71,15 @@ export async function getApi(resource, header = null) {
         .catch(responseApiError());
 }
 
-// export async function putApi(resource, obj, header = null) {
-//     //function for put api call
-//     return axiosInstance
-//         .put(resource, obj, {
-//             headers: header !== null ? { Authorization: `Bearer ${header}` } : "",
-//         })
-//         .then(responseApi())
-//         .catch(responseApiError());
-// }
+export async function putApi( header = null) {
+    //function for put api call
+    return axiosInstance
+        .put({
+            headers: header !== null ? { Authorization: `Bearer ${header}` } : "",
+        })
+        .then(responseApi())
+        .catch(responseApiError());
+}
 
 export async function deleteApi(resource, header = null) {
     return axiosInstance

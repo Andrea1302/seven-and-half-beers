@@ -9,6 +9,8 @@ var _react = _interopRequireDefault(require("react"));
 
 var _reactNative = require("react-native");
 
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Button = function Button(_ref) {
@@ -22,14 +24,30 @@ var Button = function Button(_ref) {
   };
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.TouchableOpacity, {
-    style: {
-      backgroundColor: 'blue'
-    },
+    style: styleCustom,
     onPress: onPress
   }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
     style: styleCustomText
   }, label));
 };
 
+Button.defaultProps = {
+  styleCustom: {
+    backgroundColor: '#4F8CAB',
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,
+    minWidth: 100,
+    alignItems: 'center'
+  },
+  styleCustomText: {
+    color: '#ececec',
+    fontWeight: 'bold'
+  }
+}; // propTypes 
+
+Button.propTypes = {
+  styleBtn: _propTypes.default.string
+};
 var _default = Button;
 exports.default = _default;

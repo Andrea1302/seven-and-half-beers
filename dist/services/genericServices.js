@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.deleteApi = deleteApi;
 exports.getApi = getApi;
 exports.postApi = postApi;
+exports.putApi = putApi;
 exports.responseApi = responseApi;
 exports.responseApiError = responseApiError;
 
@@ -99,16 +100,7 @@ function _postApi() {
 
 function getApi(_x3) {
   return _getApi.apply(this, arguments);
-} // export async function putApi(resource, obj, header = null) {
-//     //function for put api call
-//     return axiosInstance
-//         .put(resource, obj, {
-//             headers: header !== null ? { Authorization: `Bearer ${header}` } : "",
-//         })
-//         .then(responseApi())
-//         .catch(responseApiError());
-// }
-
+}
 
 function _getApi() {
   _getApi = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(resource) {
@@ -135,20 +127,20 @@ function _getApi() {
   return _getApi.apply(this, arguments);
 }
 
-function deleteApi(_x4) {
-  return _deleteApi.apply(this, arguments);
+function putApi() {
+  return _putApi.apply(this, arguments);
 }
 
-function _deleteApi() {
-  _deleteApi = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(resource) {
+function _putApi() {
+  _putApi = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var header,
         _args3 = arguments;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            header = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : null;
-            return _context3.abrupt("return", axiosInstance.delete(resource, {
+            header = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : null;
+            return _context3.abrupt("return", axiosInstance.put({
               headers: header !== null ? {
                 Authorization: "Bearer ".concat(header)
               } : ""
@@ -160,6 +152,35 @@ function _deleteApi() {
         }
       }
     }, _callee3);
+  }));
+  return _putApi.apply(this, arguments);
+}
+
+function deleteApi(_x4) {
+  return _deleteApi.apply(this, arguments);
+}
+
+function _deleteApi() {
+  _deleteApi = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(resource) {
+    var header,
+        _args4 = arguments;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            header = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : null;
+            return _context4.abrupt("return", axiosInstance.delete(resource, {
+              headers: header !== null ? {
+                Authorization: "Bearer ".concat(header)
+              } : ""
+            }).then(responseApi()).catch(responseApiError()));
+
+          case 2:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
   }));
   return _deleteApi.apply(this, arguments);
 }

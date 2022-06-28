@@ -54,7 +54,9 @@ var formObject = {
 var Registration = function Registration(_ref) {
   var callback = _ref.callback,
       imgBg = _ref.imgBg,
-      containerStyle = _ref.containerStyle;
+      containerStyle = _ref.containerStyle,
+      styleBtn = _ref.styleBtn,
+      styleTextBtn = _ref.styleTextBtn;
 
   var _useState = (0, _react.useState)({
     errorMail: false,
@@ -68,7 +70,7 @@ var Registration = function Registration(_ref) {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var _responseLogin$data;
 
-      var responseRegistration, responseLogin, responseUser, infoUser;
+      var responseRegistration, responseLogin, responseUser;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -99,15 +101,9 @@ var Registration = function Registration(_ref) {
 
             case 9:
               responseUser = _context.sent;
-              infoUser = {
-                info: responseUser.data,
-                token: responseLogin.data.token,
-                refreshToken: responseLogin.data.refreshToken
-              };
-              (0, _asyncStorage.setStorage)('user', infoUser);
-              callback(responseLogin);
+              callback(responseUser, responseLogin);
 
-            case 13:
+            case 11:
             case "end":
               return _context.stop();
           }
@@ -151,8 +147,8 @@ var Registration = function Registration(_ref) {
     placeholder: "password",
     placeholderTextColor: "#ececec"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    styleCustom: _styleForm.default.btn,
-    styleCustomText: _styleForm.default.textBtn,
+    styleCustom: styleBtn,
+    styleCustomText: styleTextBtn,
     callback: registration,
     label: "registration"
   })));

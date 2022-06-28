@@ -13,15 +13,12 @@ var _Button = _interopRequireDefault(require("./Button"));
 
 var _reactNative = require("react-native");
 
-var _asyncStorage = require("./utils/asyncStorage");
-
 var _styleForm = _interopRequireDefault(require("./style/styleForm"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // button 
 // components 
-// storage 
 var formObject = {
   email: '',
   password: ''
@@ -31,12 +28,12 @@ var Login = function Login(_ref) {
   var goToRegistration = _ref.goToRegistration,
       callback = _ref.callback,
       imgBg = _ref.imgBg,
-      containerStyle = _ref.containerStyle;
+      containerStyle = _ref.containerStyle,
+      styleBtn = _ref.styleBtn,
+      styleTextBtn = _ref.styleTextBtn;
 
   var Login = function Login() {
     (0, _authApi.signInPostApi)(formObject).then(function (res) {
-      (0, _asyncStorage.setStorage)("token", res.data.token);
-      (0, _asyncStorage.setStorage)("refreshToken", res.data.refreshToken);
       callback(res);
     });
   };
@@ -47,10 +44,8 @@ var Login = function Login(_ref) {
     };
   };
 
-  var goTo = function goTo(params) {
-    return function () {
-      goToRegistration(params);
-    };
+  var goTo = function goTo() {
+    goToRegistration();
   };
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {
@@ -73,14 +68,14 @@ var Login = function Login(_ref) {
     placeholder: "password",
     placeholderTextColor: "#ececec"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    styleCustom: _styleForm.default.btn,
-    styleCustomText: _styleForm.default.textBtn,
+    styleCustomText: styleTextBtn,
+    styleCustom: styleBtn,
     callback: Login,
     label: "Login"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    styleCustom: _styleForm.default.btn,
-    styleCustomText: _styleForm.default.textBtn,
-    callback: goTo('Registration'),
+    styleCustomText: styleTextBtn,
+    styleCustom: styleBtn,
+    callback: goTo,
     label: "Go to registration"
   })));
 };

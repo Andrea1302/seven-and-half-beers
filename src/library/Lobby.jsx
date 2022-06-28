@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text } from 'react-native'
+import { View, Platform } from 'react-native'
 import Button from './Button'
 //AsyncStorage
 import { getStorage } from './utils/asyncStorage'
 
-import { createLobby, deleteLobby } from './services/api/lobby/lobbyApi'
+import { createLobby, deleteLobby, randomLobby } from './services/api/lobby/lobbyApi'
+
 
 const elencoPlayer = [{
     id: 1,
@@ -33,70 +34,43 @@ const elencoPlayer = [{
     cardList: []
 }]
 
-const Lobby = ({ locationFrom, idUser }) => {
+const Lobby = ({ createCallback, randomCallback, randomCallbackMobile, createCallbackMobile, Children }) => {
 
     const [state, setState] = useState({
         playerList: elencoPlayer,
         isHost: false
     })
 
-    const webSocketLobby = async () => {
-
-        if (locationFrom === "newlobby") {
-            //let response = await chiamataIpoteticaAPIperCreareLobby&PrendereID
-            //console.log(response) 
-            //connectToLobby(response.data.lobby.id) funzione da generalizzare e importare
-            //newState.playerList = response.data.lobby.elencoPlayer
-        } else {
-            let user = await getStorage('user')
-            console.log('user', user)
-            let response = await createLobby(user?.token)
-            console.log('responseCreate',response)
-        }
-
-    }
 
     useEffect(() => {
         webSocketLobby()
     }, [])
 
-    const deleteLobbyFunc = async () => {
-        let user = await getStorage('user')
-        let response = await deleteLobby(user?.token)
-        console.log('responseDelete', response)
+    const random = async () => {
+        if (Platform.OS === 'web') {
+            let user = await getStorage('user')
+            let response = await randomLobby(user?.token)
+            randomCallback(response.data)
+        } else {
+            randomCallbackMobile()
+        }
     }
-    const renderPlayerLobby = (player, key) => {
-        return (
-            <>
-                <Text key={key}>
-                    {player.username}
-                </Text>
-                <Button callback={deleteLobbyFunc} label='Delete' />
-            </>
-        )
+    const create = async () => {
+        if (Platform.OS === 'web') {
+            let user = await getStorage('user')
+            let response = await createLobby(user?.token)
+            createCallback(response.data)
+        } else {
+            createCallbackMobile()
+        }
     }
 
-    const testButton = () => {
-        console.log("startGame")
-    }
-
-    const chiamata = async () => {
-        let response = await createLobby('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJydWJiZXJAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2NTYwODQzODMsImV4cCI6MTY1NjA4Nzk4M30.2bXNp2hJn3H5Ktz_bcweUg4Zg6NJofVhxNx2jN7MqPY')
-        console.log('response', response)
-    }
     return (
         <View>
-            {
-                state.playerList.map(renderPlayerLobby)
-            }
-            <View>
-                {
-                    state.isHost &&
-                    <Button label="Start Game" callback={testButton} />
-                }
-            </View>
 
-
+            <Button callback={create} label="Create Lobby" />
+            <Button callback={random} label="Random Lobby" />
+            {Children}
         </View>
     )
 }

@@ -5,7 +5,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteLobby = exports.createLobby = void 0;
+exports.randomLobby = exports.deleteLobby = exports.createLobby = void 0;
 
 var _genericServices = require("../../genericServices");
 
@@ -68,3 +68,30 @@ var deleteLobby = /*#__PURE__*/function () {
 }();
 
 exports.deleteLobby = deleteLobby;
+
+var randomLobby = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(token) {
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return (0, _genericServices.putApi)("lobby/-1", token);
+
+          case 2:
+            return _context3.abrupt("return", _context3.sent);
+
+          case 3:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+
+  return function randomLobby(_x3) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+exports.randomLobby = randomLobby;
