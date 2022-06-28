@@ -178,11 +178,11 @@ const Game = (props) => {
     }
 
     const webS = () => {
-        sendDataToWs(2, 'start', state.myId)
+        // sendDataToWs(2, 'start', state.myId)
     }
 
     const start = () => {
-        sendDataToWs(2, 'start', state.myId)
+        // sendDataToWs(2, 'start', state.myId)
     }
     return (
 
