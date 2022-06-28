@@ -13,15 +13,12 @@ var _Button = _interopRequireDefault(require("./Button"));
 
 var _reactNative = require("react-native");
 
-var _asyncStorage = require("./utils/asyncStorage");
-
 var _styleForm = _interopRequireDefault(require("./style/styleForm"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // button 
 // components 
-// storage 
 var formObject = {
   email: '',
   password: ''

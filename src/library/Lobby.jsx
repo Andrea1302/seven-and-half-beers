@@ -80,10 +80,6 @@ const Lobby = ({ locationFrom, idUser }) => {
         console.log("startGame")
     }
 
-    const chiamata = async () => {
-        let response = await createLobby('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJydWJiZXJAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2NTYwODQzODMsImV4cCI6MTY1NjA4Nzk4M30.2bXNp2hJn3H5Ktz_bcweUg4Zg6NJofVhxNx2jN7MqPY')
-        console.log('response', response)
-    }
     return (
         <View>
             {

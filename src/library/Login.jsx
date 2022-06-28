@@ -14,7 +14,7 @@ let formObject = {
     password: '',
 }
 
-const Login = ({ goToRegistration, callback, imgBg, containerStyle }) => {
+const Login = ({ goToRegistration, callback, imgBg, containerStyle,styleBtn,styleTextBtn }) => {
 
     const Login = () => {
         signInPostApi(formObject)
@@ -54,15 +54,15 @@ const Login = ({ goToRegistration, callback, imgBg, containerStyle }) => {
                     placeholderTextColor="#ececec"
                 />
                 <Button
-                    styleCustom={styleForm.btn}
-                    styleCustomText={styleForm.textBtn}
+                    styleCustomText={styleTextBtn} 
+                    styleCustom={styleBtn}
                     callback={Login}
                     label="Login"
                 />
 
                 <Button
-                    styleCustom={styleForm.btn}
-                    styleCustomText={styleForm.textBtn}
+                    styleCustomText={styleTextBtn} 
+                    styleCustom={styleBtn}
                     callback={goTo}
                     label="Go to registration"
                 />

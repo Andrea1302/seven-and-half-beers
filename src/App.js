@@ -14,7 +14,7 @@ function App() {
  
   return (
     <SafeAreaView>
-      <Lobby />
+      <Home />
       {/* <Game callback={test}>
         <Text>ciaoooo</Text>
       </Game> */}
