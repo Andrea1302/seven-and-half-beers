@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, ImageBackground,Text } from 'react-native';
+import { View, ImageBackground, Text } from 'react-native';
 
-import {openConnection,wsMessage,sendDataToWs} from './services/genericSocket'
+import { openConnection, wsMessage, sendDataToWs } from './services/genericSocket'
 // style 
 import styleGame from "./style/styleGame";
 
 //Components
 import Button from './Button'
+import { getStorage } from "./utils/asyncStorage";
 
 /* 
 <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
@@ -78,7 +79,6 @@ const playerList = [{
 // const nextCard = 2
 
 // let myId
-
 const Game = (props) => {
     // const myRef = useRef([])
 
@@ -87,19 +87,24 @@ const Game = (props) => {
         contatoreTurni: 0,
         turns: 0,
         isMyTurn: false,
+        myId: undefined
+
     })
 
     //DidUpade
     useEffect(() => {
-       
-
         props.callback(state)
     }, [state])
 
-    useEffect(()=>{
-        openConnection()
-        wsMessage()
-    })
+    useEffect(() => {
+        (async () => {
+            const user = await getStorage('user')
+            setState({
+                ...state,
+                myId : user.id
+            })
+        })()
+    },[])
 
 
     const stop = () => {
@@ -172,12 +177,12 @@ const Game = (props) => {
         setState(newState)
     }
 
-    const webS = () =>{
-        sendDataToWs(0,'start',66)
+    const webS = () => {
+        sendDataToWs(2, 'start', state.myId)
     }
 
-    const start = () =>{
-        sendDataToWs(0,'start',66)
+    const start = () => {
+        sendDataToWs(2, 'start', state.myId)
     }
     return (
 

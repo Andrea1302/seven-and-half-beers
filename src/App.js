@@ -10,23 +10,14 @@ import Registration from './library/Registration';
 import Login from './library/Login';
 import Home from './library/Home';
 
-
-
-
-
-// import Login from './components/Login';
-
-
 function App() {
-  const test = (state)=>{
-    console.log('state',state)
-  }
+ 
   return (
     <SafeAreaView>
-      {/* <Lobby navigationFrom="newlobby" /> */}
-      <Game callback={test}>
+      <Lobby />
+      {/* <Game callback={test}>
         <Text>ciaoooo</Text>
-      </Game>
+      </Game> */}
     </SafeAreaView>
   );
 }
