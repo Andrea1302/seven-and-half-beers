@@ -6,25 +6,27 @@ import { getStorage } from './utils/asyncStorage'
 
 import { createLobby, deleteLobby, randomLobby } from './services/api/lobby/lobbyApi'
 
-// import {onOpenSocket,onSendMessage} from './services/genericSocket'
-let ws;
+//WebSocket
+import { connectWithWs, sendMessageToWs, listenToWs, closeConnectionWithWs } from './services/genericSocket'
+
+
 const Lobby = ({ createCallback, randomCallback, randomCallbackMobile, createCallbackMobile, Children }) => {
 
     const [state, setState] = useState({
         isConnected: false,
         dataFromServer: null
     })
+
     useEffect(() => {
         // let newState = Object.assign({}, state)
         if (state.isConnected) {
-            ws.onmessage = function (event) {
-
-                console.log("Message received..." + event.data);
-                // newState.dataFromServer = event.data
-            };
-            return () => ws.close();
+            console.log("sono connesso")
+            listenToWs()
         }
-        // setState(newState)
+
+ /*        return () => {
+            closeConnectionWithWs()
+        } */
 
     }, [state.isConnected])
 
@@ -50,16 +52,13 @@ const Lobby = ({ createCallback, randomCallback, randomCallbackMobile, createCal
             createCallbackMobile()
         }
     }
-    const send = () => {
-        ws.send("Speriamo bene");
-    }
-    const connect = () => {
-        ws = new WebSocket("wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self");
 
-        ws.onopen = function () {
-            ws.send("Hi, from the client."); // this works
-            alert("Connection opened...");
-        };
+    const send = () => {
+        sendMessageToWs("Speriamo si zi")
+    }
+
+    const connect = () => {
+        connectWithWs()
         setState({
             ...state,
             isConnected: true
@@ -67,7 +66,7 @@ const Lobby = ({ createCallback, randomCallback, randomCallbackMobile, createCal
     }
 
     const closeConnection = () => {
-        ws.close()
+        closeConnectionWithWs()
         setState({
             ...state,
             isConnected: false

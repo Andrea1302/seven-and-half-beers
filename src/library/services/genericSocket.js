@@ -1,30 +1,30 @@
-// let socket = new WebSocket("wss://javascript.info/article/websocket/demo/hello");
+import { socket } from '../services/configSocket'
 
-// socket.onopen = function (e) {
-//     alert("[open] Connection established");
-//     alert("Sending to server");
-//     // socket.send("My name is John");
-//     socket.send(JSON.stringify({
-//         event: 'new_message',
-//         sender: 'Luca Giurato',
-//         text: 'Buongiollo a tutti'
-//     }));
-// };
+//onOpen
+export function connectWithWs() {
+    console.log("sono entrato")
+    socket.onopen = function (e) {
+        alert("[open] Connection established");
+        //socket.send("My name is John");
+    }
+}
 
-// socket.onmessage = function (event) {
-//     alert(`[message] Data received from server: ${event.data}`);
-// };
+//send
+export function sendMessageToWs(message) {
+    socket.send(JSON.stringify(message))
+}
 
-// socket.onclose = function (event) {
-//     if (event.wasClean) {
-//         alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
-//     } else {
-//         // e.g. server process killed or network down
-//         // event.code is usually 1006 in this case
-//         alert('[close] Connection died');
-//     }
-// };
+//onMessage
+export function listenToWs() {
+    socket.onmessage = function (event) {
+        console.log("Message received: ", event.data)
+        //return event
+    }
+    
+}
 
-// socket.onerror = function (error) {
-//     alert(`[error] ${error.message}`);
-// };
+//onClose
+export function closeConnectionWithWs() {
+    socket.close()
+    console.log('çhiuso')
+}
