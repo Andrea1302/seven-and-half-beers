@@ -54,7 +54,9 @@ var formObject = {
 var Registration = function Registration(_ref) {
   var callback = _ref.callback,
       imgBg = _ref.imgBg,
-      containerStyle = _ref.containerStyle;
+      containerStyle = _ref.containerStyle,
+      styleBtn = _ref.styleBtn,
+      styleTextBtn = _ref.styleTextBtn;
 
   var _useState = (0, _react.useState)({
     errorMail: false,
@@ -145,8 +147,8 @@ var Registration = function Registration(_ref) {
     placeholder: "password",
     placeholderTextColor: "#ececec"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    styleCustom: _styleForm.default.btn,
-    styleCustomText: _styleForm.default.textBtn,
+    styleCustom: styleBtn,
+    styleCustomText: styleTextBtn,
     callback: registration,
     label: "registration"
   })));

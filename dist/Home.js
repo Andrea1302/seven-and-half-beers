@@ -23,7 +23,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var Home = function Home(_ref) {
   var goTo = _ref.goTo,
-      logoutCallback = _ref.logoutCallback;
+      logoutCallback = _ref.logoutCallback,
+      styleTextBtn = _ref.styleTextBtn,
+      styleBtn = _ref.styleBtn;
 
   var navigateTo = function navigateTo(path) {
     return function () {
@@ -62,16 +64,31 @@ var Home = function Home(_ref) {
     source: {
       uri: 'https://thumbs.gfycat.com/LikableMarriedArizonaalligatorlizard-size_restricted.gif'
     }
+  }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+    style: {
+      width: '80%',
+      alignItems: 'center',
+      minHeight: '60%',
+      justifyContent: 'center',
+      borderRadius: 10,
+      backgroundColor: 'rgba(61, 52, 25, 0.6)'
+    }
   }, /*#__PURE__*/_react.default.createElement(_Button.default, {
+    styleCustomText: styleTextBtn,
+    styleCustom: styleBtn,
     callback: navigateTo("LobbyPage"),
     label: "Lobby"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    styleCustomText: styleTextBtn,
+    styleCustom: styleBtn,
     callback: navigateTo("LeaderboardPage"),
     label: "Leaderboard"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    styleCustomText: styleTextBtn,
+    styleCustom: styleBtn,
     callback: logout,
     label: "Logout"
-  }));
+  })));
 };
 
 var _default = Home;

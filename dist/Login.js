@@ -28,7 +28,9 @@ var Login = function Login(_ref) {
   var goToRegistration = _ref.goToRegistration,
       callback = _ref.callback,
       imgBg = _ref.imgBg,
-      containerStyle = _ref.containerStyle;
+      containerStyle = _ref.containerStyle,
+      styleBtn = _ref.styleBtn,
+      styleTextBtn = _ref.styleTextBtn;
 
   var Login = function Login() {
     (0, _authApi.signInPostApi)(formObject).then(function (res) {
@@ -66,13 +68,13 @@ var Login = function Login(_ref) {
     placeholder: "password",
     placeholderTextColor: "#ececec"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    styleCustom: _styleForm.default.btn,
-    styleCustomText: _styleForm.default.textBtn,
+    styleCustomText: styleTextBtn,
+    styleCustom: styleBtn,
     callback: Login,
     label: "Login"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    styleCustom: _styleForm.default.btn,
-    styleCustomText: _styleForm.default.textBtn,
+    styleCustomText: styleTextBtn,
+    styleCustom: styleBtn,
     callback: goTo,
     label: "Go to registration"
   })));

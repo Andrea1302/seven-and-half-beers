@@ -171,33 +171,6 @@ var Lobby = function Lobby(_ref) {
     console.log("startGame");
   };
 
-  var chiamata = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      var response;
-      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              _context3.next = 2;
-              return (0, _lobbyApi.createLobby)('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJydWJiZXJAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2NTYwODQzODMsImV4cCI6MTY1NjA4Nzk4M30.2bXNp2hJn3H5Ktz_bcweUg4Zg6NJofVhxNx2jN7MqPY');
-
-            case 2:
-              response = _context3.sent;
-              console.log('response', response);
-
-            case 4:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }));
-
-    return function chiamata() {
-      return _ref4.apply(this, arguments);
-    };
-  }();
-
   return /*#__PURE__*/_react.default.createElement(_reactNative.View, null, state.playerList.map(renderPlayerLobby), /*#__PURE__*/_react.default.createElement(_reactNative.View, null, state.isHost && /*#__PURE__*/_react.default.createElement(_Button.default, {
     label: "Start Game",
     callback: testButton
