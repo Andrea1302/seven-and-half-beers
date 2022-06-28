@@ -1,28 +1,30 @@
-import { WEBSOCKET } from "./config";
-import SockJS from 'sockjs-client'; // Note this line
-import Stomp from 'stompjs';
+// let socket = new WebSocket("wss://javascript.info/article/websocket/demo/hello");
 
-const SOCKET = new SockJS(WEBSOCKET)
-const STOMPCLIENT = Stomp.over(SOCKET)
+// socket.onopen = function (e) {
+//     alert("[open] Connection established");
+//     alert("Sending to server");
+//     // socket.send("My name is John");
+//     socket.send(JSON.stringify({
+//         event: 'new_message',
+//         sender: 'Luca Giurato',
+//         text: 'Buongiollo a tutti'
+//     }));
+// };
 
-export const openConnection = (idLobby) => {
-    STOMPCLIENT.connect({}, (frame) => {
-        console.log('frame', frame)
-        STOMPCLIENT.subscribe(`/lobby/${idLobby}`, (res) => {
-            console.log('res', JSON.parse('body', res.body))
-        })
-    })
-}
+// socket.onmessage = function (event) {
+//     alert(`[message] Data received from server: ${event.data}`);
+// };
 
-export const wsMessage = () => {
-    STOMPCLIENT.onMessage = event => {
-        // listen to data sent from the web socket server
-        const message = JSON.parse(event.data)
-        console.log('message', message)
-    }
+// socket.onclose = function (event) {
+//     if (event.wasClean) {
+//         alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+//     } else {
+//         // e.g. server process killed or network down
+//         // event.code is usually 1006 in this case
+//         alert('[close] Connection died');
+//     }
+// };
 
-}
-
-export const sendDataToWs = (idLobby, resource, idUser,) => {
-    STOMPCLIENT.send(`/app/room/${idLobby}/${resource}/${idUser}`)
-}
+// socket.onerror = function (error) {
+//     alert(`[error] ${error.message}`);
+// };
