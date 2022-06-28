@@ -7,11 +7,6 @@ import Button from './Button';
 // components 
 import { TextInput, View, ImageBackground } from 'react-native';
 
-// storage 
-import { setStorage } from './utils/asyncStorage';
-
-
-
 import styleForm from './style/styleForm'
 
 let formObject = {
