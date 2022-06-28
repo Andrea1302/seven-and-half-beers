@@ -24,9 +24,9 @@ const Lobby = ({ createCallback, randomCallback, randomCallbackMobile, createCal
             listenToWs()
         }
 
- /*        return () => {
-            closeConnectionWithWs()
-        } */
+        /*        return () => {
+                   closeConnectionWithWs()
+               } */
 
     }, [state.isConnected])
 
@@ -73,18 +73,16 @@ const Lobby = ({ createCallback, randomCallback, randomCallbackMobile, createCal
         })
     }
     return (
-        <View>
-
-            <Button callback={create} label="Create Lobby" />
-            <Button callback={random} label="Random Lobby" />
-            <Button callback={send} label="send" />
-            <Button callback={connect} label="connettiti" />
-            <Button callback={closeConnection} label="close" />
-
-
-
+        <>
+            <View>
+                <Button callback={create} label="Create Lobby" />
+                <Button callback={random} label="Random Lobby" />
+                <Button callback={send} label="send" />
+                <Button callback={connect} label="connettiti" />
+                <Button callback={closeConnection} label="close" />
+            </View>
             {Children}
-        </View>
+        </>
     )
 }
 
