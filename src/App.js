@@ -9,12 +9,13 @@ import Game from './library/Game';
 import Registration from './library/Registration';
 import Login from './library/Login';
 import Home from './library/Home';
+import Leaderboard from './library/Leaderboard';
 
 function App() {
  
   return (
     <SafeAreaView>
-      <Lobby />
+      <Game />
       {/* <Game callback={test}>
         <Text>ciaoooo</Text>
       </Game> */}

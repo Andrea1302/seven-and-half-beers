@@ -1,60 +1,48 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, Dimensions } from 'react-native'
+import { getUserInfo } from './services/api/auth/authApi';
 
 //Api
 import { getUsers } from "./services/api/leaderboard/leaderboard"
-
-const playerList = [{
-    userId: 1,
-    username: 'Yugi Muto',
-    points: '99999'
-}, {
-    userId: 34,
-    username: 'Yami Yugi',
-    points: '9567'
-}, {
-    userId: 96,
-    username: 'Maestro Muten',
-    points: '13'
-}, {
-    userId: 756,
-    username: 'Nico Robin',
-    points: '431'
-}, {
-    userId: 111,
-    username: 'Seto Kaiba',
-    points: '788'
-}, {
-    userId: 543,
-    username: 'Sanpei',
-    points: '9'
-}]
-
+import { getStorage } from './utils/asyncStorage';
+let user;
 const Leaderboard = () => {
 
     const [state, setState] = useState({
-        topPlayerList: playerList,
+        topPlayerList: null,
         yourPosition: null
     })
 
 
     useEffect(() => {
+        getUser()
         //Funzione API per prendere top giocatori\
-        //getTopPlayers()
+        getTopPlayers()
     }, [])
 
-
+    const getUser = async () => {
+        let userData = await getStorage('user')
+        let response = await getUserInfo(userData.id)
+        user = response.data
+    }
     const getTopPlayers = async () => {
 
         let res = await getUsers()
         let arrayAppoggio = res.data
+        console.log(res.data)
+        arrayAppoggio.sort((a, b) => {
+            if (a.score > b.score) {
+                return -1;
+            }
+            if (a.score < b.score) {
+                return 1;
+            }
+            return 0;
+        })
 
-        arrayAppoggio.sort((a, b) => { return a.score - b.score })
-
-        if (arrayAppoggio.lenght > 9) {
-            arrayAppoggio.slice(9, arrayAppoggio.lenght - 1)
+        if (arrayAppoggio.length > 9) {
+            arrayAppoggio.splice(9, arrayAppoggio.length - 10)
         }
-
         setState({
             ...state,
             topPlayerList: arrayAppoggio
@@ -62,19 +50,35 @@ const Leaderboard = () => {
     }
 
     const renderTopPlayers = (player, key) => {
+        let top;
+        if (state.topPlayerList[0].id === player.id) {
+            top = 'gold'
+        } else if (state.topPlayerList[1].id === player.id) {
+            top = '#c0c0c0'
+        } else if (state.topPlayerList[2].id === player.id) {
+            top = '#cd7f32'
+        } else {
+            top = '#4F8CAB'
+        }
         return (
-            <Text>{player.username} - {player.score}</Text>
+            <View style={{ padding: 10, backgroundColor: top }} key={key}>
+                <Text style={{ color: '#fff', fontWeight: 'bold' }}>{key + 1}) {player.username} - {player.score}</Text>
+            </View>
         )
     }
 
     return (
-        <View>
-            <Text>Ciao</Text>
-            {/*
-                        {
+        <View style={{ height: Dimensions.get('screen').height, backgroundColor: '#61B5D9', paddingVertical: 20 }}>
+            <Text style={{ fontSize: 40, marginBottom: 40, fontWeight: 'bold', color: '#fff', textAlign: 'center' }}>LEADERBOARD</Text>
+            {
                 state?.topPlayerList?.map(renderTopPlayers)
             }
-            */}
+            <View style={{marginVertical:30}}>
+                <Text style={{ color: '#fff',fontWeight:'bold',textAlign:'center',fontSize : 24 }}>
+                    Your score : {user?.score}
+                </Text>
+            </View>
+
         </View>
     )
 }

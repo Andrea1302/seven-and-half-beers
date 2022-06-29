@@ -3,44 +3,38 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.wsMessage = exports.sendDataToWs = exports.openConnection = void 0;
+exports.closeConnectionWithWs = closeConnectionWithWs;
+exports.connectWithWs = connectWithWs;
+exports.listenToWs = listenToWs;
+exports.sendMessageToWs = sendMessageToWs;
 
-var _config = require("./config");
+var _configSocket = require("../services/configSocket");
 
-var _sockjsClient = _interopRequireDefault(require("sockjs-client"));
+//onOpen
+function connectWithWs(myUser) {
+  _configSocket.socket.onopen = function (e) {
+    alert("[open] Connection established"); //Subscribe to the channel
 
-var _stompjs = _interopRequireDefault(require("stompjs"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// Note this line
-var SOCKET = new _sockjsClient.default(_config.WEBSOCKET);
-
-var STOMPCLIENT = _stompjs.default.over(SOCKET);
-
-var openConnection = function openConnection(idLobby) {
-  STOMPCLIENT.connect({}, function (frame) {
-    console.log('frame', frame);
-    STOMPCLIENT.subscribe("/lobby/".concat(idLobby), function (res) {
-      console.log('res', JSON.parse('body', res.body));
-    });
-  });
-};
-
-exports.openConnection = openConnection;
-
-var wsMessage = function wsMessage() {
-  STOMPCLIENT.onMessage = function (event) {
-    // listen to data sent from the web socket server
-    var message = JSON.parse(event.data);
-    console.log('message', message);
+    _configSocket.socket.send(JSON.stringify(myUser));
   };
-};
+} //send
 
-exports.wsMessage = wsMessage;
 
-var sendDataToWs = function sendDataToWs(idLobby, resource, idUser) {
-  STOMPCLIENT.send("/app/room/".concat(idLobby, "/").concat(resource, "/").concat(idUser));
-};
+function sendMessageToWs(message) {
+  _configSocket.socket.send(JSON.stringify(message));
+} //onMessage
 
-exports.sendDataToWs = sendDataToWs;
+
+function listenToWs() {
+  _configSocket.socket.onmessage = function (event) {
+    console.log("Message received: ", event.data);
+    return event.data;
+  };
+} //onClose
+
+
+function closeConnectionWithWs() {
+  _configSocket.socket.close();
+
+  console.log('çhiuso');
+}

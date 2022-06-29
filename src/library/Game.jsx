@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ImageBackground, Text } from 'react-native';
+import { View, ImageBackground, Text, Platform } from 'react-native';
 
 import { openConnection, wsMessage, sendDataToWs } from './services/genericSocket'
 // style 
@@ -8,6 +8,8 @@ import styleGame from "./style/styleGame";
 //Components
 import Button from './Button'
 import { getStorage } from "./utils/asyncStorage";
+import { socket } from './services/configSocket'
+import { connectWithWs, sendMessageToWs, listenToWs, closeConnectionWithWs } from './services/genericSocket'
 
 /* 
 <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
@@ -93,18 +95,26 @@ const Game = (props) => {
 
     //DidUpade
     useEffect(() => {
-        props.callback(state)
+        if (Platform.OS !== 'web') {
+            props.callback(state)
+        }
     }, [state])
 
     useEffect(() => {
-        (async () => {
-            const user = await getStorage('user')
-            setState({
-                ...state,
-                myId : user.id
-            })
-        })()
-    },[])
+        // userInfo()
+        socket.onmessage = function (event) {
+            if (event.data[0] === '{') {
+                console.log('questoo', event.data)
+            }
+        }
+            // (async () => {
+            //     const user = await getStorage('user')
+            //     setState({
+            //         ...state,
+            //         myId: user.id
+            //     })
+            // })()
+    }, [])
 
 
     const stop = () => {
@@ -197,7 +207,7 @@ const Game = (props) => {
                 <Button styleCustom={styleGame.singleBtn} label="Stop" callback={stop} />
                 <Button styleCustom={styleGame.singleBtn} label="Carta" callback={carta} />
                 <Button styleCustom={styleGame.singleBtn} label="wbs" callback={webS} />
-                <Button styleCustom={styleGame.singleBtn} label="start Game" callback={start} />
+                {/* <Button styleCustom={styleGame.singleBtn} label="start Game" callback={start} /> */}
 
 
             </View>

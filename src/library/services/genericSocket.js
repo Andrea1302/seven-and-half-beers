@@ -1,11 +1,11 @@
 import { socket } from '../services/configSocket'
 
 //onOpen
-export function connectWithWs() {
-    console.log("sono entrato")
+export function connectWithWs(myUser) {
     socket.onopen = function (e) {
         alert("[open] Connection established");
-        //socket.send("My name is John");
+        //Subscribe to the channel
+        socket.send(JSON.stringify(myUser))
     }
 }
 
@@ -18,9 +18,10 @@ export function sendMessageToWs(message) {
 export function listenToWs() {
     socket.onmessage = function (event) {
         console.log("Message received: ", event.data)
-        //return event
+        return event.data
     }
-    
+
+
 }
 
 //onClose
