@@ -4,6 +4,8 @@ import Login from './Login';
 import Game from './Game';
 import Home from './Home';
 import Lobby from './Lobby';
+import Leaderboard from './Leaderboard';
+
 
 import Lottie from "./Lottie";
 
@@ -14,5 +16,6 @@ export {
     Registration,
     Game,
     Home,
-    Lottie
+    Lottie,
+    Leaderboard
 }

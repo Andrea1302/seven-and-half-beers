@@ -10,72 +10,72 @@ import Button from './Button'
 import { getStorage } from "./utils/asyncStorage";
 import { socket } from './services/configSocket'
 import { connectWithWs, sendMessageToWs, listenToWs, closeConnectionWithWs } from './services/genericSocket'
-
+import {getUserInfo} from './services/api/auth/authApi'
 /* 
 <LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
 <LottieView ref={beer} style={{ height: "100%" }} source={require('./assets/lotties/beer.json')} loop={true} autosize={true} /> 
 */
 
 const playerList = [{
-    id: 112,
-    username: "Sempronio",
-    points: 1000,
-    firstCard: 1,
-    active: false,
-    isDrunk: false,
-    otherCards: 0
+    "id": "112",
+    "username": "Sempronio",
+    "points": "1000",
+    "firstCard":1,
+    "active": "false",
+    "isDrunk": "false",
+    "otherCards":0
 }, {
-    id: 222,
-    username: "PotatoGnognos",
-    points: 758,
-    firstCard: 2,
-    active: false,
-    otherCards: 0,
-    isDrunk: false,
+    "id": "222",
+    "username": "PotatoGnognos",
+    "points": "758",
+    "firstCard": 2,
+    "active": "false",
+    "otherCards": 0,
+    "isDrunk": "false",
 
 }, {
-    id: 300,
-    username: "Yugi Muto",
-    points: 9999,
-    firstCard: "Exodia",
-    active: false,
-    otherCards: 0,
-    isDrunk: false,
+    "id": "300",
+    "username": "Yugi Muto",
+    "points": "9999",
+    "firstCard": 3,
+    "active": "false",
+    "otherCards": 0,
+    "isDrunk": "false",
 
 }, {
-    id: 2,
-    username: "Seto Kaiba",
-    points: 1,
-    firstCard: 6,
-    active: false,
-    otherCards: 0,
-    isDrunk: false,
+    "id": "2",
+    "username": "Seto Kaiba",
+    "points": "1",
+    "firstCard": 6,
+    "active": "false",
+    "otherCards": 0,
+    "isDrunk": "false",
 
 }, {
-    id: 59,
-    username: "Mai Valentine",
-    points: 69,
-    firstCard: 3,
-    active: false,
-    otherCards: 0,
-    isDrunk: false,
+    "id": 59,
+    "username": "Mai Valentine",
+    "points": 69,
+    "firstCard": 3,
+    "active": "false",
+    "otherCards": 0,
+    "isDrunk": "false",
 
 }, {
-    id: 62,
-    username: "Bulma",
-    points: 420,
-    firstCard: 2,
-    active: false,
-    isDrunk: false,
-    otherCards: 0,
+    "id": 62,
+    "username": "Bulma",
+    "points": 420,
+    "firstCard": 2,
+    "active": "false",
+    "isDrunk": "false",
+    "otherCards": 0,
 }, {
-    id: 711,
-    username: "Nico Robin",
-    points: 0,
-    firstCard: 0.5,
-    active: false,
-    isDrunk: false,
-    otherCards: 0,
+    "id": 711,
+    "username": "Nico Robin",
+    "points": 0,
+    "firstCard": 0.5,
+    "active": false,
+    "isDrunk": false,
+    "otherCards": 0,
 }]
 
 // const nextCard = 2
@@ -85,7 +85,7 @@ const Game = (props) => {
     // const myRef = useRef([])
 
     const [state, setState] = useState({
-        infoGiocatori: playerList,
+        infoGiocatori: undefined,
         contatoreTurni: 0,
         turns: 0,
         isMyTurn: false,
@@ -95,30 +95,41 @@ const Game = (props) => {
 
     //DidUpade
     useEffect(() => {
-        if (Platform.OS !== 'web') {
+        // if (Platform.OS !== 'web') {
             props.callback(state)
-        }
+        // }
+        console.log(state)
     }, [state])
 
     useEffect(() => {
-        // userInfo()
+        userInfo()
+
+        // (async () => {
+        //     const user = await getStorage('user')
+        //     setState({
+        //         ...state,
+        //         myId: user.id
+        //     })
+        // })()
+    }, [])
+
+    const userInfo = async () => {
+        let userData = await getStorage('user')
+        let response = await getUserInfo(userData.id)
         socket.onmessage = function (event) {
             if (event.data[0] === '{') {
                 console.log('questoo', event.data)
+                setState({
+                    ...state,
+                    user: response.data.id,
+                    infoGiocatori: JSON.parse(event.data)
+                })
+
             }
         }
-            // (async () => {
-            //     const user = await getStorage('user')
-            //     setState({
-            //         ...state,
-            //         myId: user.id
-            //     })
-            // })()
-    }, [])
-
-
+    }
     const stop = () => {
-        const lenghtPlayers = state.infoGiocatori.length
+        const lenghtPlayers = state.infoGiocatori.user.length
         if (state.turns === lenghtPlayers - 1) {
             alert('finiiish')
             return
@@ -134,14 +145,14 @@ const Game = (props) => {
         const newState = Object.assign({}, state)
         let arrCards = [0.5, 1, 2, 3, 4, 5, 6, 7]
         const nextCard = arrCards[Math.floor(Math.random() * (7 + 1))];
-        newState.infoGiocatori[state.turns].otherCards = newState.infoGiocatori[state.turns].otherCards + nextCard
-        let sumCard = newState.infoGiocatori[state.turns].otherCards + newState.infoGiocatori[state.turns].firstCard
+        newState.infoGiocatori.user[state.turns].otherCards = newState.infoGiocatori.user[state.turns].otherCards + nextCard
+        let sumCard = newState.infoGiocatori.user[state.turns].otherCards + newState.infoGiocatori.user[state.turns].firstCard
 
         if (sumCard > 7.5) {
             console.log("Hai perso zi")
             // myRef.current[state.turns].style = {backgrounColor : 'green'}
             // console.log(myRef.current[state.turns])
-            newState.infoGiocatori[state.turns].isDrunk = true
+            newState.infoGiocatori.user[state.turns].isDrunk = true
             stop()
             return props.addCard('gameover')
 

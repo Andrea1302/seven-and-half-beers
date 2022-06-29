@@ -21,6 +21,12 @@ Object.defineProperty(exports, "Home", {
     return _Home.default;
   }
 });
+Object.defineProperty(exports, "Leaderboard", {
+  enumerable: true,
+  get: function get() {
+    return _Leaderboard.default;
+  }
+});
 Object.defineProperty(exports, "Lobby", {
   enumerable: true,
   get: function get() {
@@ -57,6 +63,8 @@ var _Game = _interopRequireDefault(require("./Game"));
 var _Home = _interopRequireDefault(require("./Home"));
 
 var _Lobby = _interopRequireDefault(require("./Lobby"));
+
+var _Leaderboard = _interopRequireDefault(require("./Leaderboard"));
 
 var _Lottie = _interopRequireDefault(require("./Lottie"));
 
