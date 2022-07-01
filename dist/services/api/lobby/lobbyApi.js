@@ -76,7 +76,7 @@ var randomLobby = /*#__PURE__*/function () {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return (0, _genericServices.putApi)("lobby/-1", token);
+            return (0, _genericServices.putApi)("lobby/-1", {}, token);
 
           case 2:
             return _context3.abrupt("return", _context3.sent);

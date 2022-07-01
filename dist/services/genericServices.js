@@ -127,20 +127,20 @@ function _getApi() {
   return _getApi.apply(this, arguments);
 }
 
-function putApi() {
+function putApi(_x4, _x5) {
   return _putApi.apply(this, arguments);
 }
 
 function _putApi() {
-  _putApi = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+  _putApi = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(resource, obj) {
     var header,
         _args3 = arguments;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            header = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : null;
-            return _context3.abrupt("return", axiosInstance.put({
+            header = _args3.length > 2 && _args3[2] !== undefined ? _args3[2] : null;
+            return _context3.abrupt("return", axiosInstance.put(resource, obj, {
               headers: header !== null ? {
                 Authorization: "Bearer ".concat(header)
               } : ""
@@ -156,7 +156,7 @@ function _putApi() {
   return _putApi.apply(this, arguments);
 }
 
-function deleteApi(_x4) {
+function deleteApi(_x6) {
   return _deleteApi.apply(this, arguments);
 }
 

@@ -25,6 +25,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+var userData;
+
 var Home = function Home(_ref) {
   var goTo = _ref.goTo,
       logoutCallback = _ref.logoutCallback,
@@ -34,7 +36,7 @@ var Home = function Home(_ref) {
 
   var navigateTo = function navigateTo(path) {
     return /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var userData, responseLobby;
+      var responseLobby;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -58,15 +60,35 @@ var Home = function Home(_ref) {
             case 7:
               userData = _context.t0;
               console.log('userdatatokenfromHome', userData.token);
-              _context.next = 11;
+              _context.t1 = path;
+              _context.next = _context.t1 === "RandomLobby" ? 12 : _context.t1 === "CreateLobby" ? 18 : _context.t1 === "LeaderboardPage" ? 24 : 26;
+              break;
+
+            case 12:
+              _context.next = 14;
               return (0, _lobbyApi.randomLobby)(userData.token);
 
-            case 11:
-              responseLobby = _context.sent;
-              console.log('responseLobby', responseLobby.data);
-              goTo(path, responseLobby.data.idLobby);
-
             case 14:
+              responseLobby = _context.sent;
+              console.log('responseLobby: ', responseLobby.data);
+              goTo("LobbyPage", responseLobby.data);
+              return _context.abrupt("break", 26);
+
+            case 18:
+              _context.next = 20;
+              return (0, _lobbyApi.createLobby)(userData.token);
+
+            case 20:
+              responseLobby = _context.sent;
+              console.log('responseLobby: ', responseLobby.data);
+              goTo("LobbyPage", responseLobby.data);
+              return _context.abrupt("break", 26);
+
+            case 24:
+              goTo(path);
+              return _context.abrupt("break", 26);
+
+            case 26:
             case "end":
               return _context.stop();
           }
@@ -118,8 +140,13 @@ var Home = function Home(_ref) {
   }, /*#__PURE__*/_react.default.createElement(_Button.default, {
     styleCustomText: styleTextBtn,
     styleCustom: styleBtn,
-    callback: navigateTo("LobbyPage"),
+    callback: navigateTo("RandomLobby"),
     label: "Random Lobby"
+  }), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    styleCustomText: styleTextBtn,
+    styleCustom: styleBtn,
+    callback: navigateTo("CreateLobby"),
+    label: "Create Lobby"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
     styleCustomText: styleTextBtn,
     styleCustom: styleBtn,

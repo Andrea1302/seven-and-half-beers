@@ -4,16 +4,19 @@ import Button from './Button'
 import { getUserInfo } from './services/api/auth/authApi'
 
 //WebSocket
+import { socket } from "./services/configSocket"
 import { connectWithWs, sendMessageToWs } from './services/genericSocket'
 
 
 let lobby;
 let match;
-const Lobby = ({ goToGameCallback, mobileUser }) => {
+const Lobby = ({ goToGameCallback, mobileUser, listPlayers }) => {
     const [state, setState] = useState({
-        dataFromServer: null,
+        dataFromServer: listPlayers,
         user: undefined
     })
+
+    console.log("Dimmi qualcosa di scemo: ", listPlayers)
 
     useEffect(() => {
         userInfo()
@@ -38,7 +41,7 @@ const Lobby = ({ goToGameCallback, mobileUser }) => {
         socket.onmessage = function (event) {
             let newState = Object.assign({}, state)
 
-            console.log(event.data);
+            console.log("Evento nell'onMessage: ", event.data);
             const obj = JSON.parse(event.data);
             newState.dataFromServer = obj;
             newState.user = response.data.id
@@ -80,11 +83,12 @@ const Lobby = ({ goToGameCallback, mobileUser }) => {
     const startGame = async () => {
         goToGameCallback()
     }
+
     const renderPlayer = (player, key) => {
         return (
             <View key={key} style={{ borderColor: '#fff', borderBottomWidth: 2, padding: 10, backgroundColor: '#4F8CAB' }}>
                 <Text style={{ color: '#fff', fontWeight: 'bold' }}>
-                    {player.username} | {player.points}pts
+                    {player.username} | {player.score}pts
                 </Text>
             </View>
         )

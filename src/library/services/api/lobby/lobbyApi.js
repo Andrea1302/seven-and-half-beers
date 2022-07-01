@@ -9,7 +9,7 @@ const deleteLobby = async (token) => {
 }
 
 const randomLobby = async (token) => {
-    return await putApi(`lobby/-1`, token)
+    return await putApi(`lobby/-1`, {}, token)
 }
 
 export { createLobby, deleteLobby, randomLobby }

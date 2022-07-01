@@ -15,6 +15,8 @@ var _Button = _interopRequireDefault(require("./Button"));
 
 var _authApi = require("./services/api/auth/authApi");
 
+var _configSocket = require("./services/configSocket");
+
 var _genericSocket = require("./services/genericSocket");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -48,16 +50,18 @@ var Lobby = function Lobby(_ref) {
   var _state$dataFromServer, _state$dataFromServer2;
 
   var goToGameCallback = _ref.goToGameCallback,
-      mobileUser = _ref.mobileUser;
+      mobileUser = _ref.mobileUser,
+      listPlayers = _ref.listPlayers;
 
   var _useState = (0, _react.useState)({
-    dataFromServer: null,
+    dataFromServer: listPlayers,
     user: undefined
   }),
       _useState2 = _slicedToArray(_useState, 2),
       state = _useState2[0],
       setState = _useState2[1];
 
+  console.log("Dimmi qualcosa di scemo: ", listPlayers);
   (0, _react.useEffect)(function () {
     userInfo();
   }, []);
@@ -94,9 +98,9 @@ var Lobby = function Lobby(_ref) {
               (0, _genericSocket.connectWithWs)();
               console.log('dopo connect');
 
-              socket.onmessage = function (event) {
+              _configSocket.socket.onmessage = function (event) {
                 var newState = Object.assign({}, state);
-                console.log(event.data);
+                console.log("Evento nell'onMessage: ", event.data);
                 var obj = JSON.parse(event.data);
                 newState.dataFromServer = obj;
                 newState.user = response.data.id; // if (obj.hasOwnProperty("idLobby")) {
@@ -175,7 +179,7 @@ var Lobby = function Lobby(_ref) {
         color: '#fff',
         fontWeight: 'bold'
       }
-    }, player.username, " | ", player.points, "pts"));
+    }, player.username, " | ", player.score, "pts"));
   };
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.View, {

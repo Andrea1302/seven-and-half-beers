@@ -71,10 +71,10 @@ export async function getApi(resource, header = null) {
         .catch(responseApiError());
 }
 
-export async function putApi( header = null) {
+export async function putApi(resource, obj, header = null) {
     //function for put api call
     return axiosInstance
-        .put({
+        .put(resource, obj, {
             headers: header !== null ? { Authorization: `Bearer ${header}` } : "",
         })
         .then(responseApi())
