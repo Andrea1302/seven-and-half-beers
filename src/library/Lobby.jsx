@@ -1,105 +1,90 @@
 import React, { useState, useEffect } from 'react'
 import { View, Platform, Text, Dimensions } from 'react-native'
 import Button from './Button'
-//AsyncStorage
-import { getStorage } from './utils/asyncStorage';
 import { getUserInfo } from './services/api/auth/authApi'
 
-import { createLobby, deleteLobby, randomLobby } from './services/api/lobby/lobbyApi'
-
 //WebSocket
-import { connectWithWs, sendMessageToWs, listenToWs, closeConnectionWithWs } from './services/genericSocket'
+import { connectWithWs, sendMessageToWs } from './services/genericSocket'
 
-import { socket } from './services/configSocket'
 
-let userPlayer;
-const Lobby = ({ userMobileId, host, startGameCallback, createCallback, randomCallback, randomCallbackMobile, createCallbackMobile }) => {
-
+let lobby;
+let match;
+const Lobby = ({ goToGameCallback, mobileUser }) => {
     const [state, setState] = useState({
         dataFromServer: null,
-        playGame: false,
-        user : undefined
+        user: undefined
     })
 
     useEffect(() => {
         userInfo()
     }, [])
 
-    // const random = async () => {
-    //     if (Platform.OS === 'web') {
-    //         let user = await getStorage('user')
-    //         let response = await randomLobby(user?.token)
-    //         randomCallback(response.data)
-    //     } else {
-    //         randomCallbackMobile()
-    //     }
-    // }
     const userInfo = async () => {
-        if (Platform.OS === 'web') {
-            let userData = await getStorage('user')
-            let response = await getUserInfo(userData.id)
-            console.log(response.data)
-            userPlayer = {
-                "user": [
-                    {
-                        "id": response.data.id,
-                        "username": response.data.username,
-                        "email": response.data.email,
-                        "password": "eb1205dfd370bc03b62c09137f7a9e98b0cf4a402652b463e286c8019138054a",
-                        "score": response.data.score,
-                        "token": null,
-                        "refreshToken": null,
-                        "online": true
-                    }
-                ],
-                "idLobby": 16,
-                "accessType": true,
-                "userMax": 7,
-                "usersSize": 0
-            }
-            connectWithWs(userPlayer)
-            socket.onmessage = function (event) {
-                if (event.data[0] === '{') {
-                    console.log('questoo', event.data)
-                    setState({
-                        ...state,
-                        user : response.data.id,
-                        dataFromServer: JSON.parse(event.data)
-                    })
-
-                }
-            }
-            // randomCallback(response.data)
+        console.log('sono qua dentro userinfolobby', mobileUser)
+        // let userData = Platform.OS === 'web' ? await getStorage('user') : mobileUser
+        let userData = mobileUser
+        let response;
+        console.log('userdata from props', mobileUser)
+        if (Platform.OS !== 'web' && userData !== undefined) {
+            response = await getUserInfo(userData.id)
+        } else {
+            return
         }
+
+        connectWithWs()
+        console.log('dopo connect')
+
+
+        socket.onmessage = function (event) {
+            let newState = Object.assign({}, state)
+
+            console.log(event.data);
+            const obj = JSON.parse(event.data);
+            newState.dataFromServer = obj;
+            newState.user = response.data.id
+            // if (obj.hasOwnProperty("idLobby")) {
+            //     lobby = obj;
+            // } 
+            // else {
+            //     if (match == null) {
+            //         match = obj;
+            //         setTimeout(() => {
+            //             const message = {
+            //                 user_id: response.data.id,
+            //                 method: "requestCard"
+            //             }
+            //             requestCard(message);
+
+            //         }, 1000);
+            //     } else {
+            //         match = obj;
+            //     }
+            // }
+            setState(newState)
+
+            // }
+        }
+        const message = {
+            user_id: response.data.id,
+            method: "connectLobby"
+        }
+        sendMessageToWs(message)
+
+
+
+        // randomCallback(response.data)
+
         // user = userMobileId
     }
-    // const create = async () => {
-    //     if (Platform.OS === 'web') {
-    //         let user = await getStorage('user')
-    //         console.log('user', user)
-    //         // let response = await createLobby(user?.token)
-    //         // console.log(response.data)
-    //         // onOpenSocket()
-    //         // createCallback(response.data)
 
-    //     } else {
-    //         createCallbackMobile()
-    //     }
-    // }
-
-    const send = () => {
-        sendMessageToWs("Speriamo si zi")
-    }
-
-    const startGame = () => {
-        startGameCallback()
-
+    const startGame = async () => {
+        goToGameCallback()
     }
     const renderPlayer = (player, key) => {
         return (
             <View key={key} style={{ borderColor: '#fff', borderBottomWidth: 2, padding: 10, backgroundColor: '#4F8CAB' }}>
                 <Text style={{ color: '#fff', fontWeight: 'bold' }}>
-                    {player.username} | {player.score}pts
+                    {player.username} | {player.points}pts
                 </Text>
             </View>
         )
@@ -107,10 +92,6 @@ const Lobby = ({ userMobileId, host, startGameCallback, createCallback, randomCa
     return (
 
         <View style={{ backgroundColor: '#61B5D9', height: Dimensions.get('screen').height, paddingVertical: 20 }}>
-            {/* <Button callback={create} label="Create Lobby" />
-            <Button callback={random} label="Random Lobby" /> */}
-            {/* <Button callback={connect} label="connettiti" /> */}
-            {/* <Button callback={closeConnection} label="close" /> */}
             {
                 !state.dataFromServer &&
                 <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 36, color: '#fff' }}>EMPTY LOBBY</Text>
@@ -118,11 +99,11 @@ const Lobby = ({ userMobileId, host, startGameCallback, createCallback, randomCa
             {
                 state.dataFromServer &&
                 <View>
-                    <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 36, color: '#fff', marginBottom: 10 }}>LOBBY PLAYERS : {state.dataFromServer.user.length}</Text>
-                    {state.dataFromServer.user.map(renderPlayer)}
+                    <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 36, color: '#fff', marginBottom: 10 }}>LOBBY PLAYERS : {state.dataFromServer.users.length}</Text>
+                    {state.dataFromServer.users?.map(renderPlayer)}
 
                     {
-                        ((state.dataFromServer.user.length > 1) && (state.user == state.dataFromServer.user[0].id)) &&
+                        ((state.dataFromServer.users?.length > 1) && (state.user == state.dataFromServer.users[0].id)) &&
                         <View style={{ alignItems: 'center', marginTop: 10 }}>
                             <Button styleCustom={{ width: 100, backgroundColor: '#4F8CAB', alignItems: 'center', padding: 10, borderRadius: 5 }} label='START' in callback={startGame} />
                         </View>

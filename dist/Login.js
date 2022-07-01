@@ -15,6 +15,8 @@ var _reactNative = require("react-native");
 
 var _styleForm = _interopRequireDefault(require("./style/styleForm"));
 
+var _asyncStorage = require("./utils/asyncStorage");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // button 
@@ -34,6 +36,7 @@ var Login = function Login(_ref) {
 
   var Login = function Login() {
     (0, _authApi.signInPostApi)(formObject).then(function (res) {
+      // setStorage('user',res.data)
       callback(res);
     });
   };

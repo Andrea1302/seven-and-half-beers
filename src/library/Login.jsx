@@ -8,6 +8,7 @@ import Button from './Button';
 import { TextInput, View, ImageBackground } from 'react-native';
 
 import styleForm from './style/styleForm'
+import { setStorage } from './utils/asyncStorage';
 
 let formObject = {
     email: '',
@@ -19,6 +20,7 @@ const Login = ({ goToRegistration, callback, imgBg, containerStyle,styleBtn,styl
     const Login = () => {
         signInPostApi(formObject)
             .then(res => {
+                // setStorage('user',res.data)
                 callback(res)
             })
     }

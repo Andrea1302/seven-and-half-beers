@@ -9,14 +9,9 @@ import Button from './Button';
 // components 
 import { TextInput, View, ImageBackground } from 'react-native';
 
-// storage 
-import { setStorage } from './utils/asyncStorage';
-
 // style 
 import styleForm from './style/styleForm';
 
-// utils 
-import { checkMail, checkPassword } from './utils/validation'
 
 let formObject = {
     username: '',

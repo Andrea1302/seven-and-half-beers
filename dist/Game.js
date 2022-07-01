@@ -11,15 +11,13 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _reactNative = require("react-native");
 
+var _configSocket = require("./services/configSocket");
+
 var _genericSocket = require("./services/genericSocket");
 
 var _styleGame = _interopRequireDefault(require("./style/styleGame"));
 
 var _Button = _interopRequireDefault(require("./Button"));
-
-var _asyncStorage = require("./utils/asyncStorage");
-
-var _configSocket = require("./services/configSocket");
 
 var _authApi = require("./services/api/auth/authApi");
 
@@ -53,75 +51,13 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-/* 
-<LottieView ref={playerIcon} style={styleGame.bastardi} source={require('./assets/lotties/user.json')} loop={true} autosize={true} />
-<LottieView ref={beer} style={{ height: "100%" }} source={require('./assets/lotties/beer.json')} loop={true} autosize={true} /> 
-*/
-var playerList = [{
-  "id": "112",
-  "username": "Sempronio",
-  "points": "1000",
-  "firstCard": 1,
-  "active": "false",
-  "isDrunk": "false",
-  "otherCards": 0
-}, {
-  "id": "222",
-  "username": "PotatoGnognos",
-  "points": "758",
-  "firstCard": 2,
-  "active": "false",
-  "otherCards": 0,
-  "isDrunk": "false"
-}, {
-  "id": "300",
-  "username": "Yugi Muto",
-  "points": "9999",
-  "firstCard": 3,
-  "active": "false",
-  "otherCards": 0,
-  "isDrunk": "false"
-}, {
-  "id": "2",
-  "username": "Seto Kaiba",
-  "points": "1",
-  "firstCard": 6,
-  "active": "false",
-  "otherCards": 0,
-  "isDrunk": "false"
-}, {
-  "id": 59,
-  "username": "Mai Valentine",
-  "points": 69,
-  "firstCard": 3,
-  "active": "false",
-  "otherCards": 0,
-  "isDrunk": "false"
-}, {
-  "id": 62,
-  "username": "Bulma",
-  "points": 420,
-  "firstCard": 2,
-  "active": "false",
-  "isDrunk": "false",
-  "otherCards": 0
-}, {
-  "id": 711,
-  "username": "Nico Robin",
-  "points": 0,
-  "firstCard": 0.5,
-  "active": false,
-  "isDrunk": false,
-  "otherCards": 0
-}]; // const nextCard = 2
 // let myId
-
 var Game = function Game(props) {
   // const myRef = useRef([])
+  var myId = props.myIdProp;
+
   var _useState = (0, _react.useState)({
     infoGiocatori: undefined,
-    contatoreTurni: 0,
-    turns: 0,
     isMyTurn: false,
     myId: undefined
   }),
@@ -131,48 +67,54 @@ var Game = function Game(props) {
 
 
   (0, _react.useEffect)(function () {
-    // if (Platform.OS !== 'web') {
-    props.callback(state); // }
+    if (_reactNative.Platform.OS !== 'web') {
+      props.callback(state);
+    }
   }, [state]);
   (0, _react.useEffect)(function () {
-    userInfo(); // (async () => {
-    //     const user = await getStorage('user')
-    //     setState({
-    //         ...state,
-    //         myId: user.id
-    //     })
-    // })()
+    userInfo();
   }, []);
 
   var userInfo = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var userData, response;
+      var response, message;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return (0, _asyncStorage.getStorage)('user');
+              return (0, _authApi.getUserInfo)(myId);
 
             case 2:
-              userData = _context.sent;
-              _context.next = 5;
-              return (0, _authApi.getUserInfo)(userData.id);
-
-            case 5:
               response = _context.sent;
 
               _configSocket.socket.onmessage = function (event) {
                 if (event.data[0] === '{') {
-                  console.log('questoo', event.data);
+                  var isMyTurnVar = false;
+                  var data = JSON.parse(event.data);
+                  data.hands.forEach(function (userNow) {
+                    console.log('user:', userNow, 'user.id', userNow.user.id, 'responseData', response.data.id, 'turns', userNow.turn);
+
+                    if (userNow.user.id === response.data.id && userNow.turn) {
+                      isMyTurnVar = true;
+                    }
+                  });
+                  console.log(isMyTurnVar);
                   setState(_objectSpread(_objectSpread({}, state), {}, {
+                    isMyTurn: isMyTurnVar,
                     user: response.data.id,
                     infoGiocatori: JSON.parse(event.data)
                   }));
                 }
               };
 
-            case 7:
+              message = {
+                user_id: myId,
+                method: "startMatch"
+              };
+              (0, _genericSocket.sendMessageToWs)(message);
+
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -186,95 +128,72 @@ var Game = function Game(props) {
   }();
 
   var stop = function stop() {
-    var lenghtPlayers = state.infoGiocatori.user.length;
-
-    if (state.turns === lenghtPlayers - 1) {
-      alert('finiiish');
-      return;
-    }
-
-    setState(_objectSpread(_objectSpread({}, state), {}, {
-      turns: state.turns + 1
-    }));
-    props.stop(71);
+    var message = {
+      user_id: myId,
+      method: "stopPlaying"
+    };
+    (0, _genericSocket.sendMessageToWs)(message);
+    setTimeout(function () {
+      (0, _genericSocket.endMatch)(myId);
+    }, 100);
   };
 
   var carta = function carta() {
     var newState = Object.assign({}, state);
-    var arrCards = [0.5, 1, 2, 3, 4, 5, 6, 7];
-    var nextCard = arrCards[Math.floor(Math.random() * (7 + 1))];
-    newState.infoGiocatori.user[state.turns].otherCards = newState.infoGiocatori.user[state.turns].otherCards + nextCard;
-    var sumCard = newState.infoGiocatori.user[state.turns].otherCards + newState.infoGiocatori.user[state.turns].firstCard;
+    var message = {
+      user_id: myId,
+      method: "requestCard"
+    };
+    requestCard(message); // let arrCards = [0.5, 1, 2, 3, 4, 5, 6, 7]
+    // const nextCard = arrCards[Math.floor(Math.random() * (7 + 1))];
+    // newState.infoGiocatori.user[state.turns].otherCards = newState.infoGiocatori.user[state.turns].otherCards + nextCard
+    // let sumCard = newState.infoGiocatori.user[state.turns].otherCards + newState.infoGiocatori.user[state.turns].firstCard
+    // if (sumCard > 7.5) {
+    //     console.log("Hai perso zi")
+    //     // myRef.current[state.turns].style = {backgrounColor : 'green'}
+    //     // console.log(myRef.current[state.turns])
+    //     newState.infoGiocatori.user[state.turns].isDrunk = true
+    //     stop()
+    //     return props.addCard('gameover')
+    // }
+    // let variable;
+    // switch (nextCard) {
+    //     case 0.5: {
+    //         variable = 11.4
+    //         break;
+    //     }
+    //     case 1: {
+    //         variable = 22.8
+    //         break;
+    //     }
+    //     case 2: {
+    //         variable = 45.6
+    //         break;
+    //     }
+    //     case 3: {
+    //         variable = 68.4
+    //         break;
+    //     }
+    //     case 4: {
+    //         variable = 91.2
+    //         break;
+    //     }
+    //     case 5: {
+    //         variable = 114
+    //         break;
+    //     }
+    //     case 6: {
+    //         variable = 136.8
+    //         break;
+    //     }
+    //     case 7: {
+    //         variable = 159.6
+    //         break;
+    //     }
+    // }
+    // props.addCard(variable)
 
-    if (sumCard > 7.5) {
-      console.log("Hai perso zi"); // myRef.current[state.turns].style = {backgrounColor : 'green'}
-      // console.log(myRef.current[state.turns])
-
-      newState.infoGiocatori.user[state.turns].isDrunk = true;
-      stop();
-      return props.addCard('gameover');
-    }
-
-    var variable;
-
-    switch (nextCard) {
-      case 0.5:
-        {
-          variable = 11.4;
-          break;
-        }
-
-      case 1:
-        {
-          variable = 22.8;
-          break;
-        }
-
-      case 2:
-        {
-          variable = 45.6;
-          break;
-        }
-
-      case 3:
-        {
-          variable = 68.4;
-          break;
-        }
-
-      case 4:
-        {
-          variable = 91.2;
-          break;
-        }
-
-      case 5:
-        {
-          variable = 114;
-          break;
-        }
-
-      case 6:
-        {
-          variable = 136.8;
-          break;
-        }
-
-      case 7:
-        {
-          variable = 159.6;
-          break;
-        }
-    }
-
-    props.addCard(variable);
     setState(newState);
-  };
-
-  var webS = function webS() {// sendDataToWs(2, 'start', state.myId)
-  };
-
-  var start = function start() {// sendDataToWs(2, 'start', state.myId)
   };
 
   return /*#__PURE__*/_react.default.createElement(_reactNative.ImageBackground, {
@@ -284,7 +203,7 @@ var Game = function Game(props) {
     style: _styleGame.default.gameTable
   }, /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: props.styleChildren
-  }, props.children), /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, props.children), state.isMyTurn && /*#__PURE__*/_react.default.createElement(_reactNative.View, {
     style: _styleGame.default.btn
   }, /*#__PURE__*/_react.default.createElement(_Button.default, {
     styleCustom: _styleGame.default.singleBtn,
@@ -294,10 +213,6 @@ var Game = function Game(props) {
     styleCustom: _styleGame.default.singleBtn,
     label: "Carta",
     callback: carta
-  }), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    styleCustom: _styleGame.default.singleBtn,
-    label: "wbs",
-    callback: webS
   })));
 };
 
