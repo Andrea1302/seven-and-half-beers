@@ -85,7 +85,7 @@ var Home = function Home(_ref) {
               return _context.abrupt("break", 26);
 
             case 24:
-              goTo(path);
+              goTo(path, mobileUser);
               return _context.abrupt("break", 26);
 
             case 26:

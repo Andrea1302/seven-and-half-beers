@@ -12,7 +12,7 @@ let lobby;
 let match;
 const Lobby = ({ goToGameCallback, mobileUser, listPlayers }) => {
     const [state, setState] = useState({
-        dataFromServer: listPlayers,
+        dataFromServer: undefined,
         user: undefined
     })
 
@@ -34,7 +34,12 @@ const Lobby = ({ goToGameCallback, mobileUser, listPlayers }) => {
             return
         }
 
-        connectWithWs()
+        // connectWithWs()
+        socket.onopen = async (e) => {
+            console.log("Mi sono appena connesso yuhuu");
+            //Subscribe to the channel
+            // socket.send(JSON.stringify(myUser))
+        }
         console.log('dopo connect')
 
 

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, Dimensions } from 'react-native'
+import { Text, View, Dimensions, Platform } from 'react-native'
 import { getUserInfo } from './services/api/auth/authApi';
 
 //Api
 import { getUsers } from "./services/api/leaderboard/leaderboard"
 import { getStorage } from './utils/asyncStorage';
 let user;
-const Leaderboard = () => {
+const Leaderboard = ({ mobileUser }) => {
 
     const [state, setState] = useState({
         topPlayerList: null,
@@ -21,9 +21,16 @@ const Leaderboard = () => {
     }, [])
 
     const getUser = async () => {
-        let userData = await getStorage('user')
-        let response = await getUserInfo(userData.id)
-        user = response.data
+        if (Platform.OS !== 'web') {
+            console.log('mobile user from package', mobileUser)
+            user = mobileUser
+        } else {
+
+
+            let userData = await getStorage('user')
+            let response = await getUserInfo(userData.id)
+            user = response.data
+        }
     }
     const getTopPlayers = async () => {
 
@@ -73,8 +80,8 @@ const Leaderboard = () => {
             {
                 state?.topPlayerList?.map(renderTopPlayers)
             }
-            <View style={{marginVertical:30}}>
-                <Text style={{ color: '#fff',fontWeight:'bold',textAlign:'center',fontSize : 24 }}>
+            <View style={{ marginVertical: 30 }}>
+                <Text style={{ color: '#fff', fontWeight: 'bold', textAlign: 'center', fontSize: 24 }}>
                     Your score : {user?.score}
                 </Text>
             </View>

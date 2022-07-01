@@ -32,7 +32,7 @@ const Home = ({ goTo, logoutCallback, styleTextBtn, styleBtn, mobileUser }) => {
                 break;
             }
             case "LeaderboardPage": {
-                goTo(path)
+                goTo(path, mobileUser)
                 break;
             }
         }

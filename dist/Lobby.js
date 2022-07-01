@@ -54,7 +54,7 @@ var Lobby = function Lobby(_ref) {
       listPlayers = _ref.listPlayers;
 
   var _useState = (0, _react.useState)({
-    dataFromServer: listPlayers,
+    dataFromServer: undefined,
     user: undefined
   }),
       _useState2 = _slicedToArray(_useState, 2),
@@ -67,11 +67,11 @@ var Lobby = function Lobby(_ref) {
   }, []);
 
   var userInfo = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
       var userData, response, message;
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context2.prev = _context2.next) {
             case 0:
               console.log('sono qua dentro userinfolobby', mobileUser); // let userData = Platform.OS === 'web' ? await getStorage('user') : mobileUser
 
@@ -79,23 +79,45 @@ var Lobby = function Lobby(_ref) {
               console.log('userdata from props', mobileUser);
 
               if (!(_reactNative.Platform.OS !== 'web' && userData !== undefined)) {
-                _context.next = 9;
+                _context2.next = 9;
                 break;
               }
 
-              _context.next = 6;
+              _context2.next = 6;
               return (0, _authApi.getUserInfo)(userData.id);
 
             case 6:
-              response = _context.sent;
-              _context.next = 10;
+              response = _context2.sent;
+              _context2.next = 10;
               break;
 
             case 9:
-              return _context.abrupt("return");
+              return _context2.abrupt("return");
 
             case 10:
-              (0, _genericSocket.connectWithWs)();
+              // connectWithWs()
+              _configSocket.socket.onopen = /*#__PURE__*/function () {
+                var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
+                  return _regeneratorRuntime().wrap(function _callee$(_context) {
+                    while (1) {
+                      switch (_context.prev = _context.next) {
+                        case 0:
+                          console.log("Mi sono appena connesso yuhuu"); //Subscribe to the channel
+                          // socket.send(JSON.stringify(myUser))
+
+                        case 1:
+                        case "end":
+                          return _context.stop();
+                      }
+                    }
+                  }, _callee);
+                }));
+
+                return function (_x) {
+                  return _ref3.apply(this, arguments);
+                };
+              }();
+
               console.log('dopo connect');
 
               _configSocket.socket.onmessage = function (event) {
@@ -133,10 +155,10 @@ var Lobby = function Lobby(_ref) {
 
             case 15:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
         }
-      }, _callee);
+      }, _callee2);
     }));
 
     return function userInfo() {
@@ -145,23 +167,23 @@ var Lobby = function Lobby(_ref) {
   }();
 
   var startGame = /*#__PURE__*/function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context3.prev = _context3.next) {
             case 0:
               goToGameCallback();
 
             case 1:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
         }
-      }, _callee2);
+      }, _callee3);
     }));
 
     return function startGame() {
-      return _ref3.apply(this, arguments);
+      return _ref4.apply(this, arguments);
     };
   }();
 

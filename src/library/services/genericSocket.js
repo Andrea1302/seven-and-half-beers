@@ -1,4 +1,4 @@
-import { socket, connect } from '../services/configSocket'
+import { socket } from '../services/configSocket'
 
 //onOpen
 export async function connectWithWs() {

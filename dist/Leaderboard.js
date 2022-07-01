@@ -47,8 +47,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var user;
 
-var Leaderboard = function Leaderboard() {
+var Leaderboard = function Leaderboard(_ref) {
   var _state$topPlayerList, _user;
+
+  var mobileUser = _ref.mobileUser;
 
   var _useState = (0, _react.useState)({
     topPlayerList: null,
@@ -65,25 +67,36 @@ var Leaderboard = function Leaderboard() {
   }, []);
 
   var getUser = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var userData, response;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
-              return (0, _asyncStorage.getStorage)('user');
+              if (!(_reactNative.Platform.OS !== 'web')) {
+                _context.next = 5;
+                break;
+              }
 
-            case 2:
-              userData = _context.sent;
-              _context.next = 5;
-              return (0, _authApi.getUserInfo)(userData.id);
+              console.log('mobile user from package', mobileUser);
+              user = mobileUser;
+              _context.next = 12;
+              break;
 
             case 5:
+              _context.next = 7;
+              return (0, _asyncStorage.getStorage)('user');
+
+            case 7:
+              userData = _context.sent;
+              _context.next = 10;
+              return (0, _authApi.getUserInfo)(userData.id);
+
+            case 10:
               response = _context.sent;
               user = response.data;
 
-            case 7:
+            case 12:
             case "end":
               return _context.stop();
           }
@@ -92,12 +105,12 @@ var Leaderboard = function Leaderboard() {
     }));
 
     return function getUser() {
-      return _ref.apply(this, arguments);
+      return _ref2.apply(this, arguments);
     };
   }();
 
   var getTopPlayers = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
       var res, arrayAppoggio;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) {
@@ -139,7 +152,7 @@ var Leaderboard = function Leaderboard() {
     }));
 
     return function getTopPlayers() {
-      return _ref2.apply(this, arguments);
+      return _ref3.apply(this, arguments);
     };
   }();
 
