@@ -15,7 +15,7 @@ let formObject = {
     password: '',
 }
 
-const Login = ({ goToRegistration, callback, imgBg, containerStyle,styleBtn,styleTextBtn }) => {
+const Login = ({ goToRegistration, callback, imgBg, containerStyle, styleBtn, styleTextBtn }) => {
 
     const LoginFunction = () => {
         signInPostApi(formObject)
@@ -43,6 +43,7 @@ const Login = ({ goToRegistration, callback, imgBg, containerStyle,styleBtn,styl
 
                 <TextInput
                     style={styleForm.input}
+                    keyboardType="email-address"
                     onChangeText={handleInput('email')}
                     placeholder="email"
                     placeholderTextColor="#ececec"
@@ -56,14 +57,14 @@ const Login = ({ goToRegistration, callback, imgBg, containerStyle,styleBtn,styl
                     placeholderTextColor="#ececec"
                 />
                 <Button
-                    styleCustomText={styleTextBtn} 
+                    styleCustomText={styleTextBtn}
                     styleCustom={styleBtn}
                     callback={LoginFunction}
                     label="Login"
                 />
 
                 <Button
-                    styleCustomText={styleTextBtn} 
+                    styleCustomText={styleTextBtn}
                     styleCustom={styleBtn}
                     callback={goTo}
                     label="Go to registration"
