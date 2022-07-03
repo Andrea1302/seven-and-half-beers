@@ -63,6 +63,7 @@ const Registration = ({ callback, imgBg, containerStyle, styleBtn, styleTextBtn,
                 />
                 <TextInput
                     style={[styleForm.input, state.errorMail ? styleForm.errorInput : '']}
+                    keyboardType="email-address"
                     onChangeText={handleInput('email')}
                     placeholder="email"
                     placeholderTextColor="#ececec"
