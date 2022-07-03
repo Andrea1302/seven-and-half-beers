@@ -82,12 +82,7 @@ const Registration = ({ callback, imgBg, containerStyle, styleBtn, styleTextBtn,
                     callback={registration}
                     label="registration"
                 />
-                <Button
-                    styleCustom={styleBtn}
-                    styleCustomText={styleTextBtn}
-                    callback={goToLogin}
-                    label="SignIn"
-                />
+
             </View >
 
         </ImageBackground>
