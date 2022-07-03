@@ -9,15 +9,11 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _reactNative = require("react-native");
+var _reactNativeWeb = require("react-native-web");
 
 var _Button = _interopRequireDefault(require("./Button"));
 
-var _authApi = require("./services/api/auth/authApi");
-
-var _configSocket = require("./services/configSocket");
-
-var _genericSocket = require("./services/genericSocket");
+var _lobbyApi = require("./services/api/lobby/lobbyApi");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43,181 +39,116 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+var WS = new WebSocket("ws://7emezzo-dev.eba-uwfpyt28.eu-south-1.elasticbeanstalk.com/ws");
 var lobby;
-var match;
+var connectionEstablished;
 
 var Lobby = function Lobby(_ref) {
-  var _state$dataFromServer, _state$dataFromServer2;
+  var _state$dataFromServer;
 
-  var goToGameCallback = _ref.goToGameCallback,
-      mobileUser = _ref.mobileUser,
-      listPlayers = _ref.listPlayers;
+  var mobileUser = _ref.mobileUser;
 
   var _useState = (0, _react.useState)({
-    dataFromServer: undefined,
-    user: undefined
+    dataFromServer: undefined
   }),
       _useState2 = _slicedToArray(_useState, 2),
       state = _useState2[0],
       setState = _useState2[1];
 
-  console.log("Dimmi qualcosa di scemo: ", listPlayers);
   (0, _react.useEffect)(function () {
-    userInfo();
-  }, []);
+    WS.onmessage = function (event) {
+      console.log('onmessage', JSON.parse(event.data)); // eventEmit('lobby', event.data)
+      // lobby = JSON.parse(event.data)
+    };
 
-  var userInfo = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var userData, response, message;
-      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+    (0, _lobbyApi.createLobby)('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2ZWdldGFAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2NTY2OTAzMzgsImV4cCI6MTY1NjY5MzkzOH0.Z55OFeEkwfhSbiMPGfdlVjFmmTJS_e3sngKNT7htk2M').then(function (response) {
+      // let response = await createLobby(mobileUser.token)
+      console.log('response.data', response.data);
+      lobby = response.data;
+
+      WS.onopen = function () {
+        console.log("CONNECTED");
+      };
+
+      connectionEstablished = false;
+      setTimeout(function () {
+        if (lobby != null && WS != null) {
+          var message = {
+            user_id: mobileUser,
+            method: "connectLobby"
+          };
+          sendMessage(message);
+          connectionEstablished = true;
+        }
+      }, 1000);
+    });
+  }, [WS.onmessage]);
+
+  var sendMessage = function sendMessage(message) {
+    WS.send(JSON.stringify(message));
+  };
+
+  var createL = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var response;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context.prev = _context.next) {
             case 0:
-              console.log('sono qua dentro userinfolobby', mobileUser); // let userData = Platform.OS === 'web' ? await getStorage('user') : mobileUser
+              _context.next = 2;
+              return (0, _lobbyApi.createLobby)('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2ZWdldGFAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJpYXQiOjE2NTY2OTAzMzgsImV4cCI6MTY1NjY5MzkzOH0.Z55OFeEkwfhSbiMPGfdlVjFmmTJS_e3sngKNT7htk2M');
 
-              userData = mobileUser;
-              console.log('userdata from props', mobileUser);
+            case 2:
+              response = _context.sent;
+              // let response = await createLobby(mobileUser.token)
+              lobby = response.data;
 
-              if (!(_reactNative.Platform.OS !== 'web' && userData !== undefined)) {
-                _context2.next = 9;
-                break;
-              }
-
-              _context2.next = 6;
-              return (0, _authApi.getUserInfo)(userData.id);
-
-            case 6:
-              response = _context2.sent;
-              _context2.next = 10;
-              break;
-
-            case 9:
-              return _context2.abrupt("return");
-
-            case 10:
-              // connectWithWs()
-              _configSocket.socket.onopen = /*#__PURE__*/function () {
-                var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
-                  return _regeneratorRuntime().wrap(function _callee$(_context) {
-                    while (1) {
-                      switch (_context.prev = _context.next) {
-                        case 0:
-                          console.log("Mi sono appena connesso yuhuu"); //Subscribe to the channel
-                          // socket.send(JSON.stringify(myUser))
-
-                        case 1:
-                        case "end":
-                          return _context.stop();
-                      }
-                    }
-                  }, _callee);
-                }));
-
-                return function (_x) {
-                  return _ref3.apply(this, arguments);
-                };
-              }();
-
-              console.log('dopo connect');
-
-              _configSocket.socket.onmessage = function (event) {
-                var newState = Object.assign({}, state);
-                console.log("Evento nell'onMessage: ", event.data);
-                var obj = JSON.parse(event.data);
-                newState.dataFromServer = obj;
-                newState.user = response.data.id; // if (obj.hasOwnProperty("idLobby")) {
-                //     lobby = obj;
-                // } 
-                // else {
-                //     if (match == null) {
-                //         match = obj;
-                //         setTimeout(() => {
-                //             const message = {
-                //                 user_id: response.data.id,
-                //                 method: "requestCard"
-                //             }
-                //             requestCard(message);
-                //         }, 1000);
-                //     } else {
-                //         match = obj;
-                //     }
-                // }
-
-                setState(newState); // }
+              WS.onopen = function () {
+                console.log("CONNECTED");
               };
 
-              message = {
-                user_id: response.data.id,
-                method: "connectLobby"
-              };
-              (0, _genericSocket.sendMessageToWs)(message); // randomCallback(response.data)
-              // user = userMobileId
+              connectionEstablished = false;
+              setTimeout(function () {
+                if (lobby != null && WS != null) {
+                  var message = {
+                    user_id: mobileUser,
+                    method: "connectLobby"
+                  };
+                  sendMessage(message);
+                  connectionEstablished = true;
+                }
+              }, 1000);
 
-            case 15:
+            case 7:
             case "end":
-              return _context2.stop();
+              return _context.stop();
           }
         }
-      }, _callee2);
+      }, _callee);
     }));
 
-    return function userInfo() {
+    return function createL() {
       return _ref2.apply(this, arguments);
     };
   }();
 
-  var startGame = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              goToGameCallback();
-
-            case 1:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }));
-
-    return function startGame() {
-      return _ref4.apply(this, arguments);
-    };
-  }();
-
-  var renderPlayer = function renderPlayer(player, key) {
-    return /*#__PURE__*/_react.default.createElement(_reactNative.View, {
-      key: key,
-      style: {
-        borderColor: '#fff',
-        borderBottomWidth: 2,
-        padding: 10,
-        backgroundColor: '#4F8CAB'
-      }
-    }, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
-      style: {
-        color: '#fff',
-        fontWeight: 'bold'
-      }
-    }, player.username, " | ", player.score, "pts"));
-  };
-
-  return /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  return /*#__PURE__*/_react.default.createElement(_reactNativeWeb.View, {
     style: {
       backgroundColor: '#61B5D9',
-      height: _reactNative.Dimensions.get('screen').height,
+      height: _reactNativeWeb.Dimensions.get('screen').height,
       paddingVertical: 20
     }
-  }, !state.dataFromServer && /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
+  }, !state.dataFromServer && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactNativeWeb.Text, {
     style: {
       textAlign: 'center',
       fontWeight: 'bold',
       fontSize: 36,
       color: '#fff'
     }
-  }, "EMPTY LOBBY"), state.dataFromServer && /*#__PURE__*/_react.default.createElement(_reactNative.View, null, /*#__PURE__*/_react.default.createElement(_reactNative.Text, {
+  }, "EMPTY LOBBY"), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    label: "crea lobby",
+    callback: createL
+  })), state.dataFromServer && /*#__PURE__*/_react.default.createElement(_reactNativeWeb.View, null, /*#__PURE__*/_react.default.createElement(_reactNativeWeb.Text, {
     style: {
       textAlign: 'center',
       fontWeight: 'bold',
@@ -225,23 +156,12 @@ var Lobby = function Lobby(_ref) {
       color: '#fff',
       marginBottom: 10
     }
-  }, "LOBBY PLAYERS : ", state.dataFromServer.users.length), (_state$dataFromServer = state.dataFromServer.users) === null || _state$dataFromServer === void 0 ? void 0 : _state$dataFromServer.map(renderPlayer), ((_state$dataFromServer2 = state.dataFromServer.users) === null || _state$dataFromServer2 === void 0 ? void 0 : _state$dataFromServer2.length) > 1 && state.user == state.dataFromServer.users[0].id && /*#__PURE__*/_react.default.createElement(_reactNative.View, {
+  }, "LOBBY PLAYERS : ", state.dataFromServer.users.length), ((_state$dataFromServer = state.dataFromServer.users) === null || _state$dataFromServer === void 0 ? void 0 : _state$dataFromServer.length) > 1 && state.user == state.dataFromServer.users[0].id && /*#__PURE__*/_react.default.createElement(_reactNativeWeb.View, {
     style: {
       alignItems: 'center',
       marginTop: 10
     }
-  }, /*#__PURE__*/_react.default.createElement(_Button.default, {
-    styleCustom: {
-      width: 100,
-      backgroundColor: '#4F8CAB',
-      alignItems: 'center',
-      padding: 10,
-      borderRadius: 5
-    },
-    label: "START",
-    in: true,
-    callback: startGame
-  }))));
+  })));
 };
 
 var _default = Lobby;

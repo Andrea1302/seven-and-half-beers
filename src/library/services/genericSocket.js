@@ -1,11 +1,11 @@
 import { socket } from '../services/configSocket'
 
 //onOpen
-export async function connectWithWs() {
-    socket.onopen = async (e) => {
+export function connectWithWs(myUser) {
+    socket.onopen = (e) => {
         console.log("[open] Connection established");
         //Subscribe to the channel
-        // socket.send(JSON.stringify(myUser))
+        socket.send(JSON.stringify(myUser))
     }
 }
 // export async function connectWithWs() {
@@ -18,6 +18,7 @@ export async function connectWithWs() {
 // }
 //send
 export function sendMessageToWs(message) {
+    console.log('messeggio da inviare', message)
     socket.send(JSON.stringify(message))
 }
 export function requestCard(message) {

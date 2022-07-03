@@ -22,45 +22,38 @@ const Game = (props) => {
 
     })
 
-    //DidUpade
-    useEffect(() => {
-        if (Platform.OS !== 'web') {
-            props.callback(state)
-        }
-    }, [state])
-
     useEffect(() => {
         userInfo()
     }, [])
 
     const userInfo = async () => {
-        let response = await getUserInfo(myId)
-        socket.onmessage = function (event) {
-            if (event.data[0] === '{') {
-                let isMyTurnVar = false;
-                let data = JSON.parse(event.data)
-                data.hands.forEach((userNow) => {
-                    console.log('user:', userNow, 'user.id', userNow.user.id, 'responseData', response.data.id, 'turns', userNow.turn)
-                    if ((userNow.user.id === response.data.id) && (userNow.turn)) {
-                        isMyTurnVar = true
-                    }
-                })
-                console.log(isMyTurnVar)
 
-                setState({
-                    ...state,
-                    isMyTurn: isMyTurnVar,
-                    user: response.data.id,
-                    infoGiocatori: JSON.parse(event.data)
-                })
+        // socket.onmessage = function (event) {
+        //     if (event.data[0] === '{') {
+        //         let isMyTurnVar = false;
+        //         let data = JSON.parse(event.data)
+        //         data.hands.forEach((userNow) => {
+        //             console.log('user:', userNow, 'user.id', userNow.user.id, 'responseData', response.data.id, 'turns', userNow.turn)
+        //             if ((userNow.user.id === response.data.id) && (userNow.turn)) {
+        //                 isMyTurnVar = true
+        //             }
+        //         })
+        //         console.log(isMyTurnVar)
 
-            }
-        }
-        const message = {
-            user_id: myId,
-            method: "startMatch"
-        }
-        sendMessageToWs(message);
+        //         setState({
+        //             ...state,
+        //             isMyTurn: isMyTurnVar,
+        //             user: response.data.id,
+        //             infoGiocatori: JSON.parse(event.data)
+        //         })
+
+        //     }
+        // }
+        // const message = {
+        //     user_id: myId,
+        //     method: "startMatch"
+        // }
+        // sendMessageToWs(message);
     }
     const stop = () => {
         const message = {
@@ -141,17 +134,17 @@ const Game = (props) => {
 
         <ImageBackground source={{ uri: 'https://cdn.shopify.com/s/files/1/1772/0301/products/3_47247d8e-5f77-4b71-b13c-6e1c08adb51f.png?v=1575939071' }} style={styleGame.gameTable}>
 
-            <View style={props.styleChildren}>
+            {/* <View style={props.styleChildren}> */}
                 {props.children}
-            </View>
-
+            {/* </View> */}
+{/* 
             {
                 state.isMyTurn &&
                 <View style={styleGame.btn}>
                     <Button styleCustom={styleGame.singleBtn} label="Stop" callback={stop} />
                     <Button styleCustom={styleGame.singleBtn} label="Carta" callback={carta} />
                 </View>
-            }
+            } */}
 
 
 

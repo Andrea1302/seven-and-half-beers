@@ -17,7 +17,7 @@ let formObject = {
 
 const Login = ({ goToRegistration, callback, imgBg, containerStyle,styleBtn,styleTextBtn }) => {
 
-    const Login = () => {
+    const LoginFunction = () => {
         signInPostApi(formObject)
             .then(res => {
                 // setStorage('user',res.data)
@@ -58,7 +58,7 @@ const Login = ({ goToRegistration, callback, imgBg, containerStyle,styleBtn,styl
                 <Button
                     styleCustomText={styleTextBtn} 
                     styleCustom={styleBtn}
-                    callback={Login}
+                    callback={LoginFunction}
                     label="Login"
                 />
 

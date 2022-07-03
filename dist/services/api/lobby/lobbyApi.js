@@ -70,13 +70,13 @@ var deleteLobby = /*#__PURE__*/function () {
 exports.deleteLobby = deleteLobby;
 
 var randomLobby = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(token) {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(token, id) {
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return (0, _genericServices.putApi)("lobby/-1", {}, token);
+            return (0, _genericServices.putApi)("lobby/".concat(id), {}, token);
 
           case 2:
             return _context3.abrupt("return", _context3.sent);
@@ -89,7 +89,7 @@ var randomLobby = /*#__PURE__*/function () {
     }, _callee3);
   }));
 
-  return function randomLobby(_x3) {
+  return function randomLobby(_x3, _x4) {
     return _ref3.apply(this, arguments);
   };
 }();

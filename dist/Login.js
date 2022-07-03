@@ -34,7 +34,7 @@ var Login = function Login(_ref) {
       styleBtn = _ref.styleBtn,
       styleTextBtn = _ref.styleTextBtn;
 
-  var Login = function Login() {
+  var LoginFunction = function LoginFunction() {
     (0, _authApi.signInPostApi)(formObject).then(function (res) {
       // setStorage('user',res.data)
       callback(res);
@@ -73,7 +73,7 @@ var Login = function Login(_ref) {
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
     styleCustomText: styleTextBtn,
     styleCustom: styleBtn,
-    callback: Login,
+    callback: LoginFunction,
     label: "Login"
   }), /*#__PURE__*/_react.default.createElement(_Button.default, {
     styleCustomText: styleTextBtn,
