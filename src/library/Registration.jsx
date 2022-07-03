@@ -11,6 +11,7 @@ import { TextInput, View, ImageBackground } from 'react-native';
 
 // style 
 import styleForm from './style/styleForm';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 
 let formObject = {
@@ -19,11 +20,14 @@ let formObject = {
     password: '',
 }
 
-const Registration = ({ callback, imgBg, containerStyle, styleBtn, styleTextBtn }) => {
+const Registration = ({ callback, imgBg, containerStyle, styleBtn, styleTextBtn, goToLogin }) => {
+
     const [state, setState] = useState({
         errorMail: false,
         errorPassword: false
     })
+
+
     const registration = async () => {
         let responseRegistration = await registerUserPostApi(formObject)
         let responseLogin;
@@ -37,9 +41,12 @@ const Registration = ({ callback, imgBg, containerStyle, styleBtn, styleTextBtn 
         let responseUser = await getUserInfo(responseLogin.data?.id)
         callback(responseUser, responseLogin)
     }
+
+
     const handleInput = (params) => (e) => {
         formObject[params] = e
     }
+
     return (
         <ImageBackground
             source={{ uri: 'https://img.freepik.com/free-vector/beer-with-bubbles-foam-background_107791-2563.jpg?w=2000' }}
@@ -73,6 +80,12 @@ const Registration = ({ callback, imgBg, containerStyle, styleBtn, styleTextBtn 
                     styleCustomText={styleTextBtn}
                     callback={registration}
                     label="registration"
+                />
+                <Button
+                    styleCustom={styleBtn}
+                    styleCustomText={styleTextBtn}
+                    callback={goToLogin}
+                    label="SignIn"
                 />
             </View >
 
